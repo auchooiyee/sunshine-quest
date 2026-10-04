@@ -14,7 +14,7 @@ Run this command from the repository directory. Open http://127.0.0.1:4173 in a 
 
 ## Deploy
 
-Student link: [Play Sunshine Math Quest](https://sunshine-quest.pages.dev/?view=regions). Push updates to this repository's `main` branch to trigger a Cloudflare Pages production deployment.
+Student link: [Play Sunshine Math Quest](https://sunshine-quest.pages.dev/?view=regions). Cloudflare Pages is configured for this repository's `main` branch. Automatic updates still need GitHub installation access checked and a successful push-triggered build verified; see [DEPLOYMENT.md](DEPLOYMENT.md).
 
 This repository is prepared for Cloudflare Pages. Run `npm run build` to create the public `dist` directory. Use `npm run build` as the Pages build command and `dist` as the output directory. See [DEPLOYMENT.md](DEPLOYMENT.md) for Git integration and update instructions.
 
