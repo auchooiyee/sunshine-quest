@@ -1,0 +1,1390 @@
+{
+  "id": "f4-maths-finance",
+  "version": 1,
+  "form": 4,
+  "subject": "Mathematics",
+  "chapter": 10,
+  "reviewStatus": "prototype-awaiting-teacher-review",
+  "alignmentSource": "KSSM Mathematics Form 4 and 5 DSKP (2018)",
+  "challenges": [
+    {
+      "id": "roots",
+      "station": "roots",
+      "kind": "finance-reading",
+      "reward": 75,
+      "title": {
+        "en": "A savings goal",
+        "ms": "Matlamat simpanan"
+      },
+      "prompt": {
+        "en": "You already have RM60. Monthly income is RM300 and expenses are RM240. How many full months are needed to reach at least RM300? No interest applies.",
+        "ms": "Anda sudah mempunyai RM60. Pendapatan bulanan RM300 dan perbelanjaan RM240. Berapa bulan penuh diperlukan untuk mencapai sekurang-kurangnya RM300? Tiada faedah."
+      },
+      "model": {
+        "chart": "savings",
+        "income": 300,
+        "expenses": [
+          240
+        ],
+        "initial": 60,
+        "goal": 300
+      },
+      "fields": [
+        {
+          "key": "value",
+          "label": {
+            "en": "Full months",
+            "ms": "Bulan penuh"
+          },
+          "type": "number"
+        }
+      ],
+      "answer": {
+        "value": 4
+      },
+      "hints": {
+        "en": [
+          "Calculate monthly savings first.",
+          "Subtract existing savings from the goal, divide by monthly savings and round up to a full month.",
+          "Monthly savings are RM60; 4 months are needed."
+        ],
+        "ms": [
+          "Kira simpanan bulanan dahulu.",
+          "Tolak simpanan sedia ada daripada matlamat, bahagi dengan simpanan bulanan dan bundarkan ke atas kepada bulan penuh.",
+          "Simpanan bulanan RM60; 4 bulan diperlukan."
+        ]
+      },
+      "explanation": {
+        "en": "RM60 saved each month reaches at least RM300 after 4 full months.",
+        "ms": "Simpanan RM60 setiap bulan mencapai sekurang-kurangnya RM300 selepas 4 bulan penuh."
+      }
+    },
+    {
+      "id": "vertex",
+      "station": "vertex",
+      "kind": "finance-reading",
+      "reward": 75,
+      "title": {
+        "en": "Monthly balance",
+        "ms": "Baki bulanan"
+      },
+      "prompt": {
+        "en": "Monthly income is RM500. Planned expenses are RM280 + RM90 + RM50. Find monthly savings.",
+        "ms": "Pendapatan bulanan RM500. Perbelanjaan dirancang RM280 + RM90 + RM50. Cari simpanan bulanan."
+      },
+      "model": {
+        "chart": "balance",
+        "income": 500,
+        "expenses": [
+          280,
+          90,
+          50
+        ]
+      },
+      "fields": [
+        {
+          "key": "value",
+          "label": {
+            "en": "Monthly savings (RM)",
+            "ms": "Simpanan bulanan (RM)"
+          },
+          "type": "number"
+        }
+      ],
+      "answer": {
+        "value": 80
+      },
+      "hints": {
+        "en": [
+          "A budget accounts for income and planned expenses.",
+          "Savings = income − total expenses.",
+          "The remaining amount is RM80."
+        ],
+        "ms": [
+          "Belanjawan mengambil kira pendapatan dan perbelanjaan dirancang.",
+          "Simpanan = pendapatan − jumlah perbelanjaan.",
+          "Baki ialah RM80."
+        ]
+      },
+      "explanation": {
+        "en": "Income minus all planned expenses leaves RM80 for savings.",
+        "ms": "Pendapatan ditolak semua perbelanjaan dirancang meninggalkan RM80 untuk simpanan."
+      }
+    },
+    {
+      "id": "design",
+      "station": "design",
+      "kind": "budget-plan",
+      "reward": 100,
+      "title": {
+        "en": "Supply the camp",
+        "ms": "Bekalkan kem"
+      },
+      "prompt": {
+        "en": "Budget RM160: buy at least 2 food packs (RM20 each), 1 medical kits (RM30 each) and 1 lamp (RM15 each). Save at least RM30. Choose a feasible plan.",
+        "ms": "Belanjawan RM160: beli sekurang-kurangnya 2 pek makanan (RM20 setiap satu), 1 kit perubatan (RM30 setiap satu) dan 1 lampu (RM15 setiap satu). Simpan sekurang-kurangnya RM30. Pilih pelan yang sesuai."
+      },
+      "model": {
+        "budget": 160,
+        "items": [
+          {
+            "key": "food",
+            "name": {
+              "en": "Food packs",
+              "ms": "Pek makanan"
+            },
+            "price": 20,
+            "minimum": 2,
+            "maximum": 6
+          },
+          {
+            "key": "medical",
+            "name": {
+              "en": "Medical kits",
+              "ms": "Kit perubatan"
+            },
+            "price": 30,
+            "minimum": 1,
+            "maximum": 4
+          },
+          {
+            "key": "lamp",
+            "name": {
+              "en": "Lamps",
+              "ms": "Lampu"
+            },
+            "price": 15,
+            "minimum": 1,
+            "maximum": 4
+          }
+        ]
+      },
+      "fields": [
+        {
+          "key": "food",
+          "label": {
+            "en": "Food packs",
+            "ms": "Pek makanan"
+          },
+          "type": "range",
+          "min": 0,
+          "max": 6,
+          "step": 1,
+          "initial": 0
+        },
+        {
+          "key": "medical",
+          "label": {
+            "en": "Medical kits",
+            "ms": "Kit perubatan"
+          },
+          "type": "range",
+          "min": 0,
+          "max": 4,
+          "step": 1,
+          "initial": 0
+        },
+        {
+          "key": "lamp",
+          "label": {
+            "en": "Lamps",
+            "ms": "Lampu"
+          },
+          "type": "range",
+          "min": 0,
+          "max": 4,
+          "step": 1,
+          "initial": 0
+        },
+        {
+          "key": "saving",
+          "label": {
+            "en": "Savings (RM)",
+            "ms": "Simpanan (RM)"
+          },
+          "type": "range",
+          "min": 0,
+          "max": 160,
+          "step": 5,
+          "initial": 0
+        }
+      ],
+      "answer": {
+        "food": 3,
+        "medical": 1,
+        "lamp": 2,
+        "saving": 40
+      },
+      "hints": {
+        "en": [
+          "Meet essential needs before buying extras.",
+          "Check food × 20 + medical × 30 + lamps × 15 + savings ≤ budget.",
+          "One plan is 3 food, 1 medical, 2 lamps and RM40 savings."
+        ],
+        "ms": [
+          "Penuhi keperluan asas sebelum membeli tambahan.",
+          "Semak makanan × 20 + perubatan × 30 + lampu × 15 + simpanan ≤ belanjawan.",
+          "Satu pelan ialah 3 makanan, 1 perubatan, 2 lampu dan simpanan RM40."
+        ]
+      },
+      "explanation": {
+        "en": "You met essential needs, protected savings and stayed within budget. Several plans can be valid; unspent money is allowed.",
+        "ms": "Anda memenuhi keperluan asas, menjaga simpanan dan mematuhi belanjawan. Beberapa pelan boleh sah; baki wang dibenarkan."
+      },
+      "target": {
+        "saving": 30
+      }
+    },
+    {
+      "id": "guardian-roots",
+      "station": "guardian",
+      "kind": "finance-reading",
+      "reward": 50,
+      "title": {
+        "en": "Guardian: savings goal",
+        "ms": "Penjaga: matlamat simpanan"
+      },
+      "prompt": {
+        "en": "You already have RM60. Monthly income is RM400 and expenses are RM325. How many full months are needed to reach at least RM350? No interest applies.",
+        "ms": "Anda sudah mempunyai RM60. Pendapatan bulanan RM400 dan perbelanjaan RM325. Berapa bulan penuh diperlukan untuk mencapai sekurang-kurangnya RM350? Tiada faedah."
+      },
+      "model": {
+        "chart": "savings",
+        "income": 400,
+        "expenses": [
+          325
+        ],
+        "initial": 60,
+        "goal": 350
+      },
+      "fields": [
+        {
+          "key": "value",
+          "label": {
+            "en": "Full months",
+            "ms": "Bulan penuh"
+          },
+          "type": "number"
+        }
+      ],
+      "answer": {
+        "value": 4
+      },
+      "hints": {
+        "en": [
+          "Calculate monthly savings first.",
+          "Subtract existing savings from the goal, divide by monthly savings and round up to a full month.",
+          "Monthly savings are RM75; 4 months are needed."
+        ],
+        "ms": [
+          "Kira simpanan bulanan dahulu.",
+          "Tolak simpanan sedia ada daripada matlamat, bahagi dengan simpanan bulanan dan bundarkan ke atas kepada bulan penuh.",
+          "Simpanan bulanan RM75; 4 bulan diperlukan."
+        ]
+      },
+      "explanation": {
+        "en": "RM75 saved each month reaches at least RM350 after 4 full months.",
+        "ms": "Simpanan RM75 setiap bulan mencapai sekurang-kurangnya RM350 selepas 4 bulan penuh."
+      }
+    },
+    {
+      "id": "guardian-vertex",
+      "station": "guardian",
+      "kind": "finance-reading",
+      "reward": 50,
+      "title": {
+        "en": "Guardian: monthly balance",
+        "ms": "Penjaga: baki bulanan"
+      },
+      "prompt": {
+        "en": "Monthly income is RM650. Planned expenses are RM430 + RM70. Find monthly savings.",
+        "ms": "Pendapatan bulanan RM650. Perbelanjaan dirancang RM430 + RM70. Cari simpanan bulanan."
+      },
+      "model": {
+        "chart": "balance",
+        "income": 650,
+        "expenses": [
+          430,
+          70
+        ]
+      },
+      "fields": [
+        {
+          "key": "value",
+          "label": {
+            "en": "Monthly savings (RM)",
+            "ms": "Simpanan bulanan (RM)"
+          },
+          "type": "number"
+        }
+      ],
+      "answer": {
+        "value": 150
+      },
+      "hints": {
+        "en": [
+          "A budget accounts for income and planned expenses.",
+          "Savings = income − total expenses.",
+          "The remaining amount is RM150."
+        ],
+        "ms": [
+          "Belanjawan mengambil kira pendapatan dan perbelanjaan dirancang.",
+          "Simpanan = pendapatan − jumlah perbelanjaan.",
+          "Baki ialah RM150."
+        ]
+      },
+      "explanation": {
+        "en": "Income minus all planned expenses leaves RM150 for savings.",
+        "ms": "Pendapatan ditolak semua perbelanjaan dirancang meninggalkan RM150 untuk simpanan."
+      }
+    },
+    {
+      "id": "guardian-design",
+      "station": "guardian",
+      "kind": "budget-plan",
+      "reward": 100,
+      "title": {
+        "en": "Guardian: supply the expedition",
+        "ms": "Penjaga: bekalkan ekspedisi"
+      },
+      "prompt": {
+        "en": "Budget RM220: buy at least 3 food packs (RM20 each), 2 medical kits (RM30 each) and 1 lamp (RM15 each). Save at least RM40. Choose a feasible plan.",
+        "ms": "Belanjawan RM220: beli sekurang-kurangnya 3 pek makanan (RM20 setiap satu), 2 kit perubatan (RM30 setiap satu) dan 1 lampu (RM15 setiap satu). Simpan sekurang-kurangnya RM40. Pilih pelan yang sesuai."
+      },
+      "model": {
+        "budget": 220,
+        "items": [
+          {
+            "key": "food",
+            "name": {
+              "en": "Food packs",
+              "ms": "Pek makanan"
+            },
+            "price": 20,
+            "minimum": 3,
+            "maximum": 6
+          },
+          {
+            "key": "medical",
+            "name": {
+              "en": "Medical kits",
+              "ms": "Kit perubatan"
+            },
+            "price": 30,
+            "minimum": 2,
+            "maximum": 4
+          },
+          {
+            "key": "lamp",
+            "name": {
+              "en": "Lamps",
+              "ms": "Lampu"
+            },
+            "price": 15,
+            "minimum": 1,
+            "maximum": 4
+          }
+        ]
+      },
+      "fields": [
+        {
+          "key": "food",
+          "label": {
+            "en": "Food packs",
+            "ms": "Pek makanan"
+          },
+          "type": "range",
+          "min": 0,
+          "max": 6,
+          "step": 1,
+          "initial": 0
+        },
+        {
+          "key": "medical",
+          "label": {
+            "en": "Medical kits",
+            "ms": "Kit perubatan"
+          },
+          "type": "range",
+          "min": 0,
+          "max": 4,
+          "step": 1,
+          "initial": 0
+        },
+        {
+          "key": "lamp",
+          "label": {
+            "en": "Lamps",
+            "ms": "Lampu"
+          },
+          "type": "range",
+          "min": 0,
+          "max": 4,
+          "step": 1,
+          "initial": 0
+        },
+        {
+          "key": "saving",
+          "label": {
+            "en": "Savings (RM)",
+            "ms": "Simpanan (RM)"
+          },
+          "type": "range",
+          "min": 0,
+          "max": 220,
+          "step": 5,
+          "initial": 0
+        }
+      ],
+      "answer": {
+        "food": 3,
+        "medical": 2,
+        "lamp": 2,
+        "saving": 70
+      },
+      "hints": {
+        "en": [
+          "Meet essential needs before buying extras.",
+          "Check food × 20 + medical × 30 + lamps × 15 + savings ≤ budget.",
+          "One plan is 3 food, 2 medical, 2 lamps and RM70 savings."
+        ],
+        "ms": [
+          "Penuhi keperluan asas sebelum membeli tambahan.",
+          "Semak makanan × 20 + perubatan × 30 + lampu × 15 + simpanan ≤ belanjawan.",
+          "Satu pelan ialah 3 makanan, 2 perubatan, 2 lampu dan simpanan RM70."
+        ]
+      },
+      "explanation": {
+        "en": "You met essential needs, protected savings and stayed within budget. Several plans can be valid; unspent money is allowed.",
+        "ms": "Anda memenuhi keperluan asas, menjaga simpanan dan mematuhi belanjawan. Beberapa pelan boleh sah; baki wang dibenarkan."
+      },
+      "target": {
+        "saving": 40
+      }
+    }
+  ],
+  "variants": [
+    {
+      "id": "practice-b-v1",
+      "reviewStatus": "prototype-awaiting-teacher-review",
+      "challenges": [
+        {
+          "id": "roots",
+          "station": "roots",
+          "kind": "finance-reading",
+          "reward": 75,
+          "title": {
+            "en": "A savings goal",
+            "ms": "Matlamat simpanan"
+          },
+          "prompt": {
+            "en": "You already have RM70. Monthly income is RM400 and expenses are RM260. How many full months are needed to reach at least RM700? No interest applies.",
+            "ms": "Anda sudah mempunyai RM70. Pendapatan bulanan RM400 dan perbelanjaan RM260. Berapa bulan penuh diperlukan untuk mencapai sekurang-kurangnya RM700? Tiada faedah."
+          },
+          "model": {
+            "chart": "savings",
+            "income": 400,
+            "expenses": [
+              260
+            ],
+            "initial": 70,
+            "goal": 700
+          },
+          "fields": [
+            {
+              "key": "value",
+              "label": {
+                "en": "Full months",
+                "ms": "Bulan penuh"
+              },
+              "type": "number"
+            }
+          ],
+          "answer": {
+            "value": 5
+          },
+          "hints": {
+            "en": [
+              "Calculate monthly savings first.",
+              "Subtract existing savings from the goal, divide by monthly savings and round up to a full month.",
+              "Monthly savings are RM140; 5 months are needed."
+            ],
+            "ms": [
+              "Kira simpanan bulanan dahulu.",
+              "Tolak simpanan sedia ada daripada matlamat, bahagi dengan simpanan bulanan dan bundarkan ke atas kepada bulan penuh.",
+              "Simpanan bulanan RM140; 5 bulan diperlukan."
+            ]
+          },
+          "explanation": {
+            "en": "RM140 saved each month reaches at least RM700 after 5 full months.",
+            "ms": "Simpanan RM140 setiap bulan mencapai sekurang-kurangnya RM700 selepas 5 bulan penuh."
+          }
+        },
+        {
+          "id": "vertex",
+          "station": "vertex",
+          "kind": "finance-reading",
+          "reward": 75,
+          "title": {
+            "en": "Monthly balance",
+            "ms": "Baki bulanan"
+          },
+          "prompt": {
+            "en": "Monthly income is RM600. Planned expenses are RM290 + RM100 + RM60. Find monthly savings.",
+            "ms": "Pendapatan bulanan RM600. Perbelanjaan dirancang RM290 + RM100 + RM60. Cari simpanan bulanan."
+          },
+          "model": {
+            "chart": "balance",
+            "income": 600,
+            "expenses": [
+              290,
+              100,
+              60
+            ]
+          },
+          "fields": [
+            {
+              "key": "value",
+              "label": {
+                "en": "Monthly savings (RM)",
+                "ms": "Simpanan bulanan (RM)"
+              },
+              "type": "number"
+            }
+          ],
+          "answer": {
+            "value": 150
+          },
+          "hints": {
+            "en": [
+              "A budget accounts for income and planned expenses.",
+              "Savings = income − total expenses.",
+              "The remaining amount is RM150."
+            ],
+            "ms": [
+              "Belanjawan mengambil kira pendapatan dan perbelanjaan dirancang.",
+              "Simpanan = pendapatan − jumlah perbelanjaan.",
+              "Baki ialah RM150."
+            ]
+          },
+          "explanation": {
+            "en": "Income minus all planned expenses leaves RM150 for savings.",
+            "ms": "Pendapatan ditolak semua perbelanjaan dirancang meninggalkan RM150 untuk simpanan."
+          }
+        },
+        {
+          "id": "design",
+          "station": "design",
+          "kind": "budget-plan",
+          "reward": 100,
+          "title": {
+            "en": "Supply the camp",
+            "ms": "Bekalkan kem"
+          },
+          "prompt": {
+            "en": "Budget RM200: buy at least 3 food packs (RM20 each), 1 medical kits (RM30 each) and 1 lamp (RM15 each). Save at least RM40. Choose a feasible plan.",
+            "ms": "Belanjawan RM200: beli sekurang-kurangnya 3 pek makanan (RM20 setiap satu), 1 kit perubatan (RM30 setiap satu) dan 1 lampu (RM15 setiap satu). Simpan sekurang-kurangnya RM40. Pilih pelan yang sesuai."
+          },
+          "model": {
+            "budget": 200,
+            "items": [
+              {
+                "key": "food",
+                "name": {
+                  "en": "Food packs",
+                  "ms": "Pek makanan"
+                },
+                "price": 20,
+                "minimum": 3,
+                "maximum": 6
+              },
+              {
+                "key": "medical",
+                "name": {
+                  "en": "Medical kits",
+                  "ms": "Kit perubatan"
+                },
+                "price": 30,
+                "minimum": 1,
+                "maximum": 4
+              },
+              {
+                "key": "lamp",
+                "name": {
+                  "en": "Lamps",
+                  "ms": "Lampu"
+                },
+                "price": 15,
+                "minimum": 1,
+                "maximum": 4
+              }
+            ]
+          },
+          "fields": [
+            {
+              "key": "food",
+              "label": {
+                "en": "Food packs",
+                "ms": "Pek makanan"
+              },
+              "type": "range",
+              "min": 0,
+              "max": 6,
+              "step": 1,
+              "initial": 0
+            },
+            {
+              "key": "medical",
+              "label": {
+                "en": "Medical kits",
+                "ms": "Kit perubatan"
+              },
+              "type": "range",
+              "min": 0,
+              "max": 4,
+              "step": 1,
+              "initial": 0
+            },
+            {
+              "key": "lamp",
+              "label": {
+                "en": "Lamps",
+                "ms": "Lampu"
+              },
+              "type": "range",
+              "min": 0,
+              "max": 4,
+              "step": 1,
+              "initial": 0
+            },
+            {
+              "key": "saving",
+              "label": {
+                "en": "Savings (RM)",
+                "ms": "Simpanan (RM)"
+              },
+              "type": "range",
+              "min": 0,
+              "max": 200,
+              "step": 5,
+              "initial": 0
+            }
+          ],
+          "answer": {
+            "food": 3,
+            "medical": 1,
+            "lamp": 1,
+            "saving": 95
+          },
+          "hints": {
+            "en": [
+              "Meet essential needs before buying extras.",
+              "Check food × 20 + medical × 30 + lamps × 15 + savings ≤ budget.",
+              "One plan is 3 food, 1 medical, 1 lamps and RM95 savings."
+            ],
+            "ms": [
+              "Penuhi keperluan asas sebelum membeli tambahan.",
+              "Semak makanan × 20 + perubatan × 30 + lampu × 15 + simpanan ≤ belanjawan.",
+              "Satu pelan ialah 3 makanan, 1 perubatan, 1 lampu dan simpanan RM95."
+            ]
+          },
+          "explanation": {
+            "en": "You met essential needs, protected savings and stayed within budget. Several plans can be valid; unspent money is allowed.",
+            "ms": "Anda memenuhi keperluan asas, menjaga simpanan dan mematuhi belanjawan. Beberapa pelan boleh sah; baki wang dibenarkan."
+          },
+          "target": {
+            "saving": 40
+          }
+        },
+        {
+          "id": "guardian-roots",
+          "station": "guardian",
+          "kind": "finance-reading",
+          "reward": 50,
+          "title": {
+            "en": "Guardian: savings goal",
+            "ms": "Penjaga: matlamat simpanan"
+          },
+          "prompt": {
+            "en": "You already have RM70. Monthly income is RM500 and expenses are RM345. How many full months are needed to reach at least RM767? No interest applies.",
+            "ms": "Anda sudah mempunyai RM70. Pendapatan bulanan RM500 dan perbelanjaan RM345. Berapa bulan penuh diperlukan untuk mencapai sekurang-kurangnya RM767? Tiada faedah."
+          },
+          "model": {
+            "chart": "savings",
+            "income": 500,
+            "expenses": [
+              345
+            ],
+            "initial": 70,
+            "goal": 767
+          },
+          "fields": [
+            {
+              "key": "value",
+              "label": {
+                "en": "Full months",
+                "ms": "Bulan penuh"
+              },
+              "type": "number"
+            }
+          ],
+          "answer": {
+            "value": 5
+          },
+          "hints": {
+            "en": [
+              "Calculate monthly savings first.",
+              "Subtract existing savings from the goal, divide by monthly savings and round up to a full month.",
+              "Monthly savings are RM155; 5 months are needed."
+            ],
+            "ms": [
+              "Kira simpanan bulanan dahulu.",
+              "Tolak simpanan sedia ada daripada matlamat, bahagi dengan simpanan bulanan dan bundarkan ke atas kepada bulan penuh.",
+              "Simpanan bulanan RM155; 5 bulan diperlukan."
+            ]
+          },
+          "explanation": {
+            "en": "RM155 saved each month reaches at least RM767 after 5 full months.",
+            "ms": "Simpanan RM155 setiap bulan mencapai sekurang-kurangnya RM767 selepas 5 bulan penuh."
+          }
+        },
+        {
+          "id": "guardian-vertex",
+          "station": "guardian",
+          "kind": "finance-reading",
+          "reward": 50,
+          "title": {
+            "en": "Guardian: monthly balance",
+            "ms": "Penjaga: baki bulanan"
+          },
+          "prompt": {
+            "en": "Monthly income is RM750. Planned expenses are RM440 + RM80. Find monthly savings.",
+            "ms": "Pendapatan bulanan RM750. Perbelanjaan dirancang RM440 + RM80. Cari simpanan bulanan."
+          },
+          "model": {
+            "chart": "balance",
+            "income": 750,
+            "expenses": [
+              440,
+              80
+            ]
+          },
+          "fields": [
+            {
+              "key": "value",
+              "label": {
+                "en": "Monthly savings (RM)",
+                "ms": "Simpanan bulanan (RM)"
+              },
+              "type": "number"
+            }
+          ],
+          "answer": {
+            "value": 230
+          },
+          "hints": {
+            "en": [
+              "A budget accounts for income and planned expenses.",
+              "Savings = income − total expenses.",
+              "The remaining amount is RM230."
+            ],
+            "ms": [
+              "Belanjawan mengambil kira pendapatan dan perbelanjaan dirancang.",
+              "Simpanan = pendapatan − jumlah perbelanjaan.",
+              "Baki ialah RM230."
+            ]
+          },
+          "explanation": {
+            "en": "Income minus all planned expenses leaves RM230 for savings.",
+            "ms": "Pendapatan ditolak semua perbelanjaan dirancang meninggalkan RM230 untuk simpanan."
+          }
+        },
+        {
+          "id": "guardian-design",
+          "station": "guardian",
+          "kind": "budget-plan",
+          "reward": 100,
+          "title": {
+            "en": "Guardian: supply the expedition",
+            "ms": "Penjaga: bekalkan ekspedisi"
+          },
+          "prompt": {
+            "en": "Budget RM260: buy at least 4 food packs (RM20 each), 2 medical kits (RM30 each) and 1 lamp (RM15 each). Save at least RM50. Choose a feasible plan.",
+            "ms": "Belanjawan RM260: beli sekurang-kurangnya 4 pek makanan (RM20 setiap satu), 2 kit perubatan (RM30 setiap satu) dan 1 lampu (RM15 setiap satu). Simpan sekurang-kurangnya RM50. Pilih pelan yang sesuai."
+          },
+          "model": {
+            "budget": 260,
+            "items": [
+              {
+                "key": "food",
+                "name": {
+                  "en": "Food packs",
+                  "ms": "Pek makanan"
+                },
+                "price": 20,
+                "minimum": 4,
+                "maximum": 6
+              },
+              {
+                "key": "medical",
+                "name": {
+                  "en": "Medical kits",
+                  "ms": "Kit perubatan"
+                },
+                "price": 30,
+                "minimum": 2,
+                "maximum": 4
+              },
+              {
+                "key": "lamp",
+                "name": {
+                  "en": "Lamps",
+                  "ms": "Lampu"
+                },
+                "price": 15,
+                "minimum": 1,
+                "maximum": 4
+              }
+            ]
+          },
+          "fields": [
+            {
+              "key": "food",
+              "label": {
+                "en": "Food packs",
+                "ms": "Pek makanan"
+              },
+              "type": "range",
+              "min": 0,
+              "max": 6,
+              "step": 1,
+              "initial": 0
+            },
+            {
+              "key": "medical",
+              "label": {
+                "en": "Medical kits",
+                "ms": "Kit perubatan"
+              },
+              "type": "range",
+              "min": 0,
+              "max": 4,
+              "step": 1,
+              "initial": 0
+            },
+            {
+              "key": "lamp",
+              "label": {
+                "en": "Lamps",
+                "ms": "Lampu"
+              },
+              "type": "range",
+              "min": 0,
+              "max": 4,
+              "step": 1,
+              "initial": 0
+            },
+            {
+              "key": "saving",
+              "label": {
+                "en": "Savings (RM)",
+                "ms": "Simpanan (RM)"
+              },
+              "type": "range",
+              "min": 0,
+              "max": 260,
+              "step": 5,
+              "initial": 0
+            }
+          ],
+          "answer": {
+            "food": 4,
+            "medical": 2,
+            "lamp": 1,
+            "saving": 105
+          },
+          "hints": {
+            "en": [
+              "Meet essential needs before buying extras.",
+              "Check food × 20 + medical × 30 + lamps × 15 + savings ≤ budget.",
+              "One plan is 4 food, 2 medical, 1 lamps and RM105 savings."
+            ],
+            "ms": [
+              "Penuhi keperluan asas sebelum membeli tambahan.",
+              "Semak makanan × 20 + perubatan × 30 + lampu × 15 + simpanan ≤ belanjawan.",
+              "Satu pelan ialah 4 makanan, 2 perubatan, 1 lampu dan simpanan RM105."
+            ]
+          },
+          "explanation": {
+            "en": "You met essential needs, protected savings and stayed within budget. Several plans can be valid; unspent money is allowed.",
+            "ms": "Anda memenuhi keperluan asas, menjaga simpanan dan mematuhi belanjawan. Beberapa pelan boleh sah; baki wang dibenarkan."
+          },
+          "target": {
+            "saving": 50
+          }
+        }
+      ]
+    },
+    {
+      "id": "practice-c-v1",
+      "reviewStatus": "prototype-awaiting-teacher-review",
+      "challenges": [
+        {
+          "id": "roots",
+          "station": "roots",
+          "kind": "finance-reading",
+          "reward": 75,
+          "title": {
+            "en": "A savings goal",
+            "ms": "Matlamat simpanan"
+          },
+          "prompt": {
+            "en": "You already have RM80. Monthly income is RM500 and expenses are RM280. How many full months are needed to reach at least RM1290? No interest applies.",
+            "ms": "Anda sudah mempunyai RM80. Pendapatan bulanan RM500 dan perbelanjaan RM280. Berapa bulan penuh diperlukan untuk mencapai sekurang-kurangnya RM1290? Tiada faedah."
+          },
+          "model": {
+            "chart": "savings",
+            "income": 500,
+            "expenses": [
+              280
+            ],
+            "initial": 80,
+            "goal": 1290
+          },
+          "fields": [
+            {
+              "key": "value",
+              "label": {
+                "en": "Full months",
+                "ms": "Bulan penuh"
+              },
+              "type": "number"
+            }
+          ],
+          "answer": {
+            "value": 6
+          },
+          "hints": {
+            "en": [
+              "Calculate monthly savings first.",
+              "Subtract existing savings from the goal, divide by monthly savings and round up to a full month.",
+              "Monthly savings are RM220; 6 months are needed."
+            ],
+            "ms": [
+              "Kira simpanan bulanan dahulu.",
+              "Tolak simpanan sedia ada daripada matlamat, bahagi dengan simpanan bulanan dan bundarkan ke atas kepada bulan penuh.",
+              "Simpanan bulanan RM220; 6 bulan diperlukan."
+            ]
+          },
+          "explanation": {
+            "en": "RM220 saved each month reaches at least RM1290 after 6 full months.",
+            "ms": "Simpanan RM220 setiap bulan mencapai sekurang-kurangnya RM1290 selepas 6 bulan penuh."
+          }
+        },
+        {
+          "id": "vertex",
+          "station": "vertex",
+          "kind": "finance-reading",
+          "reward": 75,
+          "title": {
+            "en": "Monthly balance",
+            "ms": "Baki bulanan"
+          },
+          "prompt": {
+            "en": "Monthly income is RM700. Planned expenses are RM300 + RM110 + RM70. Find monthly savings.",
+            "ms": "Pendapatan bulanan RM700. Perbelanjaan dirancang RM300 + RM110 + RM70. Cari simpanan bulanan."
+          },
+          "model": {
+            "chart": "balance",
+            "income": 700,
+            "expenses": [
+              300,
+              110,
+              70
+            ]
+          },
+          "fields": [
+            {
+              "key": "value",
+              "label": {
+                "en": "Monthly savings (RM)",
+                "ms": "Simpanan bulanan (RM)"
+              },
+              "type": "number"
+            }
+          ],
+          "answer": {
+            "value": 220
+          },
+          "hints": {
+            "en": [
+              "A budget accounts for income and planned expenses.",
+              "Savings = income − total expenses.",
+              "The remaining amount is RM220."
+            ],
+            "ms": [
+              "Belanjawan mengambil kira pendapatan dan perbelanjaan dirancang.",
+              "Simpanan = pendapatan − jumlah perbelanjaan.",
+              "Baki ialah RM220."
+            ]
+          },
+          "explanation": {
+            "en": "Income minus all planned expenses leaves RM220 for savings.",
+            "ms": "Pendapatan ditolak semua perbelanjaan dirancang meninggalkan RM220 untuk simpanan."
+          }
+        },
+        {
+          "id": "design",
+          "station": "design",
+          "kind": "budget-plan",
+          "reward": 100,
+          "title": {
+            "en": "Supply the camp",
+            "ms": "Bekalkan kem"
+          },
+          "prompt": {
+            "en": "Budget RM240: buy at least 4 food packs (RM20 each), 1 medical kits (RM30 each) and 1 lamp (RM15 each). Save at least RM50. Choose a feasible plan.",
+            "ms": "Belanjawan RM240: beli sekurang-kurangnya 4 pek makanan (RM20 setiap satu), 1 kit perubatan (RM30 setiap satu) dan 1 lampu (RM15 setiap satu). Simpan sekurang-kurangnya RM50. Pilih pelan yang sesuai."
+          },
+          "model": {
+            "budget": 240,
+            "items": [
+              {
+                "key": "food",
+                "name": {
+                  "en": "Food packs",
+                  "ms": "Pek makanan"
+                },
+                "price": 20,
+                "minimum": 4,
+                "maximum": 6
+              },
+              {
+                "key": "medical",
+                "name": {
+                  "en": "Medical kits",
+                  "ms": "Kit perubatan"
+                },
+                "price": 30,
+                "minimum": 1,
+                "maximum": 4
+              },
+              {
+                "key": "lamp",
+                "name": {
+                  "en": "Lamps",
+                  "ms": "Lampu"
+                },
+                "price": 15,
+                "minimum": 1,
+                "maximum": 4
+              }
+            ]
+          },
+          "fields": [
+            {
+              "key": "food",
+              "label": {
+                "en": "Food packs",
+                "ms": "Pek makanan"
+              },
+              "type": "range",
+              "min": 0,
+              "max": 6,
+              "step": 1,
+              "initial": 0
+            },
+            {
+              "key": "medical",
+              "label": {
+                "en": "Medical kits",
+                "ms": "Kit perubatan"
+              },
+              "type": "range",
+              "min": 0,
+              "max": 4,
+              "step": 1,
+              "initial": 0
+            },
+            {
+              "key": "lamp",
+              "label": {
+                "en": "Lamps",
+                "ms": "Lampu"
+              },
+              "type": "range",
+              "min": 0,
+              "max": 4,
+              "step": 1,
+              "initial": 0
+            },
+            {
+              "key": "saving",
+              "label": {
+                "en": "Savings (RM)",
+                "ms": "Simpanan (RM)"
+              },
+              "type": "range",
+              "min": 0,
+              "max": 240,
+              "step": 5,
+              "initial": 0
+            }
+          ],
+          "answer": {
+            "food": 4,
+            "medical": 1,
+            "lamp": 1,
+            "saving": 115
+          },
+          "hints": {
+            "en": [
+              "Meet essential needs before buying extras.",
+              "Check food × 20 + medical × 30 + lamps × 15 + savings ≤ budget.",
+              "One plan is 4 food, 1 medical, 1 lamps and RM115 savings."
+            ],
+            "ms": [
+              "Penuhi keperluan asas sebelum membeli tambahan.",
+              "Semak makanan × 20 + perubatan × 30 + lampu × 15 + simpanan ≤ belanjawan.",
+              "Satu pelan ialah 4 makanan, 1 perubatan, 1 lampu dan simpanan RM115."
+            ]
+          },
+          "explanation": {
+            "en": "You met essential needs, protected savings and stayed within budget. Several plans can be valid; unspent money is allowed.",
+            "ms": "Anda memenuhi keperluan asas, menjaga simpanan dan mematuhi belanjawan. Beberapa pelan boleh sah; baki wang dibenarkan."
+          },
+          "target": {
+            "saving": 50
+          }
+        },
+        {
+          "id": "guardian-roots",
+          "station": "guardian",
+          "kind": "finance-reading",
+          "reward": 50,
+          "title": {
+            "en": "Guardian: savings goal",
+            "ms": "Penjaga: matlamat simpanan"
+          },
+          "prompt": {
+            "en": "You already have RM80. Monthly income is RM600 and expenses are RM365. How many full months are needed to reach at least RM1372? No interest applies.",
+            "ms": "Anda sudah mempunyai RM80. Pendapatan bulanan RM600 dan perbelanjaan RM365. Berapa bulan penuh diperlukan untuk mencapai sekurang-kurangnya RM1372? Tiada faedah."
+          },
+          "model": {
+            "chart": "savings",
+            "income": 600,
+            "expenses": [
+              365
+            ],
+            "initial": 80,
+            "goal": 1372
+          },
+          "fields": [
+            {
+              "key": "value",
+              "label": {
+                "en": "Full months",
+                "ms": "Bulan penuh"
+              },
+              "type": "number"
+            }
+          ],
+          "answer": {
+            "value": 6
+          },
+          "hints": {
+            "en": [
+              "Calculate monthly savings first.",
+              "Subtract existing savings from the goal, divide by monthly savings and round up to a full month.",
+              "Monthly savings are RM235; 6 months are needed."
+            ],
+            "ms": [
+              "Kira simpanan bulanan dahulu.",
+              "Tolak simpanan sedia ada daripada matlamat, bahagi dengan simpanan bulanan dan bundarkan ke atas kepada bulan penuh.",
+              "Simpanan bulanan RM235; 6 bulan diperlukan."
+            ]
+          },
+          "explanation": {
+            "en": "RM235 saved each month reaches at least RM1372 after 6 full months.",
+            "ms": "Simpanan RM235 setiap bulan mencapai sekurang-kurangnya RM1372 selepas 6 bulan penuh."
+          }
+        },
+        {
+          "id": "guardian-vertex",
+          "station": "guardian",
+          "kind": "finance-reading",
+          "reward": 50,
+          "title": {
+            "en": "Guardian: monthly balance",
+            "ms": "Penjaga: baki bulanan"
+          },
+          "prompt": {
+            "en": "Monthly income is RM850. Planned expenses are RM450 + RM90. Find monthly savings.",
+            "ms": "Pendapatan bulanan RM850. Perbelanjaan dirancang RM450 + RM90. Cari simpanan bulanan."
+          },
+          "model": {
+            "chart": "balance",
+            "income": 850,
+            "expenses": [
+              450,
+              90
+            ]
+          },
+          "fields": [
+            {
+              "key": "value",
+              "label": {
+                "en": "Monthly savings (RM)",
+                "ms": "Simpanan bulanan (RM)"
+              },
+              "type": "number"
+            }
+          ],
+          "answer": {
+            "value": 310
+          },
+          "hints": {
+            "en": [
+              "A budget accounts for income and planned expenses.",
+              "Savings = income − total expenses.",
+              "The remaining amount is RM310."
+            ],
+            "ms": [
+              "Belanjawan mengambil kira pendapatan dan perbelanjaan dirancang.",
+              "Simpanan = pendapatan − jumlah perbelanjaan.",
+              "Baki ialah RM310."
+            ]
+          },
+          "explanation": {
+            "en": "Income minus all planned expenses leaves RM310 for savings.",
+            "ms": "Pendapatan ditolak semua perbelanjaan dirancang meninggalkan RM310 untuk simpanan."
+          }
+        },
+        {
+          "id": "guardian-design",
+          "station": "guardian",
+          "kind": "budget-plan",
+          "reward": 100,
+          "title": {
+            "en": "Guardian: supply the expedition",
+            "ms": "Penjaga: bekalkan ekspedisi"
+          },
+          "prompt": {
+            "en": "Budget RM300: buy at least 5 food packs (RM20 each), 2 medical kits (RM30 each) and 1 lamp (RM15 each). Save at least RM60. Choose a feasible plan.",
+            "ms": "Belanjawan RM300: beli sekurang-kurangnya 5 pek makanan (RM20 setiap satu), 2 kit perubatan (RM30 setiap satu) dan 1 lampu (RM15 setiap satu). Simpan sekurang-kurangnya RM60. Pilih pelan yang sesuai."
+          },
+          "model": {
+            "budget": 300,
+            "items": [
+              {
+                "key": "food",
+                "name": {
+                  "en": "Food packs",
+                  "ms": "Pek makanan"
+                },
+                "price": 20,
+                "minimum": 5,
+                "maximum": 6
+              },
+              {
+                "key": "medical",
+                "name": {
+                  "en": "Medical kits",
+                  "ms": "Kit perubatan"
+                },
+                "price": 30,
+                "minimum": 2,
+                "maximum": 4
+              },
+              {
+                "key": "lamp",
+                "name": {
+                  "en": "Lamps",
+                  "ms": "Lampu"
+                },
+                "price": 15,
+                "minimum": 1,
+                "maximum": 4
+              }
+            ]
+          },
+          "fields": [
+            {
+              "key": "food",
+              "label": {
+                "en": "Food packs",
+                "ms": "Pek makanan"
+              },
+              "type": "range",
+              "min": 0,
+              "max": 6,
+              "step": 1,
+              "initial": 0
+            },
+            {
+              "key": "medical",
+              "label": {
+                "en": "Medical kits",
+                "ms": "Kit perubatan"
+              },
+              "type": "range",
+              "min": 0,
+              "max": 4,
+              "step": 1,
+              "initial": 0
+            },
+            {
+              "key": "lamp",
+              "label": {
+                "en": "Lamps",
+                "ms": "Lampu"
+              },
+              "type": "range",
+              "min": 0,
+              "max": 4,
+              "step": 1,
+              "initial": 0
+            },
+            {
+              "key": "saving",
+              "label": {
+                "en": "Savings (RM)",
+                "ms": "Simpanan (RM)"
+              },
+              "type": "range",
+              "min": 0,
+              "max": 300,
+              "step": 5,
+              "initial": 0
+            }
+          ],
+          "answer": {
+            "food": 5,
+            "medical": 2,
+            "lamp": 1,
+            "saving": 125
+          },
+          "hints": {
+            "en": [
+              "Meet essential needs before buying extras.",
+              "Check food × 20 + medical × 30 + lamps × 15 + savings ≤ budget.",
+              "One plan is 5 food, 2 medical, 1 lamps and RM125 savings."
+            ],
+            "ms": [
+              "Penuhi keperluan asas sebelum membeli tambahan.",
+              "Semak makanan × 20 + perubatan × 30 + lampu × 15 + simpanan ≤ belanjawan.",
+              "Satu pelan ialah 5 makanan, 2 perubatan, 1 lampu dan simpanan RM125."
+            ]
+          },
+          "explanation": {
+            "en": "You met essential needs, protected savings and stayed within budget. Several plans can be valid; unspent money is allowed.",
+            "ms": "Anda memenuhi keperluan asas, menjaga simpanan dan mematuhi belanjawan. Beberapa pelan boleh sah; baki wang dibenarkan."
+          },
+          "target": {
+            "saving": 60
+          }
+        }
+      ]
+    }
+  ]
+}

@@ -1,10 +1,12 @@
 import { BALANCE } from './balance.js';
 /** Framework-free, deterministic simulation. Positions are world pixels, time is seconds. */
-export function createGame(saved) {
+export function createGame(saved, options = {}) {
   const WORLD = 4200, GROUND = 500;
   const clamp = (v, min, max) => Math.max(min, Math.min(max, v));
   const number = (v, fallback, min = 0, max = 1e6) => typeof v === 'number' && Number.isFinite(v) ? clamp(v, min, max) : fallback;
   let sequence = 0, previous = {}, state;
+  let questLimit = WORLD - 35, assistance = options.assist !== false;
+  let applicationSignature='';
   function fresh() {
     return {
       mode: 'ready', worldWidth: WORLD, groundY: GROUND,
@@ -94,7 +96,7 @@ export function createGame(saved) {
     state.crafted = state.upgrades.stoneSword || state.upgrades.stoneAxe;
     sound('craft'); emit(`${recipe.name}做好啦！${recipe.description}`); return true;
   }
-  function start() { if (state.mode === 'ready') { state.mode = 'playing'; emit('收集 12 块木头，找到森林徽章，再回家！斧头采木，剑打蘑菇。'); } }
+  function start() { if (state.mode === 'ready' || (options.mathQuest && state.mode === 'complete')) { state.mode = 'playing'; emit('收集 12 块木头，找到森林徽章，再回家！斧头采木，剑打蘑菇。'); } }
   function togglePause() { if (state.mode === 'playing') state.mode = 'paused'; else if (state.mode === 'paused') state.mode = 'playing'; previous = {}; }
   function jump() {
     const p = state.player;
@@ -105,7 +107,8 @@ export function createGame(saved) {
     const p = state.player;
     if (p.invulnerable > 0) return;
     const reduction = state.upgrades.stoneArmor ? BALANCE.armor.stoneArmor : state.upgrades.woodArmor ? BALANCE.armor.woodArmor : 0;
-    p.hp = Math.max(0, Math.round((p.hp - damage * (1 - reduction)) * 1000) / 1000);
+    const support = options.mathQuest && assistance ? .3 : 1;
+    p.hp = Math.max(0, Math.round((p.hp - damage * (1 - reduction) * support) * 1000) / 1000);
     p.invulnerable = 1.4; p.action = 'hurt'; p.actionElapsed = 0; p.actionDuration = .32; p.actionHit = true;
     sound('hurt'); puff(p.x, p.y - 30, '#f2b77c');
     if (p.hp <= 0) {
@@ -130,6 +133,9 @@ export function createGame(saved) {
     const nearest = list => list.sort((a, b) => Math.abs(a.x - p.x) - Math.abs(b.x - p.x))[0];
     const enemy = nearest(state.enemies.filter(e => e.alive && inRange(e, e.type === 'boss' ? 140 : 112)));
     if (enemy) {
+      if (options.mathQuest && enemy.type === 'boss') {
+        state.events.push({ type: 'guardian' }); return;
+      }
       enemy.hp = Math.max(0, enemy.hp - weapon.damage); enemy.hitTimer = .3;
       enemy.x = clamp(enemy.x + p.actionFacing * 24, 360, WORLD - 70); puff(enemy.x, enemy.y - 35, '#f0cd6d'); sound('hit');
       if (enemy.hp === 0) {
@@ -197,11 +203,12 @@ export function createGame(saved) {
     const steps = Math.max(1, Math.ceil(dt / (1 / 60))), step = dt / steps;
     for (let s = 0; s < steps; s++) {
       state.elapsed += step;
+      if(options.mathQuest)updateCart(step);
       p.invulnerable = Math.max(0, p.invulnerable - step); p.attackTimer = Math.max(0, p.attackTimer - step);
       let swinging = ['sword', 'axe'].includes(p.action);
       p.vx = ((input.right ? 1 : 0) - (input.left ? 1 : 0)) * 245 * (swinging ? .42 : p.action === 'hurt' ? .3 : 1);
       if (p.vx && !swinging) p.facing = Math.sign(p.vx);
-      p.x = clamp(p.x + p.vx * step, 35, WORLD - 35);
+      p.x = clamp(p.x + p.vx * step, 35, questLimit);
       const oldY = p.y; p.vy += 1400 * step; p.y += p.vy * step; p.onGround = false;
       let floor = GROUND;
       for (const platform of state.platforms) if (p.x > platform.x - 14 && p.x < platform.x + platform.w + 14 && oldY <= platform.y + 1 && p.y >= platform.y && p.vy >= 0) floor = Math.min(floor, platform.y);
@@ -216,6 +223,7 @@ export function createGame(saved) {
       for (const resource of [...state.trees, ...state.rocks]) resource.hitTimer = Math.max(0, resource.hitTimer - step);
       for (const enemy of state.enemies) {
         if (!enemy.alive) { enemy.vx = 0; continue; }
+        if (options.mathQuest && enemy.type === 'boss') { enemy.vx = 0; continue; }
         enemy.phase += step; enemy.hitTimer = Math.max(0, enemy.hitTimer - step); enemy.landTimer = Math.max(0, enemy.landTimer - step);
         const dx = p.x - enemy.x, distance = Math.abs(dx), active = distance < (enemy.type === 'boss' ? 540 : 420) && p.x > 380;
         if (active) enemy.facing = dx < 0 ? -1 : 1;
@@ -307,7 +315,46 @@ export function createGame(saved) {
   function save() {
     return { version: 2, player: { x: state.player.x, hp: state.player.hp }, wood: state.wood, stone: state.stone, equipment: state.equipment, upgrades: { ...state.upgrades }, crafted: state.crafted, trophy: state.trophy, elapsed: state.elapsed, completed: state.mode === 'complete', trees: state.trees.map(({ id, hp }) => ({ id, hp })), rocks: state.rocks.map(({ id, hp }) => ({ id, hp })), enemies: state.enemies.map(({ id, hp }) => ({ id, hp })), platformRewards: state.platformRewards.map(({ id, collected }) => ({ id, collected })), drops: state.drops.map(({ type, x, y, amount }) => ({ type, x, y, amount })) };
   }
-  function restart() { state = fresh(); previous = {}; sequence = 0; }
+  function restart() { state = fresh(); previous = {}; sequence = 0; applicationSignature=''; }
+  const applicationEffects=()=>state.application?.kind==='expedition'?state.application.effects:state.application?[state.application]:[];
+  const cartSignature=a=>a?JSON.stringify({...a,elapsed:undefined}):'';
+  function cartPosition(a){const distance=Math.min(a.elapsed,a.t1)*a.v1+Math.max(0,a.elapsed-a.t1)*a.v2;return (a.origin??2520)+Math.min(1,distance/a.distance)*360;}
+  function updateCart(step) {
+    const a=applicationEffects().find(a=>a.kind==='cart');if(!a)return;
+    const platform=state.platforms.find(p=>p.questCart);if(!platform)return;
+    const oldX=platform.x,carrying=state.player.onGround&&Math.abs(state.player.y-platform.y)<1&&state.player.x>=oldX-14&&state.player.x<=oldX+platform.w+14;
+    if(state.player.x>=(a.origin??2520)-70)a.elapsed=Math.min(a.duration,a.elapsed+step);
+    platform.x=cartPosition(a);
+    if(carrying)state.player.x=clamp(state.player.x+platform.x-oldX,35,questLimit);
+  }
+  function configureQuest({ limit, blueprint, application=null, shields = 3, complete = false, assist = true }) {
+    if (!options.mathQuest) return;
+    questLimit = number(limit, WORLD - 35, 35, WORLD - 35);
+    state.player.x = Math.min(state.player.x, questLimit);
+    assistance = assist;
+    state.platforms = state.platforms.filter(p => !p.questBridge&&!p.questApplication);
+    if (blueprint && Number.isFinite(blueprint.span) && Number.isFinite(blueprint.k) && blueprint.span >= 4 && blueprint.span <= 10 && blueprint.k >= .25 && blueprint.k <= 1.5) {
+      for (let i = 0; i < 16; i++) {
+        const x = blueprint.span * (i + .5) / 16;
+        state.platforms.push({x:number(blueprint.origin,2520,35,WORLD-300)+i*16,y:GROUND-blueprint.k*x*(blueprint.span-x)*7,w:17,questBridge:true});
+      }
+    }
+    const signature=JSON.stringify(application);
+    if(signature!==applicationSignature){
+      const previousCart=applicationEffects().find(a=>a.kind==='cart');state.application=application?JSON.parse(signature):null;
+      for(const effect of applicationEffects())if(effect.kind==='cart')effect.elapsed=cartSignature(effect)===cartSignature(previousCart)?previousCart.elapsed:0;
+      applicationSignature=signature;
+    }
+    for(const effect of applicationEffects()){
+      if(effect.kind==='waypoint')state.platforms.push({x:effect.x-28,y:effect.y,w:56,questApplication:true});
+      if(effect.kind==='cart')state.platforms.push({x:cartPosition(effect),y:450,w:80,questApplication:true,questCart:true});
+    }
+    const guardian = state.enemies.find(e => e.type === 'boss');
+    guardian.hp = Math.max(0,Math.min(3,shields))*10;
+    guardian.alive = guardian.hp > 0;
+    state.trophy = complete;
+    if (complete) { state.mode = 'complete'; state.shockwaves.length = 0; state.projectiles.length = 0; }
+  }
   state = fresh(); restore(saved);
-  return { get state() { return state; }, start, update, attack, interact, jump, restart, save, getPrompt, togglePause, returnHome, getWeapon, getRecipes, craft, equip };
+  return { get state() { return state; }, start, update, attack, interact, jump, restart, save, getPrompt, togglePause, returnHome, getWeapon, getRecipes, craft, equip, configureQuest };
 }

@@ -1,0 +1,1153 @@
+{
+  "id": "f4-maths-motion",
+  "version": 1,
+  "form": 4,
+  "subject": "Mathematics",
+  "chapter": 7,
+  "reviewStatus": "prototype-awaiting-teacher-review",
+  "alignmentSource": "KSSM Mathematics Form 4 and 5 DSKP (2018)",
+  "challenges": [
+    {
+      "id": "roots",
+      "station": "roots",
+      "kind": "motion-reading",
+      "reward": 75,
+      "title": {
+        "en": "Read the track",
+        "ms": "Baca trek"
+      },
+      "prompt": {
+        "en": "Find the speed during the moving section of this distance–time graph. Give your answer in m/s.",
+        "ms": "Cari laju pada bahagian bergerak dalam graf jarak–masa ini. Beri jawapan dalam m/s."
+      },
+      "model": {
+        "graph": "distance",
+        "points": [
+          [
+            0,
+            0
+          ],
+          [
+            4,
+            20
+          ],
+          [
+            7,
+            20
+          ]
+        ]
+      },
+      "fields": [
+        {
+          "key": "value",
+          "label": {
+            "en": "Speed (m/s)",
+            "ms": "Laju (m/s)"
+          },
+          "type": "number"
+        }
+      ],
+      "answer": {
+        "value": 5
+      },
+      "hints": {
+        "en": [
+          "Speed is the gradient of a distance–time graph.",
+          "Divide the change in distance by the change in time in the moving section.",
+          "The moving section has gradient 5 m/s."
+        ],
+        "ms": [
+          "Laju ialah kecerunan graf jarak–masa.",
+          "Bahagikan perubahan jarak dengan perubahan masa pada bahagian bergerak.",
+          "Bahagian bergerak mempunyai kecerunan 5 m/s."
+        ]
+      },
+      "explanation": {
+        "en": "The moving section has speed 5 m/s. A horizontal distance–time segment means rest.",
+        "ms": "Laju pada bahagian bergerak ialah 5 m/s. Segmen mendatar graf jarak–masa bermaksud pegun."
+      }
+    },
+    {
+      "id": "vertex",
+      "station": "vertex",
+      "kind": "motion-reading",
+      "reward": 75,
+      "title": {
+        "en": "Distance from area",
+        "ms": "Jarak daripada luas"
+      },
+      "prompt": {
+        "en": "Find the total distance travelled from the area under the speed–time graph. Give metres.",
+        "ms": "Cari jumlah jarak dilalui daripada luas di bawah graf laju–masa. Beri jawapan dalam meter."
+      },
+      "model": {
+        "graph": "speed",
+        "segments": [
+          {
+            "duration": 4,
+            "speed": 3
+          },
+          {
+            "duration": 2,
+            "speed": 0
+          },
+          {
+            "duration": 3,
+            "speed": 4
+          }
+        ]
+      },
+      "fields": [
+        {
+          "key": "value",
+          "label": {
+            "en": "Distance (m)",
+            "ms": "Jarak (m)"
+          },
+          "type": "number"
+        }
+      ],
+      "answer": {
+        "value": 24
+      },
+      "hints": {
+        "en": [
+          "Distance is the area under a speed–time graph.",
+          "Each rectangle has area speed × duration. Add the rectangles.",
+          "The total area is 24 m."
+        ],
+        "ms": [
+          "Jarak ialah luas di bawah graf laju–masa.",
+          "Luas setiap segi empat tepat ialah laju × tempoh. Tambahkan luas-luasnya.",
+          "Jumlah luas ialah 24 m."
+        ]
+      },
+      "explanation": {
+        "en": "Adding speed × duration for every stage gives 24 m.",
+        "ms": "Menambahkan laju × tempoh bagi setiap peringkat memberikan 24 m."
+      }
+    },
+    {
+      "id": "design",
+      "station": "design",
+      "kind": "motion-plan",
+      "reward": 100,
+      "title": {
+        "en": "Program the delivery cart",
+        "ms": "Atur troli penghantaran"
+      },
+      "prompt": {
+        "en": "Travel exactly 50 m in 10 s. Set the first-stage duration and speed. The remaining time is at 2 m/s.",
+        "ms": "Bergerak tepat 50 m dalam 10 s. Tetapkan tempoh dan laju peringkat pertama. Masa selebihnya pada 2 m/s."
+      },
+      "model": {
+        "duration": 10,
+        "v2": 2,
+        "maxSpeed": 12
+      },
+      "fields": [
+        {
+          "key": "t1",
+          "label": {
+            "en": "First duration (s)",
+            "ms": "Tempoh pertama (s)"
+          },
+          "type": "range",
+          "min": 1,
+          "max": 9,
+          "step": 1,
+          "initial": 1
+        },
+        {
+          "key": "v1",
+          "label": {
+            "en": "First speed (m/s)",
+            "ms": "Laju pertama (m/s)"
+          },
+          "type": "range",
+          "min": 0,
+          "max": 12,
+          "step": 1,
+          "initial": 2
+        }
+      ],
+      "answer": {
+        "t1": 5,
+        "v1": 8
+      },
+      "hints": {
+        "en": [
+          "Total distance = first area + second area.",
+          "Use v₁t₁ + 2(10 − t₁) = 50.",
+          "One plan uses 5 s at 8 m/s. Other exact plans also work."
+        ],
+        "ms": [
+          "Jumlah jarak = luas pertama + luas kedua.",
+          "Gunakan v₁t₁ + 2(10 − t₁) = 50.",
+          "Satu pelan menggunakan 5 s pada 8 m/s. Pelan tepat yang lain juga diterima."
+        ]
+      },
+      "explanation": {
+        "en": "Your two areas add to the required distance. The cart now follows this speed plan in the forest.",
+        "ms": "Kedua-dua luas berjumlah jarak diperlukan. Troli kini mengikuti pelan laju ini di hutan."
+      },
+      "target": {
+        "distance": 50
+      }
+    },
+    {
+      "id": "guardian-roots",
+      "station": "guardian",
+      "kind": "motion-reading",
+      "reward": 50,
+      "title": {
+        "en": "Guardian: read the track",
+        "ms": "Penjaga: baca trek"
+      },
+      "prompt": {
+        "en": "Find the speed during the moving section of this distance–time graph. Give your answer in m/s.",
+        "ms": "Cari laju pada bahagian bergerak dalam graf jarak–masa ini. Beri jawapan dalam m/s."
+      },
+      "model": {
+        "graph": "distance",
+        "points": [
+          [
+            0,
+            0
+          ],
+          [
+            3,
+            0
+          ],
+          [
+            8,
+            30
+          ]
+        ]
+      },
+      "fields": [
+        {
+          "key": "value",
+          "label": {
+            "en": "Speed (m/s)",
+            "ms": "Laju (m/s)"
+          },
+          "type": "number"
+        }
+      ],
+      "answer": {
+        "value": 6
+      },
+      "hints": {
+        "en": [
+          "Speed is the gradient of a distance–time graph.",
+          "Divide the change in distance by the change in time in the moving section.",
+          "The moving section has gradient 6 m/s."
+        ],
+        "ms": [
+          "Laju ialah kecerunan graf jarak–masa.",
+          "Bahagikan perubahan jarak dengan perubahan masa pada bahagian bergerak.",
+          "Bahagian bergerak mempunyai kecerunan 6 m/s."
+        ]
+      },
+      "explanation": {
+        "en": "The moving section has speed 6 m/s. A horizontal distance–time segment means rest.",
+        "ms": "Laju pada bahagian bergerak ialah 6 m/s. Segmen mendatar graf jarak–masa bermaksud pegun."
+      }
+    },
+    {
+      "id": "guardian-vertex",
+      "station": "guardian",
+      "kind": "motion-reading",
+      "reward": 50,
+      "title": {
+        "en": "Guardian: distance from area",
+        "ms": "Penjaga: jarak daripada luas"
+      },
+      "prompt": {
+        "en": "Find the total distance travelled from the area under the speed–time graph. Give metres.",
+        "ms": "Cari jumlah jarak dilalui daripada luas di bawah graf laju–masa. Beri jawapan dalam meter."
+      },
+      "model": {
+        "graph": "speed",
+        "segments": [
+          {
+            "duration": 3,
+            "speed": 5
+          },
+          {
+            "duration": 2,
+            "speed": 0
+          },
+          {
+            "duration": 4,
+            "speed": 2
+          }
+        ]
+      },
+      "fields": [
+        {
+          "key": "value",
+          "label": {
+            "en": "Distance (m)",
+            "ms": "Jarak (m)"
+          },
+          "type": "number"
+        }
+      ],
+      "answer": {
+        "value": 23
+      },
+      "hints": {
+        "en": [
+          "Distance is the area under a speed–time graph.",
+          "Each rectangle has area speed × duration. Add the rectangles.",
+          "The total area is 23 m."
+        ],
+        "ms": [
+          "Jarak ialah luas di bawah graf laju–masa.",
+          "Luas setiap segi empat tepat ialah laju × tempoh. Tambahkan luas-luasnya.",
+          "Jumlah luas ialah 23 m."
+        ]
+      },
+      "explanation": {
+        "en": "Adding speed × duration for every stage gives 23 m.",
+        "ms": "Menambahkan laju × tempoh bagi setiap peringkat memberikan 23 m."
+      }
+    },
+    {
+      "id": "guardian-design",
+      "station": "guardian",
+      "kind": "motion-plan",
+      "reward": 100,
+      "title": {
+        "en": "Guardian: delivery plan",
+        "ms": "Penjaga: pelan penghantaran"
+      },
+      "prompt": {
+        "en": "Travel exactly 60 m in 12 s. Set the first-stage duration and speed. The remaining time is at 3 m/s.",
+        "ms": "Bergerak tepat 60 m dalam 12 s. Tetapkan tempoh dan laju peringkat pertama. Masa selebihnya pada 3 m/s."
+      },
+      "model": {
+        "duration": 12,
+        "v2": 3,
+        "maxSpeed": 12
+      },
+      "fields": [
+        {
+          "key": "t1",
+          "label": {
+            "en": "First duration (s)",
+            "ms": "Tempoh pertama (s)"
+          },
+          "type": "range",
+          "min": 1,
+          "max": 11,
+          "step": 1,
+          "initial": 1
+        },
+        {
+          "key": "v1",
+          "label": {
+            "en": "First speed (m/s)",
+            "ms": "Laju pertama (m/s)"
+          },
+          "type": "range",
+          "min": 0,
+          "max": 12,
+          "step": 1,
+          "initial": 2
+        }
+      ],
+      "answer": {
+        "t1": 6,
+        "v1": 7
+      },
+      "hints": {
+        "en": [
+          "Total distance = first area + second area.",
+          "Use v₁t₁ + 3(12 − t₁) = 60.",
+          "One plan uses 6 s at 7 m/s. Other exact plans also work."
+        ],
+        "ms": [
+          "Jumlah jarak = luas pertama + luas kedua.",
+          "Gunakan v₁t₁ + 3(12 − t₁) = 60.",
+          "Satu pelan menggunakan 6 s pada 7 m/s. Pelan tepat yang lain juga diterima."
+        ]
+      },
+      "explanation": {
+        "en": "Your two areas add to the required distance. The cart now follows this speed plan in the forest.",
+        "ms": "Kedua-dua luas berjumlah jarak diperlukan. Troli kini mengikuti pelan laju ini di hutan."
+      },
+      "target": {
+        "distance": 60
+      }
+    }
+  ],
+  "variants": [
+    {
+      "id": "practice-b-v1",
+      "reviewStatus": "prototype-awaiting-teacher-review",
+      "challenges": [
+        {
+          "id": "roots",
+          "station": "roots",
+          "kind": "motion-reading",
+          "reward": 75,
+          "title": {
+            "en": "Read the track",
+            "ms": "Baca trek"
+          },
+          "prompt": {
+            "en": "Find the speed during the moving section of this distance–time graph. Give your answer in m/s.",
+            "ms": "Cari laju pada bahagian bergerak dalam graf jarak–masa ini. Beri jawapan dalam m/s."
+          },
+          "model": {
+            "graph": "distance",
+            "points": [
+              [
+                0,
+                0
+              ],
+              [
+                4,
+                40
+              ],
+              [
+                7,
+                40
+              ]
+            ]
+          },
+          "fields": [
+            {
+              "key": "value",
+              "label": {
+                "en": "Speed (m/s)",
+                "ms": "Laju (m/s)"
+              },
+              "type": "number"
+            }
+          ],
+          "answer": {
+            "value": 10
+          },
+          "hints": {
+            "en": [
+              "Speed is the gradient of a distance–time graph.",
+              "Divide the change in distance by the change in time in the moving section.",
+              "The moving section has gradient 10 m/s."
+            ],
+            "ms": [
+              "Laju ialah kecerunan graf jarak–masa.",
+              "Bahagikan perubahan jarak dengan perubahan masa pada bahagian bergerak.",
+              "Bahagian bergerak mempunyai kecerunan 10 m/s."
+            ]
+          },
+          "explanation": {
+            "en": "The moving section has speed 10 m/s. A horizontal distance–time segment means rest.",
+            "ms": "Laju pada bahagian bergerak ialah 10 m/s. Segmen mendatar graf jarak–masa bermaksud pegun."
+          }
+        },
+        {
+          "id": "vertex",
+          "station": "vertex",
+          "kind": "motion-reading",
+          "reward": 75,
+          "title": {
+            "en": "Distance from area",
+            "ms": "Jarak daripada luas"
+          },
+          "prompt": {
+            "en": "Find the total distance travelled from the area under the speed–time graph. Give metres.",
+            "ms": "Cari jumlah jarak dilalui daripada luas di bawah graf laju–masa. Beri jawapan dalam meter."
+          },
+          "model": {
+            "graph": "speed",
+            "segments": [
+              {
+                "duration": 4,
+                "speed": 4
+              },
+              {
+                "duration": 2,
+                "speed": 0
+              },
+              {
+                "duration": 3,
+                "speed": 5
+              }
+            ]
+          },
+          "fields": [
+            {
+              "key": "value",
+              "label": {
+                "en": "Distance (m)",
+                "ms": "Jarak (m)"
+              },
+              "type": "number"
+            }
+          ],
+          "answer": {
+            "value": 31
+          },
+          "hints": {
+            "en": [
+              "Distance is the area under a speed–time graph.",
+              "Each rectangle has area speed × duration. Add the rectangles.",
+              "The total area is 31 m."
+            ],
+            "ms": [
+              "Jarak ialah luas di bawah graf laju–masa.",
+              "Luas setiap segi empat tepat ialah laju × tempoh. Tambahkan luas-luasnya.",
+              "Jumlah luas ialah 31 m."
+            ]
+          },
+          "explanation": {
+            "en": "Adding speed × duration for every stage gives 31 m.",
+            "ms": "Menambahkan laju × tempoh bagi setiap peringkat memberikan 31 m."
+          }
+        },
+        {
+          "id": "design",
+          "station": "design",
+          "kind": "motion-plan",
+          "reward": 100,
+          "title": {
+            "en": "Program the delivery cart",
+            "ms": "Atur troli penghantaran"
+          },
+          "prompt": {
+            "en": "Travel exactly 60 m in 10 s. Set the first-stage duration and speed. The remaining time is at 3 m/s.",
+            "ms": "Bergerak tepat 60 m dalam 10 s. Tetapkan tempoh dan laju peringkat pertama. Masa selebihnya pada 3 m/s."
+          },
+          "model": {
+            "duration": 10,
+            "v2": 3,
+            "maxSpeed": 12
+          },
+          "fields": [
+            {
+              "key": "t1",
+              "label": {
+                "en": "First duration (s)",
+                "ms": "Tempoh pertama (s)"
+              },
+              "type": "range",
+              "min": 1,
+              "max": 9,
+              "step": 1,
+              "initial": 1
+            },
+            {
+              "key": "v1",
+              "label": {
+                "en": "First speed (m/s)",
+                "ms": "Laju pertama (m/s)"
+              },
+              "type": "range",
+              "min": 0,
+              "max": 12,
+              "step": 1,
+              "initial": 2
+            }
+          ],
+          "answer": {
+            "t1": 5,
+            "v1": 9
+          },
+          "hints": {
+            "en": [
+              "Total distance = first area + second area.",
+              "Use v₁t₁ + 3(10 − t₁) = 60.",
+              "One plan uses 5 s at 9 m/s. Other exact plans also work."
+            ],
+            "ms": [
+              "Jumlah jarak = luas pertama + luas kedua.",
+              "Gunakan v₁t₁ + 3(10 − t₁) = 60.",
+              "Satu pelan menggunakan 5 s pada 9 m/s. Pelan tepat yang lain juga diterima."
+            ]
+          },
+          "explanation": {
+            "en": "Your two areas add to the required distance. The cart now follows this speed plan in the forest.",
+            "ms": "Kedua-dua luas berjumlah jarak diperlukan. Troli kini mengikuti pelan laju ini di hutan."
+          },
+          "target": {
+            "distance": 60
+          }
+        },
+        {
+          "id": "guardian-roots",
+          "station": "guardian",
+          "kind": "motion-reading",
+          "reward": 50,
+          "title": {
+            "en": "Guardian: read the track",
+            "ms": "Penjaga: baca trek"
+          },
+          "prompt": {
+            "en": "Find the speed during the moving section of this distance–time graph. Give your answer in m/s.",
+            "ms": "Cari laju pada bahagian bergerak dalam graf jarak–masa ini. Beri jawapan dalam m/s."
+          },
+          "model": {
+            "graph": "distance",
+            "points": [
+              [
+                0,
+                0
+              ],
+              [
+                3,
+                0
+              ],
+              [
+                8,
+                60
+              ]
+            ]
+          },
+          "fields": [
+            {
+              "key": "value",
+              "label": {
+                "en": "Speed (m/s)",
+                "ms": "Laju (m/s)"
+              },
+              "type": "number"
+            }
+          ],
+          "answer": {
+            "value": 12
+          },
+          "hints": {
+            "en": [
+              "Speed is the gradient of a distance–time graph.",
+              "Divide the change in distance by the change in time in the moving section.",
+              "The moving section has gradient 12 m/s."
+            ],
+            "ms": [
+              "Laju ialah kecerunan graf jarak–masa.",
+              "Bahagikan perubahan jarak dengan perubahan masa pada bahagian bergerak.",
+              "Bahagian bergerak mempunyai kecerunan 12 m/s."
+            ]
+          },
+          "explanation": {
+            "en": "The moving section has speed 12 m/s. A horizontal distance–time segment means rest.",
+            "ms": "Laju pada bahagian bergerak ialah 12 m/s. Segmen mendatar graf jarak–masa bermaksud pegun."
+          }
+        },
+        {
+          "id": "guardian-vertex",
+          "station": "guardian",
+          "kind": "motion-reading",
+          "reward": 50,
+          "title": {
+            "en": "Guardian: distance from area",
+            "ms": "Penjaga: jarak daripada luas"
+          },
+          "prompt": {
+            "en": "Find the total distance travelled from the area under the speed–time graph. Give metres.",
+            "ms": "Cari jumlah jarak dilalui daripada luas di bawah graf laju–masa. Beri jawapan dalam meter."
+          },
+          "model": {
+            "graph": "speed",
+            "segments": [
+              {
+                "duration": 3,
+                "speed": 6
+              },
+              {
+                "duration": 2,
+                "speed": 0
+              },
+              {
+                "duration": 4,
+                "speed": 3
+              }
+            ]
+          },
+          "fields": [
+            {
+              "key": "value",
+              "label": {
+                "en": "Distance (m)",
+                "ms": "Jarak (m)"
+              },
+              "type": "number"
+            }
+          ],
+          "answer": {
+            "value": 30
+          },
+          "hints": {
+            "en": [
+              "Distance is the area under a speed–time graph.",
+              "Each rectangle has area speed × duration. Add the rectangles.",
+              "The total area is 30 m."
+            ],
+            "ms": [
+              "Jarak ialah luas di bawah graf laju–masa.",
+              "Luas setiap segi empat tepat ialah laju × tempoh. Tambahkan luas-luasnya.",
+              "Jumlah luas ialah 30 m."
+            ]
+          },
+          "explanation": {
+            "en": "Adding speed × duration for every stage gives 30 m.",
+            "ms": "Menambahkan laju × tempoh bagi setiap peringkat memberikan 30 m."
+          }
+        },
+        {
+          "id": "guardian-design",
+          "station": "guardian",
+          "kind": "motion-plan",
+          "reward": 100,
+          "title": {
+            "en": "Guardian: delivery plan",
+            "ms": "Penjaga: pelan penghantaran"
+          },
+          "prompt": {
+            "en": "Travel exactly 72 m in 12 s. Set the first-stage duration and speed. The remaining time is at 4 m/s.",
+            "ms": "Bergerak tepat 72 m dalam 12 s. Tetapkan tempoh dan laju peringkat pertama. Masa selebihnya pada 4 m/s."
+          },
+          "model": {
+            "duration": 12,
+            "v2": 4,
+            "maxSpeed": 12
+          },
+          "fields": [
+            {
+              "key": "t1",
+              "label": {
+                "en": "First duration (s)",
+                "ms": "Tempoh pertama (s)"
+              },
+              "type": "range",
+              "min": 1,
+              "max": 11,
+              "step": 1,
+              "initial": 1
+            },
+            {
+              "key": "v1",
+              "label": {
+                "en": "First speed (m/s)",
+                "ms": "Laju pertama (m/s)"
+              },
+              "type": "range",
+              "min": 0,
+              "max": 12,
+              "step": 1,
+              "initial": 2
+            }
+          ],
+          "answer": {
+            "t1": 6,
+            "v1": 8
+          },
+          "hints": {
+            "en": [
+              "Total distance = first area + second area.",
+              "Use v₁t₁ + 4(12 − t₁) = 72.",
+              "One plan uses 6 s at 8 m/s. Other exact plans also work."
+            ],
+            "ms": [
+              "Jumlah jarak = luas pertama + luas kedua.",
+              "Gunakan v₁t₁ + 4(12 − t₁) = 72.",
+              "Satu pelan menggunakan 6 s pada 8 m/s. Pelan tepat yang lain juga diterima."
+            ]
+          },
+          "explanation": {
+            "en": "Your two areas add to the required distance. The cart now follows this speed plan in the forest.",
+            "ms": "Kedua-dua luas berjumlah jarak diperlukan. Troli kini mengikuti pelan laju ini di hutan."
+          },
+          "target": {
+            "distance": 72
+          }
+        }
+      ]
+    },
+    {
+      "id": "practice-c-v1",
+      "reviewStatus": "prototype-awaiting-teacher-review",
+      "challenges": [
+        {
+          "id": "roots",
+          "station": "roots",
+          "kind": "motion-reading",
+          "reward": 75,
+          "title": {
+            "en": "Read the track",
+            "ms": "Baca trek"
+          },
+          "prompt": {
+            "en": "Find the speed during the moving section of this distance–time graph. Give your answer in m/s.",
+            "ms": "Cari laju pada bahagian bergerak dalam graf jarak–masa ini. Beri jawapan dalam m/s."
+          },
+          "model": {
+            "graph": "distance",
+            "points": [
+              [
+                0,
+                0
+              ],
+              [
+                4,
+                60
+              ],
+              [
+                7,
+                60
+              ]
+            ]
+          },
+          "fields": [
+            {
+              "key": "value",
+              "label": {
+                "en": "Speed (m/s)",
+                "ms": "Laju (m/s)"
+              },
+              "type": "number"
+            }
+          ],
+          "answer": {
+            "value": 15
+          },
+          "hints": {
+            "en": [
+              "Speed is the gradient of a distance–time graph.",
+              "Divide the change in distance by the change in time in the moving section.",
+              "The moving section has gradient 15 m/s."
+            ],
+            "ms": [
+              "Laju ialah kecerunan graf jarak–masa.",
+              "Bahagikan perubahan jarak dengan perubahan masa pada bahagian bergerak.",
+              "Bahagian bergerak mempunyai kecerunan 15 m/s."
+            ]
+          },
+          "explanation": {
+            "en": "The moving section has speed 15 m/s. A horizontal distance–time segment means rest.",
+            "ms": "Laju pada bahagian bergerak ialah 15 m/s. Segmen mendatar graf jarak–masa bermaksud pegun."
+          }
+        },
+        {
+          "id": "vertex",
+          "station": "vertex",
+          "kind": "motion-reading",
+          "reward": 75,
+          "title": {
+            "en": "Distance from area",
+            "ms": "Jarak daripada luas"
+          },
+          "prompt": {
+            "en": "Find the total distance travelled from the area under the speed–time graph. Give metres.",
+            "ms": "Cari jumlah jarak dilalui daripada luas di bawah graf laju–masa. Beri jawapan dalam meter."
+          },
+          "model": {
+            "graph": "speed",
+            "segments": [
+              {
+                "duration": 4,
+                "speed": 5
+              },
+              {
+                "duration": 2,
+                "speed": 0
+              },
+              {
+                "duration": 3,
+                "speed": 6
+              }
+            ]
+          },
+          "fields": [
+            {
+              "key": "value",
+              "label": {
+                "en": "Distance (m)",
+                "ms": "Jarak (m)"
+              },
+              "type": "number"
+            }
+          ],
+          "answer": {
+            "value": 38
+          },
+          "hints": {
+            "en": [
+              "Distance is the area under a speed–time graph.",
+              "Each rectangle has area speed × duration. Add the rectangles.",
+              "The total area is 38 m."
+            ],
+            "ms": [
+              "Jarak ialah luas di bawah graf laju–masa.",
+              "Luas setiap segi empat tepat ialah laju × tempoh. Tambahkan luas-luasnya.",
+              "Jumlah luas ialah 38 m."
+            ]
+          },
+          "explanation": {
+            "en": "Adding speed × duration for every stage gives 38 m.",
+            "ms": "Menambahkan laju × tempoh bagi setiap peringkat memberikan 38 m."
+          }
+        },
+        {
+          "id": "design",
+          "station": "design",
+          "kind": "motion-plan",
+          "reward": 100,
+          "title": {
+            "en": "Program the delivery cart",
+            "ms": "Atur troli penghantaran"
+          },
+          "prompt": {
+            "en": "Travel exactly 70 m in 10 s. Set the first-stage duration and speed. The remaining time is at 4 m/s.",
+            "ms": "Bergerak tepat 70 m dalam 10 s. Tetapkan tempoh dan laju peringkat pertama. Masa selebihnya pada 4 m/s."
+          },
+          "model": {
+            "duration": 10,
+            "v2": 4,
+            "maxSpeed": 12
+          },
+          "fields": [
+            {
+              "key": "t1",
+              "label": {
+                "en": "First duration (s)",
+                "ms": "Tempoh pertama (s)"
+              },
+              "type": "range",
+              "min": 1,
+              "max": 9,
+              "step": 1,
+              "initial": 1
+            },
+            {
+              "key": "v1",
+              "label": {
+                "en": "First speed (m/s)",
+                "ms": "Laju pertama (m/s)"
+              },
+              "type": "range",
+              "min": 0,
+              "max": 12,
+              "step": 1,
+              "initial": 2
+            }
+          ],
+          "answer": {
+            "t1": 5,
+            "v1": 10
+          },
+          "hints": {
+            "en": [
+              "Total distance = first area + second area.",
+              "Use v₁t₁ + 4(10 − t₁) = 70.",
+              "One plan uses 5 s at 10 m/s. Other exact plans also work."
+            ],
+            "ms": [
+              "Jumlah jarak = luas pertama + luas kedua.",
+              "Gunakan v₁t₁ + 4(10 − t₁) = 70.",
+              "Satu pelan menggunakan 5 s pada 10 m/s. Pelan tepat yang lain juga diterima."
+            ]
+          },
+          "explanation": {
+            "en": "Your two areas add to the required distance. The cart now follows this speed plan in the forest.",
+            "ms": "Kedua-dua luas berjumlah jarak diperlukan. Troli kini mengikuti pelan laju ini di hutan."
+          },
+          "target": {
+            "distance": 70
+          }
+        },
+        {
+          "id": "guardian-roots",
+          "station": "guardian",
+          "kind": "motion-reading",
+          "reward": 50,
+          "title": {
+            "en": "Guardian: read the track",
+            "ms": "Penjaga: baca trek"
+          },
+          "prompt": {
+            "en": "Find the speed during the moving section of this distance–time graph. Give your answer in m/s.",
+            "ms": "Cari laju pada bahagian bergerak dalam graf jarak–masa ini. Beri jawapan dalam m/s."
+          },
+          "model": {
+            "graph": "distance",
+            "points": [
+              [
+                0,
+                0
+              ],
+              [
+                3,
+                0
+              ],
+              [
+                8,
+                90
+              ]
+            ]
+          },
+          "fields": [
+            {
+              "key": "value",
+              "label": {
+                "en": "Speed (m/s)",
+                "ms": "Laju (m/s)"
+              },
+              "type": "number"
+            }
+          ],
+          "answer": {
+            "value": 18
+          },
+          "hints": {
+            "en": [
+              "Speed is the gradient of a distance–time graph.",
+              "Divide the change in distance by the change in time in the moving section.",
+              "The moving section has gradient 18 m/s."
+            ],
+            "ms": [
+              "Laju ialah kecerunan graf jarak–masa.",
+              "Bahagikan perubahan jarak dengan perubahan masa pada bahagian bergerak.",
+              "Bahagian bergerak mempunyai kecerunan 18 m/s."
+            ]
+          },
+          "explanation": {
+            "en": "The moving section has speed 18 m/s. A horizontal distance–time segment means rest.",
+            "ms": "Laju pada bahagian bergerak ialah 18 m/s. Segmen mendatar graf jarak–masa bermaksud pegun."
+          }
+        },
+        {
+          "id": "guardian-vertex",
+          "station": "guardian",
+          "kind": "motion-reading",
+          "reward": 50,
+          "title": {
+            "en": "Guardian: distance from area",
+            "ms": "Penjaga: jarak daripada luas"
+          },
+          "prompt": {
+            "en": "Find the total distance travelled from the area under the speed–time graph. Give metres.",
+            "ms": "Cari jumlah jarak dilalui daripada luas di bawah graf laju–masa. Beri jawapan dalam meter."
+          },
+          "model": {
+            "graph": "speed",
+            "segments": [
+              {
+                "duration": 3,
+                "speed": 7
+              },
+              {
+                "duration": 2,
+                "speed": 0
+              },
+              {
+                "duration": 4,
+                "speed": 4
+              }
+            ]
+          },
+          "fields": [
+            {
+              "key": "value",
+              "label": {
+                "en": "Distance (m)",
+                "ms": "Jarak (m)"
+              },
+              "type": "number"
+            }
+          ],
+          "answer": {
+            "value": 37
+          },
+          "hints": {
+            "en": [
+              "Distance is the area under a speed–time graph.",
+              "Each rectangle has area speed × duration. Add the rectangles.",
+              "The total area is 37 m."
+            ],
+            "ms": [
+              "Jarak ialah luas di bawah graf laju–masa.",
+              "Luas setiap segi empat tepat ialah laju × tempoh. Tambahkan luas-luasnya.",
+              "Jumlah luas ialah 37 m."
+            ]
+          },
+          "explanation": {
+            "en": "Adding speed × duration for every stage gives 37 m.",
+            "ms": "Menambahkan laju × tempoh bagi setiap peringkat memberikan 37 m."
+          }
+        },
+        {
+          "id": "guardian-design",
+          "station": "guardian",
+          "kind": "motion-plan",
+          "reward": 100,
+          "title": {
+            "en": "Guardian: delivery plan",
+            "ms": "Penjaga: pelan penghantaran"
+          },
+          "prompt": {
+            "en": "Travel exactly 84 m in 12 s. Set the first-stage duration and speed. The remaining time is at 5 m/s.",
+            "ms": "Bergerak tepat 84 m dalam 12 s. Tetapkan tempoh dan laju peringkat pertama. Masa selebihnya pada 5 m/s."
+          },
+          "model": {
+            "duration": 12,
+            "v2": 5,
+            "maxSpeed": 12
+          },
+          "fields": [
+            {
+              "key": "t1",
+              "label": {
+                "en": "First duration (s)",
+                "ms": "Tempoh pertama (s)"
+              },
+              "type": "range",
+              "min": 1,
+              "max": 11,
+              "step": 1,
+              "initial": 1
+            },
+            {
+              "key": "v1",
+              "label": {
+                "en": "First speed (m/s)",
+                "ms": "Laju pertama (m/s)"
+              },
+              "type": "range",
+              "min": 0,
+              "max": 12,
+              "step": 1,
+              "initial": 2
+            }
+          ],
+          "answer": {
+            "t1": 6,
+            "v1": 9
+          },
+          "hints": {
+            "en": [
+              "Total distance = first area + second area.",
+              "Use v₁t₁ + 5(12 − t₁) = 84.",
+              "One plan uses 6 s at 9 m/s. Other exact plans also work."
+            ],
+            "ms": [
+              "Jumlah jarak = luas pertama + luas kedua.",
+              "Gunakan v₁t₁ + 5(12 − t₁) = 84.",
+              "Satu pelan menggunakan 6 s pada 9 m/s. Pelan tepat yang lain juga diterima."
+            ]
+          },
+          "explanation": {
+            "en": "Your two areas add to the required distance. The cart now follows this speed plan in the forest.",
+            "ms": "Kedua-dua luas berjumlah jarak diperlukan. Troli kini mengikuti pelan laju ini di hutan."
+          },
+          "target": {
+            "distance": 84
+          }
+        }
+      ]
+    }
+  ]
+}

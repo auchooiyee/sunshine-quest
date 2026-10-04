@@ -1,0 +1,1375 @@
+{
+  "id": "f4-maths-inequalities",
+  "version": 1,
+  "form": 4,
+  "subject": "Mathematics",
+  "chapter": 6,
+  "reviewStatus": "prototype-awaiting-teacher-review",
+  "alignmentSource": "KSSM Mathematics Form 4 and 5 DSKP (2018)",
+  "challenges": [
+    {
+      "id": "roots",
+      "station": "roots",
+      "kind": "inequality",
+      "reward": 75,
+      "title": {
+        "en": "Safe landing",
+        "ms": "Pendaratan selamat"
+      },
+      "prompt": {
+        "en": "Choose a whole-number point with x ≥ 2, y ≥ 1 and x + y ≤ 8. Coordinates are between 0 and 10.",
+        "ms": "Pilih titik integer dengan x ≥ 2, y ≥ 1 dan x + y ≤ 8. Koordinat antara 0 hingga 10."
+      },
+      "model": {
+        "bound": 10,
+        "constraints": [
+          {
+            "a": 1,
+            "b": 0,
+            "op": ">=",
+            "c": 2
+          },
+          {
+            "a": 0,
+            "b": 1,
+            "op": ">=",
+            "c": 1
+          },
+          {
+            "a": 1,
+            "b": 1,
+            "op": "<=",
+            "c": 8
+          }
+        ]
+      },
+      "fields": [
+        {
+          "key": "x",
+          "label": {
+            "en": "Landing x",
+            "ms": "Pendaratan x"
+          },
+          "type": "number"
+        },
+        {
+          "key": "y",
+          "label": {
+            "en": "Landing y",
+            "ms": "Pendaratan y"
+          },
+          "type": "number"
+        }
+      ],
+      "answer": {
+        "x": 3,
+        "y": 3
+      },
+      "hints": {
+        "en": [
+          "Substitute a candidate point into every inequality.",
+          "A solid line includes its boundary; a dashed line excludes it. Use non-negative whole coordinates.",
+          "One valid landing is (3, 3). Check each restriction."
+        ],
+        "ms": [
+          "Gantikan titik calon ke dalam setiap ketaksamaan.",
+          "Garis penuh termasuk sempadannya; garis putus-putus tidak termasuk. Gunakan koordinat integer bukan negatif.",
+          "Satu pendaratan sah ialah (3, 3). Semak setiap syarat."
+        ]
+      },
+      "explanation": {
+        "en": "Your coordinates satisfy every restriction. Other feasible whole-number points also work.",
+        "ms": "Koordinat anda mematuhi setiap syarat. Titik integer lain dalam rantau tersaur juga diterima."
+      }
+    },
+    {
+      "id": "vertex",
+      "station": "vertex",
+      "kind": "inequality",
+      "reward": 75,
+      "title": {
+        "en": "The open edge",
+        "ms": "Pinggir terbuka"
+      },
+      "prompt": {
+        "en": "Choose a whole-number point with x ≥ 1, y ≥ 2 and x + y < 7. A point on x + y = 7 is excluded.",
+        "ms": "Pilih titik integer dengan x ≥ 1, y ≥ 2 dan x + y < 7. Titik pada x + y = 7 tidak termasuk."
+      },
+      "model": {
+        "bound": 10,
+        "constraints": [
+          {
+            "a": 1,
+            "b": 0,
+            "op": ">=",
+            "c": 1
+          },
+          {
+            "a": 0,
+            "b": 1,
+            "op": ">=",
+            "c": 2
+          },
+          {
+            "a": 1,
+            "b": 1,
+            "op": "<",
+            "c": 7
+          }
+        ]
+      },
+      "fields": [
+        {
+          "key": "x",
+          "label": {
+            "en": "Landing x",
+            "ms": "Pendaratan x"
+          },
+          "type": "number"
+        },
+        {
+          "key": "y",
+          "label": {
+            "en": "Landing y",
+            "ms": "Pendaratan y"
+          },
+          "type": "number"
+        }
+      ],
+      "answer": {
+        "x": 2,
+        "y": 3
+      },
+      "hints": {
+        "en": [
+          "Substitute a candidate point into every inequality.",
+          "A solid line includes its boundary; a dashed line excludes it. Use non-negative whole coordinates.",
+          "One valid landing is (2, 3). Check each restriction."
+        ],
+        "ms": [
+          "Gantikan titik calon ke dalam setiap ketaksamaan.",
+          "Garis penuh termasuk sempadannya; garis putus-putus tidak termasuk. Gunakan koordinat integer bukan negatif.",
+          "Satu pendaratan sah ialah (2, 3). Semak setiap syarat."
+        ]
+      },
+      "explanation": {
+        "en": "Your coordinates satisfy every restriction. Other feasible whole-number points also work.",
+        "ms": "Koordinat anda mematuhi setiap syarat. Titik integer lain dalam rantau tersaur juga diterima."
+      }
+    },
+    {
+      "id": "design",
+      "station": "design",
+      "kind": "inequality",
+      "reward": 100,
+      "title": {
+        "en": "Supply route",
+        "ms": "Laluan bekalan"
+      },
+      "prompt": {
+        "en": "Set the supply marker: x ≥ 2, y ≥ 2 and 2x + y ≤ 10. Use whole-number coordinates.",
+        "ms": "Tetapkan penanda bekalan: x ≥ 2, y ≥ 2 dan 2x + y ≤ 10. Gunakan koordinat integer."
+      },
+      "model": {
+        "bound": 10,
+        "constraints": [
+          {
+            "a": 1,
+            "b": 0,
+            "op": ">=",
+            "c": 2
+          },
+          {
+            "a": 0,
+            "b": 1,
+            "op": ">=",
+            "c": 2
+          },
+          {
+            "a": 2,
+            "b": 1,
+            "op": "<=",
+            "c": 10
+          }
+        ]
+      },
+      "fields": [
+        {
+          "key": "x",
+          "label": {
+            "en": "Landing x",
+            "ms": "Pendaratan x"
+          },
+          "type": "number"
+        },
+        {
+          "key": "y",
+          "label": {
+            "en": "Landing y",
+            "ms": "Pendaratan y"
+          },
+          "type": "number"
+        }
+      ],
+      "answer": {
+        "x": 3,
+        "y": 3
+      },
+      "hints": {
+        "en": [
+          "Substitute a candidate point into every inequality.",
+          "A solid line includes its boundary; a dashed line excludes it. Use non-negative whole coordinates.",
+          "One valid landing is (3, 3). Check each restriction."
+        ],
+        "ms": [
+          "Gantikan titik calon ke dalam setiap ketaksamaan.",
+          "Garis penuh termasuk sempadannya; garis putus-putus tidak termasuk. Gunakan koordinat integer bukan negatif.",
+          "Satu pendaratan sah ialah (3, 3). Semak setiap syarat."
+        ]
+      },
+      "explanation": {
+        "en": "Your coordinates satisfy every restriction. Other feasible whole-number points also work.",
+        "ms": "Koordinat anda mematuhi setiap syarat. Titik integer lain dalam rantau tersaur juga diterima."
+      }
+    },
+    {
+      "id": "guardian-roots",
+      "station": "guardian",
+      "kind": "inequality",
+      "reward": 50,
+      "title": {
+        "en": "Guardian: three restrictions",
+        "ms": "Penjaga: tiga syarat"
+      },
+      "prompt": {
+        "en": "Find a whole-number point satisfying x ≥ 3, y ≥ 2 and x + 2y ≤ 11.",
+        "ms": "Cari titik integer yang memenuhi x ≥ 3, y ≥ 2 dan x + 2y ≤ 11."
+      },
+      "model": {
+        "bound": 10,
+        "constraints": [
+          {
+            "a": 1,
+            "b": 0,
+            "op": ">=",
+            "c": 3
+          },
+          {
+            "a": 0,
+            "b": 1,
+            "op": ">=",
+            "c": 2
+          },
+          {
+            "a": 1,
+            "b": 2,
+            "op": "<=",
+            "c": 11
+          }
+        ]
+      },
+      "fields": [
+        {
+          "key": "x",
+          "label": {
+            "en": "Landing x",
+            "ms": "Pendaratan x"
+          },
+          "type": "number"
+        },
+        {
+          "key": "y",
+          "label": {
+            "en": "Landing y",
+            "ms": "Pendaratan y"
+          },
+          "type": "number"
+        }
+      ],
+      "answer": {
+        "x": 3,
+        "y": 3
+      },
+      "hints": {
+        "en": [
+          "Substitute a candidate point into every inequality.",
+          "A solid line includes its boundary; a dashed line excludes it. Use non-negative whole coordinates.",
+          "One valid landing is (3, 3). Check each restriction."
+        ],
+        "ms": [
+          "Gantikan titik calon ke dalam setiap ketaksamaan.",
+          "Garis penuh termasuk sempadannya; garis putus-putus tidak termasuk. Gunakan koordinat integer bukan negatif.",
+          "Satu pendaratan sah ialah (3, 3). Semak setiap syarat."
+        ]
+      },
+      "explanation": {
+        "en": "Your coordinates satisfy every restriction. Other feasible whole-number points also work.",
+        "ms": "Koordinat anda mematuhi setiap syarat. Titik integer lain dalam rantau tersaur juga diterima."
+      }
+    },
+    {
+      "id": "guardian-vertex",
+      "station": "guardian",
+      "kind": "inequality",
+      "reward": 50,
+      "title": {
+        "en": "Guardian: excluded boundary",
+        "ms": "Penjaga: sempadan tidak termasuk"
+      },
+      "prompt": {
+        "en": "Find a whole-number point satisfying x > 2, y ≥ 1 and x + y < 8.",
+        "ms": "Cari titik integer yang memenuhi x > 2, y ≥ 1 dan x + y < 8."
+      },
+      "model": {
+        "bound": 10,
+        "constraints": [
+          {
+            "a": 1,
+            "b": 0,
+            "op": ">",
+            "c": 2
+          },
+          {
+            "a": 0,
+            "b": 1,
+            "op": ">=",
+            "c": 1
+          },
+          {
+            "a": 1,
+            "b": 1,
+            "op": "<",
+            "c": 8
+          }
+        ]
+      },
+      "fields": [
+        {
+          "key": "x",
+          "label": {
+            "en": "Landing x",
+            "ms": "Pendaratan x"
+          },
+          "type": "number"
+        },
+        {
+          "key": "y",
+          "label": {
+            "en": "Landing y",
+            "ms": "Pendaratan y"
+          },
+          "type": "number"
+        }
+      ],
+      "answer": {
+        "x": 3,
+        "y": 2
+      },
+      "hints": {
+        "en": [
+          "Substitute a candidate point into every inequality.",
+          "A solid line includes its boundary; a dashed line excludes it. Use non-negative whole coordinates.",
+          "One valid landing is (3, 2). Check each restriction."
+        ],
+        "ms": [
+          "Gantikan titik calon ke dalam setiap ketaksamaan.",
+          "Garis penuh termasuk sempadannya; garis putus-putus tidak termasuk. Gunakan koordinat integer bukan negatif.",
+          "Satu pendaratan sah ialah (3, 2). Semak setiap syarat."
+        ]
+      },
+      "explanation": {
+        "en": "Your coordinates satisfy every restriction. Other feasible whole-number points also work.",
+        "ms": "Koordinat anda mematuhi setiap syarat. Titik integer lain dalam rantau tersaur juga diterima."
+      }
+    },
+    {
+      "id": "guardian-design",
+      "station": "guardian",
+      "kind": "inequality",
+      "reward": 100,
+      "title": {
+        "en": "Guardian: final route",
+        "ms": "Penjaga: laluan akhir"
+      },
+      "prompt": {
+        "en": "Place the final route marker: x ≥ 2, y ≥ 3 and 2x + y ≤ 12. Use whole-number coordinates.",
+        "ms": "Letakkan penanda laluan akhir: x ≥ 2, y ≥ 3 dan 2x + y ≤ 12. Gunakan koordinat integer."
+      },
+      "model": {
+        "bound": 10,
+        "constraints": [
+          {
+            "a": 1,
+            "b": 0,
+            "op": ">=",
+            "c": 2
+          },
+          {
+            "a": 0,
+            "b": 1,
+            "op": ">=",
+            "c": 3
+          },
+          {
+            "a": 2,
+            "b": 1,
+            "op": "<=",
+            "c": 12
+          }
+        ]
+      },
+      "fields": [
+        {
+          "key": "x",
+          "label": {
+            "en": "Landing x",
+            "ms": "Pendaratan x"
+          },
+          "type": "number"
+        },
+        {
+          "key": "y",
+          "label": {
+            "en": "Landing y",
+            "ms": "Pendaratan y"
+          },
+          "type": "number"
+        }
+      ],
+      "answer": {
+        "x": 4,
+        "y": 3
+      },
+      "hints": {
+        "en": [
+          "Substitute a candidate point into every inequality.",
+          "A solid line includes its boundary; a dashed line excludes it. Use non-negative whole coordinates.",
+          "One valid landing is (4, 3). Check each restriction."
+        ],
+        "ms": [
+          "Gantikan titik calon ke dalam setiap ketaksamaan.",
+          "Garis penuh termasuk sempadannya; garis putus-putus tidak termasuk. Gunakan koordinat integer bukan negatif.",
+          "Satu pendaratan sah ialah (4, 3). Semak setiap syarat."
+        ]
+      },
+      "explanation": {
+        "en": "Your coordinates satisfy every restriction. Other feasible whole-number points also work.",
+        "ms": "Koordinat anda mematuhi setiap syarat. Titik integer lain dalam rantau tersaur juga diterima."
+      }
+    }
+  ],
+  "variants": [
+    {
+      "id": "practice-b-v1",
+      "reviewStatus": "prototype-awaiting-teacher-review",
+      "challenges": [
+        {
+          "id": "roots",
+          "station": "roots",
+          "kind": "inequality",
+          "reward": 75,
+          "title": {
+            "en": "Safe landing",
+            "ms": "Pendaratan selamat"
+          },
+          "prompt": {
+            "en": "Choose whole-number coordinates between 0 and 10 satisfying x ≥ 3, y ≥ 2, x + y ≤ 10. Solid boundaries are included; dashed boundaries are excluded.",
+            "ms": "Pilih koordinat integer antara 0 hingga 10 yang memenuhi x ≥ 3, y ≥ 2, x + y ≤ 10. Sempadan penuh termasuk; sempadan putus-putus tidak termasuk."
+          },
+          "model": {
+            "bound": 10,
+            "constraints": [
+              {
+                "a": 1,
+                "b": 0,
+                "op": ">=",
+                "c": 3
+              },
+              {
+                "a": 0,
+                "b": 1,
+                "op": ">=",
+                "c": 2
+              },
+              {
+                "a": 1,
+                "b": 1,
+                "op": "<=",
+                "c": 10
+              }
+            ]
+          },
+          "fields": [
+            {
+              "key": "x",
+              "label": {
+                "en": "Landing x",
+                "ms": "Pendaratan x"
+              },
+              "type": "number"
+            },
+            {
+              "key": "y",
+              "label": {
+                "en": "Landing y",
+                "ms": "Pendaratan y"
+              },
+              "type": "number"
+            }
+          ],
+          "answer": {
+            "x": 4,
+            "y": 4
+          },
+          "hints": {
+            "en": [
+              "Substitute a candidate point into every inequality.",
+              "A solid line includes its boundary; a dashed line excludes it. Use non-negative whole coordinates.",
+              "One valid landing is (4, 4). Check each restriction."
+            ],
+            "ms": [
+              "Gantikan titik calon ke dalam setiap ketaksamaan.",
+              "Garis penuh termasuk sempadannya; garis putus-putus tidak termasuk. Gunakan koordinat integer bukan negatif.",
+              "Satu pendaratan sah ialah (4, 4). Semak setiap syarat."
+            ]
+          },
+          "explanation": {
+            "en": "Your coordinates satisfy every restriction. Other feasible whole-number points also work.",
+            "ms": "Koordinat anda mematuhi setiap syarat. Titik integer lain dalam rantau tersaur juga diterima."
+          }
+        },
+        {
+          "id": "vertex",
+          "station": "vertex",
+          "kind": "inequality",
+          "reward": 75,
+          "title": {
+            "en": "The open edge",
+            "ms": "Pinggir terbuka"
+          },
+          "prompt": {
+            "en": "Choose whole-number coordinates between 0 and 10 satisfying x ≥ 2, y ≥ 3, x + y < 9. Solid boundaries are included; dashed boundaries are excluded.",
+            "ms": "Pilih koordinat integer antara 0 hingga 10 yang memenuhi x ≥ 2, y ≥ 3, x + y < 9. Sempadan penuh termasuk; sempadan putus-putus tidak termasuk."
+          },
+          "model": {
+            "bound": 10,
+            "constraints": [
+              {
+                "a": 1,
+                "b": 0,
+                "op": ">=",
+                "c": 2
+              },
+              {
+                "a": 0,
+                "b": 1,
+                "op": ">=",
+                "c": 3
+              },
+              {
+                "a": 1,
+                "b": 1,
+                "op": "<",
+                "c": 9
+              }
+            ]
+          },
+          "fields": [
+            {
+              "key": "x",
+              "label": {
+                "en": "Landing x",
+                "ms": "Pendaratan x"
+              },
+              "type": "number"
+            },
+            {
+              "key": "y",
+              "label": {
+                "en": "Landing y",
+                "ms": "Pendaratan y"
+              },
+              "type": "number"
+            }
+          ],
+          "answer": {
+            "x": 3,
+            "y": 4
+          },
+          "hints": {
+            "en": [
+              "Substitute a candidate point into every inequality.",
+              "A solid line includes its boundary; a dashed line excludes it. Use non-negative whole coordinates.",
+              "One valid landing is (3, 4). Check each restriction."
+            ],
+            "ms": [
+              "Gantikan titik calon ke dalam setiap ketaksamaan.",
+              "Garis penuh termasuk sempadannya; garis putus-putus tidak termasuk. Gunakan koordinat integer bukan negatif.",
+              "Satu pendaratan sah ialah (3, 4). Semak setiap syarat."
+            ]
+          },
+          "explanation": {
+            "en": "Your coordinates satisfy every restriction. Other feasible whole-number points also work.",
+            "ms": "Koordinat anda mematuhi setiap syarat. Titik integer lain dalam rantau tersaur juga diterima."
+          }
+        },
+        {
+          "id": "design",
+          "station": "design",
+          "kind": "inequality",
+          "reward": 100,
+          "title": {
+            "en": "Supply route",
+            "ms": "Laluan bekalan"
+          },
+          "prompt": {
+            "en": "Choose whole-number coordinates between 0 and 10 satisfying x ≥ 3, y ≥ 3, 2x + y ≤ 13. Solid boundaries are included; dashed boundaries are excluded.",
+            "ms": "Pilih koordinat integer antara 0 hingga 10 yang memenuhi x ≥ 3, y ≥ 3, 2x + y ≤ 13. Sempadan penuh termasuk; sempadan putus-putus tidak termasuk."
+          },
+          "model": {
+            "bound": 10,
+            "constraints": [
+              {
+                "a": 1,
+                "b": 0,
+                "op": ">=",
+                "c": 3
+              },
+              {
+                "a": 0,
+                "b": 1,
+                "op": ">=",
+                "c": 3
+              },
+              {
+                "a": 2,
+                "b": 1,
+                "op": "<=",
+                "c": 13
+              }
+            ]
+          },
+          "fields": [
+            {
+              "key": "x",
+              "label": {
+                "en": "Landing x",
+                "ms": "Pendaratan x"
+              },
+              "type": "number"
+            },
+            {
+              "key": "y",
+              "label": {
+                "en": "Landing y",
+                "ms": "Pendaratan y"
+              },
+              "type": "number"
+            }
+          ],
+          "answer": {
+            "x": 4,
+            "y": 4
+          },
+          "hints": {
+            "en": [
+              "Substitute a candidate point into every inequality.",
+              "A solid line includes its boundary; a dashed line excludes it. Use non-negative whole coordinates.",
+              "One valid landing is (4, 4). Check each restriction."
+            ],
+            "ms": [
+              "Gantikan titik calon ke dalam setiap ketaksamaan.",
+              "Garis penuh termasuk sempadannya; garis putus-putus tidak termasuk. Gunakan koordinat integer bukan negatif.",
+              "Satu pendaratan sah ialah (4, 4). Semak setiap syarat."
+            ]
+          },
+          "explanation": {
+            "en": "Your coordinates satisfy every restriction. Other feasible whole-number points also work.",
+            "ms": "Koordinat anda mematuhi setiap syarat. Titik integer lain dalam rantau tersaur juga diterima."
+          }
+        },
+        {
+          "id": "guardian-roots",
+          "station": "guardian",
+          "kind": "inequality",
+          "reward": 50,
+          "title": {
+            "en": "Guardian: three restrictions",
+            "ms": "Penjaga: tiga syarat"
+          },
+          "prompt": {
+            "en": "Choose whole-number coordinates between 0 and 10 satisfying x ≥ 4, y ≥ 3, x + 2y ≤ 14. Solid boundaries are included; dashed boundaries are excluded.",
+            "ms": "Pilih koordinat integer antara 0 hingga 10 yang memenuhi x ≥ 4, y ≥ 3, x + 2y ≤ 14. Sempadan penuh termasuk; sempadan putus-putus tidak termasuk."
+          },
+          "model": {
+            "bound": 10,
+            "constraints": [
+              {
+                "a": 1,
+                "b": 0,
+                "op": ">=",
+                "c": 4
+              },
+              {
+                "a": 0,
+                "b": 1,
+                "op": ">=",
+                "c": 3
+              },
+              {
+                "a": 1,
+                "b": 2,
+                "op": "<=",
+                "c": 14
+              }
+            ]
+          },
+          "fields": [
+            {
+              "key": "x",
+              "label": {
+                "en": "Landing x",
+                "ms": "Pendaratan x"
+              },
+              "type": "number"
+            },
+            {
+              "key": "y",
+              "label": {
+                "en": "Landing y",
+                "ms": "Pendaratan y"
+              },
+              "type": "number"
+            }
+          ],
+          "answer": {
+            "x": 4,
+            "y": 4
+          },
+          "hints": {
+            "en": [
+              "Substitute a candidate point into every inequality.",
+              "A solid line includes its boundary; a dashed line excludes it. Use non-negative whole coordinates.",
+              "One valid landing is (4, 4). Check each restriction."
+            ],
+            "ms": [
+              "Gantikan titik calon ke dalam setiap ketaksamaan.",
+              "Garis penuh termasuk sempadannya; garis putus-putus tidak termasuk. Gunakan koordinat integer bukan negatif.",
+              "Satu pendaratan sah ialah (4, 4). Semak setiap syarat."
+            ]
+          },
+          "explanation": {
+            "en": "Your coordinates satisfy every restriction. Other feasible whole-number points also work.",
+            "ms": "Koordinat anda mematuhi setiap syarat. Titik integer lain dalam rantau tersaur juga diterima."
+          }
+        },
+        {
+          "id": "guardian-vertex",
+          "station": "guardian",
+          "kind": "inequality",
+          "reward": 50,
+          "title": {
+            "en": "Guardian: excluded boundary",
+            "ms": "Penjaga: sempadan tidak termasuk"
+          },
+          "prompt": {
+            "en": "Choose whole-number coordinates between 0 and 10 satisfying x > 3, y ≥ 2, x + y < 10. Solid boundaries are included; dashed boundaries are excluded.",
+            "ms": "Pilih koordinat integer antara 0 hingga 10 yang memenuhi x > 3, y ≥ 2, x + y < 10. Sempadan penuh termasuk; sempadan putus-putus tidak termasuk."
+          },
+          "model": {
+            "bound": 10,
+            "constraints": [
+              {
+                "a": 1,
+                "b": 0,
+                "op": ">",
+                "c": 3
+              },
+              {
+                "a": 0,
+                "b": 1,
+                "op": ">=",
+                "c": 2
+              },
+              {
+                "a": 1,
+                "b": 1,
+                "op": "<",
+                "c": 10
+              }
+            ]
+          },
+          "fields": [
+            {
+              "key": "x",
+              "label": {
+                "en": "Landing x",
+                "ms": "Pendaratan x"
+              },
+              "type": "number"
+            },
+            {
+              "key": "y",
+              "label": {
+                "en": "Landing y",
+                "ms": "Pendaratan y"
+              },
+              "type": "number"
+            }
+          ],
+          "answer": {
+            "x": 4,
+            "y": 3
+          },
+          "hints": {
+            "en": [
+              "Substitute a candidate point into every inequality.",
+              "A solid line includes its boundary; a dashed line excludes it. Use non-negative whole coordinates.",
+              "One valid landing is (4, 3). Check each restriction."
+            ],
+            "ms": [
+              "Gantikan titik calon ke dalam setiap ketaksamaan.",
+              "Garis penuh termasuk sempadannya; garis putus-putus tidak termasuk. Gunakan koordinat integer bukan negatif.",
+              "Satu pendaratan sah ialah (4, 3). Semak setiap syarat."
+            ]
+          },
+          "explanation": {
+            "en": "Your coordinates satisfy every restriction. Other feasible whole-number points also work.",
+            "ms": "Koordinat anda mematuhi setiap syarat. Titik integer lain dalam rantau tersaur juga diterima."
+          }
+        },
+        {
+          "id": "guardian-design",
+          "station": "guardian",
+          "kind": "inequality",
+          "reward": 100,
+          "title": {
+            "en": "Guardian: final route",
+            "ms": "Penjaga: laluan akhir"
+          },
+          "prompt": {
+            "en": "Choose whole-number coordinates between 0 and 10 satisfying x ≥ 3, y ≥ 4, 2x + y ≤ 15. Solid boundaries are included; dashed boundaries are excluded.",
+            "ms": "Pilih koordinat integer antara 0 hingga 10 yang memenuhi x ≥ 3, y ≥ 4, 2x + y ≤ 15. Sempadan penuh termasuk; sempadan putus-putus tidak termasuk."
+          },
+          "model": {
+            "bound": 10,
+            "constraints": [
+              {
+                "a": 1,
+                "b": 0,
+                "op": ">=",
+                "c": 3
+              },
+              {
+                "a": 0,
+                "b": 1,
+                "op": ">=",
+                "c": 4
+              },
+              {
+                "a": 2,
+                "b": 1,
+                "op": "<=",
+                "c": 15
+              }
+            ]
+          },
+          "fields": [
+            {
+              "key": "x",
+              "label": {
+                "en": "Landing x",
+                "ms": "Pendaratan x"
+              },
+              "type": "number"
+            },
+            {
+              "key": "y",
+              "label": {
+                "en": "Landing y",
+                "ms": "Pendaratan y"
+              },
+              "type": "number"
+            }
+          ],
+          "answer": {
+            "x": 5,
+            "y": 4
+          },
+          "hints": {
+            "en": [
+              "Substitute a candidate point into every inequality.",
+              "A solid line includes its boundary; a dashed line excludes it. Use non-negative whole coordinates.",
+              "One valid landing is (5, 4). Check each restriction."
+            ],
+            "ms": [
+              "Gantikan titik calon ke dalam setiap ketaksamaan.",
+              "Garis penuh termasuk sempadannya; garis putus-putus tidak termasuk. Gunakan koordinat integer bukan negatif.",
+              "Satu pendaratan sah ialah (5, 4). Semak setiap syarat."
+            ]
+          },
+          "explanation": {
+            "en": "Your coordinates satisfy every restriction. Other feasible whole-number points also work.",
+            "ms": "Koordinat anda mematuhi setiap syarat. Titik integer lain dalam rantau tersaur juga diterima."
+          }
+        }
+      ]
+    },
+    {
+      "id": "practice-c-v1",
+      "reviewStatus": "prototype-awaiting-teacher-review",
+      "challenges": [
+        {
+          "id": "roots",
+          "station": "roots",
+          "kind": "inequality",
+          "reward": 75,
+          "title": {
+            "en": "Safe landing",
+            "ms": "Pendaratan selamat"
+          },
+          "prompt": {
+            "en": "Choose whole-number coordinates between 0 and 10 satisfying x ≥ 4, y ≥ 3, x + y ≤ 12. Solid boundaries are included; dashed boundaries are excluded.",
+            "ms": "Pilih koordinat integer antara 0 hingga 10 yang memenuhi x ≥ 4, y ≥ 3, x + y ≤ 12. Sempadan penuh termasuk; sempadan putus-putus tidak termasuk."
+          },
+          "model": {
+            "bound": 10,
+            "constraints": [
+              {
+                "a": 1,
+                "b": 0,
+                "op": ">=",
+                "c": 4
+              },
+              {
+                "a": 0,
+                "b": 1,
+                "op": ">=",
+                "c": 3
+              },
+              {
+                "a": 1,
+                "b": 1,
+                "op": "<=",
+                "c": 12
+              }
+            ]
+          },
+          "fields": [
+            {
+              "key": "x",
+              "label": {
+                "en": "Landing x",
+                "ms": "Pendaratan x"
+              },
+              "type": "number"
+            },
+            {
+              "key": "y",
+              "label": {
+                "en": "Landing y",
+                "ms": "Pendaratan y"
+              },
+              "type": "number"
+            }
+          ],
+          "answer": {
+            "x": 5,
+            "y": 5
+          },
+          "hints": {
+            "en": [
+              "Substitute a candidate point into every inequality.",
+              "A solid line includes its boundary; a dashed line excludes it. Use non-negative whole coordinates.",
+              "One valid landing is (5, 5). Check each restriction."
+            ],
+            "ms": [
+              "Gantikan titik calon ke dalam setiap ketaksamaan.",
+              "Garis penuh termasuk sempadannya; garis putus-putus tidak termasuk. Gunakan koordinat integer bukan negatif.",
+              "Satu pendaratan sah ialah (5, 5). Semak setiap syarat."
+            ]
+          },
+          "explanation": {
+            "en": "Your coordinates satisfy every restriction. Other feasible whole-number points also work.",
+            "ms": "Koordinat anda mematuhi setiap syarat. Titik integer lain dalam rantau tersaur juga diterima."
+          }
+        },
+        {
+          "id": "vertex",
+          "station": "vertex",
+          "kind": "inequality",
+          "reward": 75,
+          "title": {
+            "en": "The open edge",
+            "ms": "Pinggir terbuka"
+          },
+          "prompt": {
+            "en": "Choose whole-number coordinates between 0 and 10 satisfying x ≥ 3, y ≥ 4, x + y < 11. Solid boundaries are included; dashed boundaries are excluded.",
+            "ms": "Pilih koordinat integer antara 0 hingga 10 yang memenuhi x ≥ 3, y ≥ 4, x + y < 11. Sempadan penuh termasuk; sempadan putus-putus tidak termasuk."
+          },
+          "model": {
+            "bound": 10,
+            "constraints": [
+              {
+                "a": 1,
+                "b": 0,
+                "op": ">=",
+                "c": 3
+              },
+              {
+                "a": 0,
+                "b": 1,
+                "op": ">=",
+                "c": 4
+              },
+              {
+                "a": 1,
+                "b": 1,
+                "op": "<",
+                "c": 11
+              }
+            ]
+          },
+          "fields": [
+            {
+              "key": "x",
+              "label": {
+                "en": "Landing x",
+                "ms": "Pendaratan x"
+              },
+              "type": "number"
+            },
+            {
+              "key": "y",
+              "label": {
+                "en": "Landing y",
+                "ms": "Pendaratan y"
+              },
+              "type": "number"
+            }
+          ],
+          "answer": {
+            "x": 4,
+            "y": 5
+          },
+          "hints": {
+            "en": [
+              "Substitute a candidate point into every inequality.",
+              "A solid line includes its boundary; a dashed line excludes it. Use non-negative whole coordinates.",
+              "One valid landing is (4, 5). Check each restriction."
+            ],
+            "ms": [
+              "Gantikan titik calon ke dalam setiap ketaksamaan.",
+              "Garis penuh termasuk sempadannya; garis putus-putus tidak termasuk. Gunakan koordinat integer bukan negatif.",
+              "Satu pendaratan sah ialah (4, 5). Semak setiap syarat."
+            ]
+          },
+          "explanation": {
+            "en": "Your coordinates satisfy every restriction. Other feasible whole-number points also work.",
+            "ms": "Koordinat anda mematuhi setiap syarat. Titik integer lain dalam rantau tersaur juga diterima."
+          }
+        },
+        {
+          "id": "design",
+          "station": "design",
+          "kind": "inequality",
+          "reward": 100,
+          "title": {
+            "en": "Supply route",
+            "ms": "Laluan bekalan"
+          },
+          "prompt": {
+            "en": "Choose whole-number coordinates between 0 and 10 satisfying x ≥ 4, y ≥ 4, 2x + y ≤ 16. Solid boundaries are included; dashed boundaries are excluded.",
+            "ms": "Pilih koordinat integer antara 0 hingga 10 yang memenuhi x ≥ 4, y ≥ 4, 2x + y ≤ 16. Sempadan penuh termasuk; sempadan putus-putus tidak termasuk."
+          },
+          "model": {
+            "bound": 10,
+            "constraints": [
+              {
+                "a": 1,
+                "b": 0,
+                "op": ">=",
+                "c": 4
+              },
+              {
+                "a": 0,
+                "b": 1,
+                "op": ">=",
+                "c": 4
+              },
+              {
+                "a": 2,
+                "b": 1,
+                "op": "<=",
+                "c": 16
+              }
+            ]
+          },
+          "fields": [
+            {
+              "key": "x",
+              "label": {
+                "en": "Landing x",
+                "ms": "Pendaratan x"
+              },
+              "type": "number"
+            },
+            {
+              "key": "y",
+              "label": {
+                "en": "Landing y",
+                "ms": "Pendaratan y"
+              },
+              "type": "number"
+            }
+          ],
+          "answer": {
+            "x": 5,
+            "y": 5
+          },
+          "hints": {
+            "en": [
+              "Substitute a candidate point into every inequality.",
+              "A solid line includes its boundary; a dashed line excludes it. Use non-negative whole coordinates.",
+              "One valid landing is (5, 5). Check each restriction."
+            ],
+            "ms": [
+              "Gantikan titik calon ke dalam setiap ketaksamaan.",
+              "Garis penuh termasuk sempadannya; garis putus-putus tidak termasuk. Gunakan koordinat integer bukan negatif.",
+              "Satu pendaratan sah ialah (5, 5). Semak setiap syarat."
+            ]
+          },
+          "explanation": {
+            "en": "Your coordinates satisfy every restriction. Other feasible whole-number points also work.",
+            "ms": "Koordinat anda mematuhi setiap syarat. Titik integer lain dalam rantau tersaur juga diterima."
+          }
+        },
+        {
+          "id": "guardian-roots",
+          "station": "guardian",
+          "kind": "inequality",
+          "reward": 50,
+          "title": {
+            "en": "Guardian: three restrictions",
+            "ms": "Penjaga: tiga syarat"
+          },
+          "prompt": {
+            "en": "Choose whole-number coordinates between 0 and 10 satisfying x ≥ 5, y ≥ 4, x + 2y ≤ 17. Solid boundaries are included; dashed boundaries are excluded.",
+            "ms": "Pilih koordinat integer antara 0 hingga 10 yang memenuhi x ≥ 5, y ≥ 4, x + 2y ≤ 17. Sempadan penuh termasuk; sempadan putus-putus tidak termasuk."
+          },
+          "model": {
+            "bound": 10,
+            "constraints": [
+              {
+                "a": 1,
+                "b": 0,
+                "op": ">=",
+                "c": 5
+              },
+              {
+                "a": 0,
+                "b": 1,
+                "op": ">=",
+                "c": 4
+              },
+              {
+                "a": 1,
+                "b": 2,
+                "op": "<=",
+                "c": 17
+              }
+            ]
+          },
+          "fields": [
+            {
+              "key": "x",
+              "label": {
+                "en": "Landing x",
+                "ms": "Pendaratan x"
+              },
+              "type": "number"
+            },
+            {
+              "key": "y",
+              "label": {
+                "en": "Landing y",
+                "ms": "Pendaratan y"
+              },
+              "type": "number"
+            }
+          ],
+          "answer": {
+            "x": 5,
+            "y": 5
+          },
+          "hints": {
+            "en": [
+              "Substitute a candidate point into every inequality.",
+              "A solid line includes its boundary; a dashed line excludes it. Use non-negative whole coordinates.",
+              "One valid landing is (5, 5). Check each restriction."
+            ],
+            "ms": [
+              "Gantikan titik calon ke dalam setiap ketaksamaan.",
+              "Garis penuh termasuk sempadannya; garis putus-putus tidak termasuk. Gunakan koordinat integer bukan negatif.",
+              "Satu pendaratan sah ialah (5, 5). Semak setiap syarat."
+            ]
+          },
+          "explanation": {
+            "en": "Your coordinates satisfy every restriction. Other feasible whole-number points also work.",
+            "ms": "Koordinat anda mematuhi setiap syarat. Titik integer lain dalam rantau tersaur juga diterima."
+          }
+        },
+        {
+          "id": "guardian-vertex",
+          "station": "guardian",
+          "kind": "inequality",
+          "reward": 50,
+          "title": {
+            "en": "Guardian: excluded boundary",
+            "ms": "Penjaga: sempadan tidak termasuk"
+          },
+          "prompt": {
+            "en": "Choose whole-number coordinates between 0 and 10 satisfying x > 4, y ≥ 3, x + y < 12. Solid boundaries are included; dashed boundaries are excluded.",
+            "ms": "Pilih koordinat integer antara 0 hingga 10 yang memenuhi x > 4, y ≥ 3, x + y < 12. Sempadan penuh termasuk; sempadan putus-putus tidak termasuk."
+          },
+          "model": {
+            "bound": 10,
+            "constraints": [
+              {
+                "a": 1,
+                "b": 0,
+                "op": ">",
+                "c": 4
+              },
+              {
+                "a": 0,
+                "b": 1,
+                "op": ">=",
+                "c": 3
+              },
+              {
+                "a": 1,
+                "b": 1,
+                "op": "<",
+                "c": 12
+              }
+            ]
+          },
+          "fields": [
+            {
+              "key": "x",
+              "label": {
+                "en": "Landing x",
+                "ms": "Pendaratan x"
+              },
+              "type": "number"
+            },
+            {
+              "key": "y",
+              "label": {
+                "en": "Landing y",
+                "ms": "Pendaratan y"
+              },
+              "type": "number"
+            }
+          ],
+          "answer": {
+            "x": 5,
+            "y": 4
+          },
+          "hints": {
+            "en": [
+              "Substitute a candidate point into every inequality.",
+              "A solid line includes its boundary; a dashed line excludes it. Use non-negative whole coordinates.",
+              "One valid landing is (5, 4). Check each restriction."
+            ],
+            "ms": [
+              "Gantikan titik calon ke dalam setiap ketaksamaan.",
+              "Garis penuh termasuk sempadannya; garis putus-putus tidak termasuk. Gunakan koordinat integer bukan negatif.",
+              "Satu pendaratan sah ialah (5, 4). Semak setiap syarat."
+            ]
+          },
+          "explanation": {
+            "en": "Your coordinates satisfy every restriction. Other feasible whole-number points also work.",
+            "ms": "Koordinat anda mematuhi setiap syarat. Titik integer lain dalam rantau tersaur juga diterima."
+          }
+        },
+        {
+          "id": "guardian-design",
+          "station": "guardian",
+          "kind": "inequality",
+          "reward": 100,
+          "title": {
+            "en": "Guardian: final route",
+            "ms": "Penjaga: laluan akhir"
+          },
+          "prompt": {
+            "en": "Choose whole-number coordinates between 0 and 10 satisfying x ≥ 4, y ≥ 5, 2x + y ≤ 18. Solid boundaries are included; dashed boundaries are excluded.",
+            "ms": "Pilih koordinat integer antara 0 hingga 10 yang memenuhi x ≥ 4, y ≥ 5, 2x + y ≤ 18. Sempadan penuh termasuk; sempadan putus-putus tidak termasuk."
+          },
+          "model": {
+            "bound": 10,
+            "constraints": [
+              {
+                "a": 1,
+                "b": 0,
+                "op": ">=",
+                "c": 4
+              },
+              {
+                "a": 0,
+                "b": 1,
+                "op": ">=",
+                "c": 5
+              },
+              {
+                "a": 2,
+                "b": 1,
+                "op": "<=",
+                "c": 18
+              }
+            ]
+          },
+          "fields": [
+            {
+              "key": "x",
+              "label": {
+                "en": "Landing x",
+                "ms": "Pendaratan x"
+              },
+              "type": "number"
+            },
+            {
+              "key": "y",
+              "label": {
+                "en": "Landing y",
+                "ms": "Pendaratan y"
+              },
+              "type": "number"
+            }
+          ],
+          "answer": {
+            "x": 6,
+            "y": 5
+          },
+          "hints": {
+            "en": [
+              "Substitute a candidate point into every inequality.",
+              "A solid line includes its boundary; a dashed line excludes it. Use non-negative whole coordinates.",
+              "One valid landing is (6, 5). Check each restriction."
+            ],
+            "ms": [
+              "Gantikan titik calon ke dalam setiap ketaksamaan.",
+              "Garis penuh termasuk sempadannya; garis putus-putus tidak termasuk. Gunakan koordinat integer bukan negatif.",
+              "Satu pendaratan sah ialah (6, 5). Semak setiap syarat."
+            ]
+          },
+          "explanation": {
+            "en": "Your coordinates satisfy every restriction. Other feasible whole-number points also work.",
+            "ms": "Koordinat anda mematuhi setiap syarat. Titik integer lain dalam rantau tersaur juga diterima."
+          }
+        }
+      ]
+    }
+  ]
+}

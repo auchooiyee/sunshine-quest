@@ -1,0 +1,1117 @@
+{
+  "id": "f4-maths-probability",
+  "version": 1,
+  "form": 4,
+  "subject": "Mathematics",
+  "chapter": 9,
+  "reviewStatus": "prototype-awaiting-teacher-review",
+  "alignmentSource": "KSSM Mathematics Form 4 and 5 DSKP (2018)",
+  "challenges": [
+    {
+      "id": "roots",
+      "station": "roots",
+      "kind": "probability-reading",
+      "reward": 75,
+      "title": {
+        "en": "Follow the branches",
+        "ms": "Ikut cabang"
+      },
+      "prompt": {
+        "en": "A bag has 3 red and 2 blue crystals. Two draws are with replacement. After the first is red, find P(second red) and P(two reds).",
+        "ms": "Beg mengandungi 3 kristal merah dan 2 biru. Dua cabutan dibuat dengan pengembalian. Selepas cabutan pertama merah, cari P(kedua merah) dan P(dua merah)."
+      },
+      "model": {
+        "red": 3,
+        "blue": 2,
+        "replacement": true,
+        "event": "RR"
+      },
+      "fields": [
+        {
+          "key": "conditional",
+          "label": {
+            "en": "Second branch probability",
+            "ms": "Kebarangkalian cabang kedua"
+          },
+          "type": "number"
+        },
+        {
+          "key": "combined",
+          "label": {
+            "en": "Combined event probability",
+            "ms": "Kebarangkalian peristiwa bergabung"
+          },
+          "type": "number"
+        }
+      ],
+      "answer": {
+        "conditional": 0.6,
+        "combined": 0.36
+      },
+      "hints": {
+        "en": [
+          "Replacement keeps the bag counts unchanged.",
+          "Multiply the first branch probability by the conditional second branch.",
+          "The branch is 0.6; the combined event is 0.36. Fractions are accepted."
+        ],
+        "ms": [
+          "Pengembalian mengekalkan bilangan dalam beg.",
+          "Darab kebarangkalian cabang pertama dengan kebarangkalian bersyarat cabang kedua.",
+          "Cabang ialah 0.6; peristiwa bergabung ialah 0.36. Pecahan diterima."
+        ]
+      },
+      "explanation": {
+        "en": "The second branch is 0.6. Multiplying by 3/5 gives 0.36.",
+        "ms": "Cabang kedua ialah 0.6. Darab dengan 3/5 memberikan 0.36."
+      }
+    },
+    {
+      "id": "vertex",
+      "station": "vertex",
+      "kind": "probability-reading",
+      "reward": 75,
+      "title": {
+        "en": "Follow the branches",
+        "ms": "Ikut cabang"
+      },
+      "prompt": {
+        "en": "A bag has 3 red and 2 blue crystals. Two draws are without replacement. After the first is red, find P(second red) and P(two reds).",
+        "ms": "Beg mengandungi 3 kristal merah dan 2 biru. Dua cabutan dibuat tanpa pengembalian. Selepas cabutan pertama merah, cari P(kedua merah) dan P(dua merah)."
+      },
+      "model": {
+        "red": 3,
+        "blue": 2,
+        "replacement": false,
+        "event": "RR"
+      },
+      "fields": [
+        {
+          "key": "conditional",
+          "label": {
+            "en": "Second branch probability",
+            "ms": "Kebarangkalian cabang kedua"
+          },
+          "type": "number"
+        },
+        {
+          "key": "combined",
+          "label": {
+            "en": "Combined event probability",
+            "ms": "Kebarangkalian peristiwa bergabung"
+          },
+          "type": "number"
+        }
+      ],
+      "answer": {
+        "conditional": 0.5,
+        "combined": 0.3
+      },
+      "hints": {
+        "en": [
+          "Without replacement, the first red crystal is removed.",
+          "Multiply the first branch probability by the conditional second branch.",
+          "The branch is 0.5; the combined event is 0.3. Fractions are accepted."
+        ],
+        "ms": [
+          "Tanpa pengembalian, kristal merah pertama dikeluarkan.",
+          "Darab kebarangkalian cabang pertama dengan kebarangkalian bersyarat cabang kedua.",
+          "Cabang ialah 0.5; peristiwa bergabung ialah 0.3. Pecahan diterima."
+        ]
+      },
+      "explanation": {
+        "en": "The second branch is 0.5. Multiplying by 3/5 gives 0.3.",
+        "ms": "Cabang kedua ialah 0.5. Darab dengan 3/5 memberikan 0.3."
+      }
+    },
+    {
+      "id": "design",
+      "station": "design",
+      "kind": "probability-plan",
+      "reward": 100,
+      "title": {
+        "en": "Design the crystal bag",
+        "ms": "Reka beg kristal"
+      },
+      "prompt": {
+        "en": "Fill a bag with 6 crystals, at least one of each colour. Make P(two reds without replacement) = 1/5.",
+        "ms": "Isi beg dengan 6 kristal, sekurang-kurangnya satu setiap warna. Jadikan P(dua merah tanpa pengembalian) = 1/5."
+      },
+      "model": {},
+      "fields": [
+        {
+          "key": "red",
+          "label": {
+            "en": "Red crystals",
+            "ms": "Kristal merah"
+          },
+          "type": "range",
+          "min": 1,
+          "max": 5,
+          "step": 1,
+          "initial": 1
+        },
+        {
+          "key": "blue",
+          "label": {
+            "en": "Blue crystals",
+            "ms": "Kristal biru"
+          },
+          "type": "range",
+          "min": 1,
+          "max": 5,
+          "step": 1,
+          "initial": 1
+        }
+      ],
+      "answer": {
+        "red": 3,
+        "blue": 3
+      },
+      "hints": {
+        "en": [
+          "The counts must add to the target total.",
+          "For R red crystals, P(RR) = R/6 × (R − 1)/5.",
+          "Try 3 red and 3 blue crystals."
+        ],
+        "ms": [
+          "Jumlah bilangan mesti sama dengan jumlah sasaran.",
+          "Untuk R kristal merah, P(MM) = R/6 × (R − 1)/5.",
+          "Cuba 3 kristal merah dan 3 biru."
+        ]
+      },
+      "explanation": {
+        "en": "Your bag has the correct total and probability. Unlocks depend on the calculation, not a random lucky result.",
+        "ms": "Beg anda mempunyai jumlah dan kebarangkalian betul. Pembukaan bergantung pada pengiraan, bukan keputusan rawak bertuah."
+      },
+      "target": {
+        "total": 6,
+        "probability": 0.2,
+        "probabilityFraction": "1/5"
+      }
+    },
+    {
+      "id": "guardian-roots",
+      "station": "guardian",
+      "kind": "probability-reading",
+      "reward": 50,
+      "title": {
+        "en": "Guardian: follow the branches",
+        "ms": "Penjaga: ikut cabang"
+      },
+      "prompt": {
+        "en": "A bag has 4 red and 2 blue crystals. Two draws are without replacement. After the first is red, find P(second red) and P(two reds).",
+        "ms": "Beg mengandungi 4 kristal merah dan 2 biru. Dua cabutan dibuat tanpa pengembalian. Selepas cabutan pertama merah, cari P(kedua merah) dan P(dua merah)."
+      },
+      "model": {
+        "red": 4,
+        "blue": 2,
+        "replacement": false,
+        "event": "RR"
+      },
+      "fields": [
+        {
+          "key": "conditional",
+          "label": {
+            "en": "Second branch probability",
+            "ms": "Kebarangkalian cabang kedua"
+          },
+          "type": "number"
+        },
+        {
+          "key": "combined",
+          "label": {
+            "en": "Combined event probability",
+            "ms": "Kebarangkalian peristiwa bergabung"
+          },
+          "type": "number"
+        }
+      ],
+      "answer": {
+        "conditional": 0.6,
+        "combined": 0.4
+      },
+      "hints": {
+        "en": [
+          "Without replacement, the first red crystal is removed.",
+          "Multiply the first branch probability by the conditional second branch.",
+          "The branch is 0.6; the combined event is 0.4. Fractions are accepted."
+        ],
+        "ms": [
+          "Tanpa pengembalian, kristal merah pertama dikeluarkan.",
+          "Darab kebarangkalian cabang pertama dengan kebarangkalian bersyarat cabang kedua.",
+          "Cabang ialah 0.6; peristiwa bergabung ialah 0.4. Pecahan diterima."
+        ]
+      },
+      "explanation": {
+        "en": "The second branch is 0.6. Multiplying by 4/6 gives 0.4.",
+        "ms": "Cabang kedua ialah 0.6. Darab dengan 4/6 memberikan 0.4."
+      }
+    },
+    {
+      "id": "guardian-vertex",
+      "station": "guardian",
+      "kind": "probability-reading",
+      "reward": 50,
+      "title": {
+        "en": "Guardian: follow the branches",
+        "ms": "Penjaga: ikut cabang"
+      },
+      "prompt": {
+        "en": "A bag has 3 red and 3 blue crystals. Two draws are without replacement. After the first is red, find P(second blue) and P(red then blue).",
+        "ms": "Beg mengandungi 3 kristal merah dan 3 biru. Dua cabutan dibuat tanpa pengembalian. Selepas cabutan pertama merah, cari P(kedua biru) dan P(merah kemudian biru)."
+      },
+      "model": {
+        "red": 3,
+        "blue": 3,
+        "replacement": false,
+        "event": "RB"
+      },
+      "fields": [
+        {
+          "key": "conditional",
+          "label": {
+            "en": "Second branch probability",
+            "ms": "Kebarangkalian cabang kedua"
+          },
+          "type": "number"
+        },
+        {
+          "key": "combined",
+          "label": {
+            "en": "Combined event probability",
+            "ms": "Kebarangkalian peristiwa bergabung"
+          },
+          "type": "number"
+        }
+      ],
+      "answer": {
+        "conditional": 0.6,
+        "combined": 0.3
+      },
+      "hints": {
+        "en": [
+          "Without replacement, the first red crystal is removed.",
+          "Multiply the first branch probability by the conditional second branch.",
+          "The branch is 0.6; the combined event is 0.3. Fractions are accepted."
+        ],
+        "ms": [
+          "Tanpa pengembalian, kristal merah pertama dikeluarkan.",
+          "Darab kebarangkalian cabang pertama dengan kebarangkalian bersyarat cabang kedua.",
+          "Cabang ialah 0.6; peristiwa bergabung ialah 0.3. Pecahan diterima."
+        ]
+      },
+      "explanation": {
+        "en": "The second branch is 0.6. Multiplying by 3/6 gives 0.3.",
+        "ms": "Cabang kedua ialah 0.6. Darab dengan 3/6 memberikan 0.3."
+      }
+    },
+    {
+      "id": "guardian-design",
+      "station": "guardian",
+      "kind": "probability-plan",
+      "reward": 100,
+      "title": {
+        "en": "Guardian: design the bag",
+        "ms": "Penjaga: reka beg"
+      },
+      "prompt": {
+        "en": "Fill a bag with 8 crystals, at least one of each colour. Make P(two reds without replacement) = 3/14.",
+        "ms": "Isi beg dengan 8 kristal, sekurang-kurangnya satu setiap warna. Jadikan P(dua merah tanpa pengembalian) = 3/14."
+      },
+      "model": {},
+      "fields": [
+        {
+          "key": "red",
+          "label": {
+            "en": "Red crystals",
+            "ms": "Kristal merah"
+          },
+          "type": "range",
+          "min": 1,
+          "max": 7,
+          "step": 1,
+          "initial": 1
+        },
+        {
+          "key": "blue",
+          "label": {
+            "en": "Blue crystals",
+            "ms": "Kristal biru"
+          },
+          "type": "range",
+          "min": 1,
+          "max": 7,
+          "step": 1,
+          "initial": 1
+        }
+      ],
+      "answer": {
+        "red": 4,
+        "blue": 4
+      },
+      "hints": {
+        "en": [
+          "The counts must add to the target total.",
+          "For R red crystals, P(RR) = R/8 × (R − 1)/7.",
+          "Try 4 red and 4 blue crystals."
+        ],
+        "ms": [
+          "Jumlah bilangan mesti sama dengan jumlah sasaran.",
+          "Untuk R kristal merah, P(MM) = R/8 × (R − 1)/7.",
+          "Cuba 4 kristal merah dan 4 biru."
+        ]
+      },
+      "explanation": {
+        "en": "Your bag has the correct total and probability. Unlocks depend on the calculation, not a random lucky result.",
+        "ms": "Beg anda mempunyai jumlah dan kebarangkalian betul. Pembukaan bergantung pada pengiraan, bukan keputusan rawak bertuah."
+      },
+      "target": {
+        "total": 8,
+        "probability": 0.21428571428571427,
+        "probabilityFraction": "3/14"
+      }
+    }
+  ],
+  "variants": [
+    {
+      "id": "practice-b-v1",
+      "reviewStatus": "prototype-awaiting-teacher-review",
+      "challenges": [
+        {
+          "id": "roots",
+          "station": "roots",
+          "kind": "probability-reading",
+          "reward": 75,
+          "title": {
+            "en": "Follow the branches",
+            "ms": "Ikut cabang"
+          },
+          "prompt": {
+            "en": "A bag has 4 red and 3 blue crystals. Two draws are with replacement. After the first is red, find P(second red) and P(two reds).",
+            "ms": "Beg mengandungi 4 kristal merah dan 3 biru. Dua cabutan dibuat dengan pengembalian. Selepas cabutan pertama merah, cari P(kedua merah) dan P(dua merah)."
+          },
+          "model": {
+            "red": 4,
+            "blue": 3,
+            "replacement": true,
+            "event": "RR"
+          },
+          "fields": [
+            {
+              "key": "conditional",
+              "label": {
+                "en": "Second branch probability",
+                "ms": "Kebarangkalian cabang kedua"
+              },
+              "type": "number"
+            },
+            {
+              "key": "combined",
+              "label": {
+                "en": "Combined event probability",
+                "ms": "Kebarangkalian peristiwa bergabung"
+              },
+              "type": "number"
+            }
+          ],
+          "answer": {
+            "conditional": 0.5714285714285714,
+            "combined": 0.32653061224489793
+          },
+          "hints": {
+            "en": [
+              "Replacement keeps the bag counts unchanged.",
+              "Multiply the first branch probability by the conditional second branch.",
+              "The second branch is 4/7; the combined event is 16/49. Fractions are accepted."
+            ],
+            "ms": [
+              "Pengembalian mengekalkan bilangan dalam beg.",
+              "Darab kebarangkalian cabang pertama dengan kebarangkalian bersyarat cabang kedua.",
+              "Cabang kedua ialah 4/7; peristiwa bergabung ialah 16/49. Pecahan diterima."
+            ]
+          },
+          "explanation": {
+            "en": "The second branch is 4/7; multiplying by 4/7 gives 16/49.",
+            "ms": "Cabang kedua ialah 4/7; darab dengan 4/7 memberikan 16/49."
+          }
+        },
+        {
+          "id": "vertex",
+          "station": "vertex",
+          "kind": "probability-reading",
+          "reward": 75,
+          "title": {
+            "en": "Follow the branches",
+            "ms": "Ikut cabang"
+          },
+          "prompt": {
+            "en": "A bag has 4 red and 3 blue crystals. Two draws are without replacement. After the first is red, find P(second red) and P(two reds).",
+            "ms": "Beg mengandungi 4 kristal merah dan 3 biru. Dua cabutan dibuat tanpa pengembalian. Selepas cabutan pertama merah, cari P(kedua merah) dan P(dua merah)."
+          },
+          "model": {
+            "red": 4,
+            "blue": 3,
+            "replacement": false,
+            "event": "RR"
+          },
+          "fields": [
+            {
+              "key": "conditional",
+              "label": {
+                "en": "Second branch probability",
+                "ms": "Kebarangkalian cabang kedua"
+              },
+              "type": "number"
+            },
+            {
+              "key": "combined",
+              "label": {
+                "en": "Combined event probability",
+                "ms": "Kebarangkalian peristiwa bergabung"
+              },
+              "type": "number"
+            }
+          ],
+          "answer": {
+            "conditional": 0.5,
+            "combined": 0.2857142857142857
+          },
+          "hints": {
+            "en": [
+              "Without replacement, the first red crystal is removed.",
+              "Multiply the first branch probability by the conditional second branch.",
+              "The second branch is 1/2; the combined event is 2/7. Fractions are accepted."
+            ],
+            "ms": [
+              "Tanpa pengembalian, kristal merah pertama dikeluarkan.",
+              "Darab kebarangkalian cabang pertama dengan kebarangkalian bersyarat cabang kedua.",
+              "Cabang kedua ialah 1/2; peristiwa bergabung ialah 2/7. Pecahan diterima."
+            ]
+          },
+          "explanation": {
+            "en": "The second branch is 1/2; multiplying by 4/7 gives 2/7.",
+            "ms": "Cabang kedua ialah 1/2; darab dengan 4/7 memberikan 2/7."
+          }
+        },
+        {
+          "id": "design",
+          "station": "design",
+          "kind": "probability-plan",
+          "reward": 100,
+          "title": {
+            "en": "Design the crystal bag",
+            "ms": "Reka beg kristal"
+          },
+          "prompt": {
+            "en": "Fill a bag with 7 crystals, at least one of each colour. Make P(two reds without replacement) = 2/7.",
+            "ms": "Isi beg dengan 7 kristal, sekurang-kurangnya satu setiap warna. Jadikan P(dua merah tanpa pengembalian) = 2/7."
+          },
+          "model": {},
+          "fields": [
+            {
+              "key": "red",
+              "label": {
+                "en": "Red crystals",
+                "ms": "Kristal merah"
+              },
+              "type": "range",
+              "min": 1,
+              "max": 6,
+              "step": 1,
+              "initial": 1
+            },
+            {
+              "key": "blue",
+              "label": {
+                "en": "Blue crystals",
+                "ms": "Kristal biru"
+              },
+              "type": "range",
+              "min": 1,
+              "max": 6,
+              "step": 1,
+              "initial": 1
+            }
+          ],
+          "answer": {
+            "red": 4,
+            "blue": 3
+          },
+          "hints": {
+            "en": [
+              "The counts must add to the target total.",
+              "For R red crystals, P(RR) = R/7 × (R − 1)/6.",
+              "Try 4 red and 3 blue crystals."
+            ],
+            "ms": [
+              "Jumlah bilangan mesti sama dengan jumlah sasaran.",
+              "Untuk R kristal merah, P(MM) = R/7 × (R − 1)/6.",
+              "Cuba 4 kristal merah dan 3 biru."
+            ]
+          },
+          "explanation": {
+            "en": "Your bag has the correct total and probability. Unlocks depend on the calculation, not a random lucky result.",
+            "ms": "Beg anda mempunyai jumlah dan kebarangkalian betul. Pembukaan bergantung pada pengiraan, bukan keputusan rawak bertuah."
+          },
+          "target": {
+            "total": 7,
+            "probability": 0.2857142857142857,
+            "probabilityFraction": "2/7"
+          }
+        },
+        {
+          "id": "guardian-roots",
+          "station": "guardian",
+          "kind": "probability-reading",
+          "reward": 50,
+          "title": {
+            "en": "Guardian: follow the branches",
+            "ms": "Penjaga: ikut cabang"
+          },
+          "prompt": {
+            "en": "A bag has 5 red and 3 blue crystals. Two draws are without replacement. After the first is red, find P(second red) and P(two reds).",
+            "ms": "Beg mengandungi 5 kristal merah dan 3 biru. Dua cabutan dibuat tanpa pengembalian. Selepas cabutan pertama merah, cari P(kedua merah) dan P(dua merah)."
+          },
+          "model": {
+            "red": 5,
+            "blue": 3,
+            "replacement": false,
+            "event": "RR"
+          },
+          "fields": [
+            {
+              "key": "conditional",
+              "label": {
+                "en": "Second branch probability",
+                "ms": "Kebarangkalian cabang kedua"
+              },
+              "type": "number"
+            },
+            {
+              "key": "combined",
+              "label": {
+                "en": "Combined event probability",
+                "ms": "Kebarangkalian peristiwa bergabung"
+              },
+              "type": "number"
+            }
+          ],
+          "answer": {
+            "conditional": 0.5714285714285714,
+            "combined": 0.35714285714285715
+          },
+          "hints": {
+            "en": [
+              "Without replacement, the first red crystal is removed.",
+              "Multiply the first branch probability by the conditional second branch.",
+              "The second branch is 4/7; the combined event is 5/14. Fractions are accepted."
+            ],
+            "ms": [
+              "Tanpa pengembalian, kristal merah pertama dikeluarkan.",
+              "Darab kebarangkalian cabang pertama dengan kebarangkalian bersyarat cabang kedua.",
+              "Cabang kedua ialah 4/7; peristiwa bergabung ialah 5/14. Pecahan diterima."
+            ]
+          },
+          "explanation": {
+            "en": "The second branch is 4/7; multiplying by 5/8 gives 5/14.",
+            "ms": "Cabang kedua ialah 4/7; darab dengan 5/8 memberikan 5/14."
+          }
+        },
+        {
+          "id": "guardian-vertex",
+          "station": "guardian",
+          "kind": "probability-reading",
+          "reward": 50,
+          "title": {
+            "en": "Guardian: follow the branches",
+            "ms": "Penjaga: ikut cabang"
+          },
+          "prompt": {
+            "en": "A bag has 4 red and 4 blue crystals. Two draws are without replacement. After the first is red, find P(second blue) and P(red then blue).",
+            "ms": "Beg mengandungi 4 kristal merah dan 4 biru. Dua cabutan dibuat tanpa pengembalian. Selepas cabutan pertama merah, cari P(kedua biru) dan P(merah kemudian biru)."
+          },
+          "model": {
+            "red": 4,
+            "blue": 4,
+            "replacement": false,
+            "event": "RB"
+          },
+          "fields": [
+            {
+              "key": "conditional",
+              "label": {
+                "en": "Second branch probability",
+                "ms": "Kebarangkalian cabang kedua"
+              },
+              "type": "number"
+            },
+            {
+              "key": "combined",
+              "label": {
+                "en": "Combined event probability",
+                "ms": "Kebarangkalian peristiwa bergabung"
+              },
+              "type": "number"
+            }
+          ],
+          "answer": {
+            "conditional": 0.5714285714285714,
+            "combined": 0.2857142857142857
+          },
+          "hints": {
+            "en": [
+              "Without replacement, the first red crystal is removed.",
+              "Multiply the first branch probability by the conditional second branch.",
+              "The second branch is 4/7; the combined event is 2/7. Fractions are accepted."
+            ],
+            "ms": [
+              "Tanpa pengembalian, kristal merah pertama dikeluarkan.",
+              "Darab kebarangkalian cabang pertama dengan kebarangkalian bersyarat cabang kedua.",
+              "Cabang kedua ialah 4/7; peristiwa bergabung ialah 2/7. Pecahan diterima."
+            ]
+          },
+          "explanation": {
+            "en": "The second branch is 4/7; multiplying by 4/8 gives 2/7.",
+            "ms": "Cabang kedua ialah 4/7; darab dengan 4/8 memberikan 2/7."
+          }
+        },
+        {
+          "id": "guardian-design",
+          "station": "guardian",
+          "kind": "probability-plan",
+          "reward": 100,
+          "title": {
+            "en": "Guardian: design the bag",
+            "ms": "Penjaga: reka beg"
+          },
+          "prompt": {
+            "en": "Fill a bag with 9 crystals, at least one of each colour. Make P(two reds without replacement) = 5/18.",
+            "ms": "Isi beg dengan 9 kristal, sekurang-kurangnya satu setiap warna. Jadikan P(dua merah tanpa pengembalian) = 5/18."
+          },
+          "model": {},
+          "fields": [
+            {
+              "key": "red",
+              "label": {
+                "en": "Red crystals",
+                "ms": "Kristal merah"
+              },
+              "type": "range",
+              "min": 1,
+              "max": 8,
+              "step": 1,
+              "initial": 1
+            },
+            {
+              "key": "blue",
+              "label": {
+                "en": "Blue crystals",
+                "ms": "Kristal biru"
+              },
+              "type": "range",
+              "min": 1,
+              "max": 8,
+              "step": 1,
+              "initial": 1
+            }
+          ],
+          "answer": {
+            "red": 5,
+            "blue": 4
+          },
+          "hints": {
+            "en": [
+              "The counts must add to the target total.",
+              "For R red crystals, P(RR) = R/9 × (R − 1)/8.",
+              "Try 5 red and 4 blue crystals."
+            ],
+            "ms": [
+              "Jumlah bilangan mesti sama dengan jumlah sasaran.",
+              "Untuk R kristal merah, P(MM) = R/9 × (R − 1)/8.",
+              "Cuba 5 kristal merah dan 4 biru."
+            ]
+          },
+          "explanation": {
+            "en": "Your bag has the correct total and probability. Unlocks depend on the calculation, not a random lucky result.",
+            "ms": "Beg anda mempunyai jumlah dan kebarangkalian betul. Pembukaan bergantung pada pengiraan, bukan keputusan rawak bertuah."
+          },
+          "target": {
+            "total": 9,
+            "probability": 0.2777777777777778,
+            "probabilityFraction": "5/18"
+          }
+        }
+      ]
+    },
+    {
+      "id": "practice-c-v1",
+      "reviewStatus": "prototype-awaiting-teacher-review",
+      "challenges": [
+        {
+          "id": "roots",
+          "station": "roots",
+          "kind": "probability-reading",
+          "reward": 75,
+          "title": {
+            "en": "Follow the branches",
+            "ms": "Ikut cabang"
+          },
+          "prompt": {
+            "en": "A bag has 5 red and 4 blue crystals. Two draws are with replacement. After the first is red, find P(second red) and P(two reds).",
+            "ms": "Beg mengandungi 5 kristal merah dan 4 biru. Dua cabutan dibuat dengan pengembalian. Selepas cabutan pertama merah, cari P(kedua merah) dan P(dua merah)."
+          },
+          "model": {
+            "red": 5,
+            "blue": 4,
+            "replacement": true,
+            "event": "RR"
+          },
+          "fields": [
+            {
+              "key": "conditional",
+              "label": {
+                "en": "Second branch probability",
+                "ms": "Kebarangkalian cabang kedua"
+              },
+              "type": "number"
+            },
+            {
+              "key": "combined",
+              "label": {
+                "en": "Combined event probability",
+                "ms": "Kebarangkalian peristiwa bergabung"
+              },
+              "type": "number"
+            }
+          ],
+          "answer": {
+            "conditional": 0.5555555555555556,
+            "combined": 0.30864197530864196
+          },
+          "hints": {
+            "en": [
+              "Replacement keeps the bag counts unchanged.",
+              "Multiply the first branch probability by the conditional second branch.",
+              "The second branch is 5/9; the combined event is 25/81. Fractions are accepted."
+            ],
+            "ms": [
+              "Pengembalian mengekalkan bilangan dalam beg.",
+              "Darab kebarangkalian cabang pertama dengan kebarangkalian bersyarat cabang kedua.",
+              "Cabang kedua ialah 5/9; peristiwa bergabung ialah 25/81. Pecahan diterima."
+            ]
+          },
+          "explanation": {
+            "en": "The second branch is 5/9; multiplying by 5/9 gives 25/81.",
+            "ms": "Cabang kedua ialah 5/9; darab dengan 5/9 memberikan 25/81."
+          }
+        },
+        {
+          "id": "vertex",
+          "station": "vertex",
+          "kind": "probability-reading",
+          "reward": 75,
+          "title": {
+            "en": "Follow the branches",
+            "ms": "Ikut cabang"
+          },
+          "prompt": {
+            "en": "A bag has 5 red and 4 blue crystals. Two draws are without replacement. After the first is red, find P(second red) and P(two reds).",
+            "ms": "Beg mengandungi 5 kristal merah dan 4 biru. Dua cabutan dibuat tanpa pengembalian. Selepas cabutan pertama merah, cari P(kedua merah) dan P(dua merah)."
+          },
+          "model": {
+            "red": 5,
+            "blue": 4,
+            "replacement": false,
+            "event": "RR"
+          },
+          "fields": [
+            {
+              "key": "conditional",
+              "label": {
+                "en": "Second branch probability",
+                "ms": "Kebarangkalian cabang kedua"
+              },
+              "type": "number"
+            },
+            {
+              "key": "combined",
+              "label": {
+                "en": "Combined event probability",
+                "ms": "Kebarangkalian peristiwa bergabung"
+              },
+              "type": "number"
+            }
+          ],
+          "answer": {
+            "conditional": 0.5,
+            "combined": 0.2777777777777778
+          },
+          "hints": {
+            "en": [
+              "Without replacement, the first red crystal is removed.",
+              "Multiply the first branch probability by the conditional second branch.",
+              "The second branch is 1/2; the combined event is 5/18. Fractions are accepted."
+            ],
+            "ms": [
+              "Tanpa pengembalian, kristal merah pertama dikeluarkan.",
+              "Darab kebarangkalian cabang pertama dengan kebarangkalian bersyarat cabang kedua.",
+              "Cabang kedua ialah 1/2; peristiwa bergabung ialah 5/18. Pecahan diterima."
+            ]
+          },
+          "explanation": {
+            "en": "The second branch is 1/2; multiplying by 5/9 gives 5/18.",
+            "ms": "Cabang kedua ialah 1/2; darab dengan 5/9 memberikan 5/18."
+          }
+        },
+        {
+          "id": "design",
+          "station": "design",
+          "kind": "probability-plan",
+          "reward": 100,
+          "title": {
+            "en": "Design the crystal bag",
+            "ms": "Reka beg kristal"
+          },
+          "prompt": {
+            "en": "Fill a bag with 8 crystals, at least one of each colour. Make P(two reds without replacement) = 5/14.",
+            "ms": "Isi beg dengan 8 kristal, sekurang-kurangnya satu setiap warna. Jadikan P(dua merah tanpa pengembalian) = 5/14."
+          },
+          "model": {},
+          "fields": [
+            {
+              "key": "red",
+              "label": {
+                "en": "Red crystals",
+                "ms": "Kristal merah"
+              },
+              "type": "range",
+              "min": 1,
+              "max": 7,
+              "step": 1,
+              "initial": 1
+            },
+            {
+              "key": "blue",
+              "label": {
+                "en": "Blue crystals",
+                "ms": "Kristal biru"
+              },
+              "type": "range",
+              "min": 1,
+              "max": 7,
+              "step": 1,
+              "initial": 1
+            }
+          ],
+          "answer": {
+            "red": 5,
+            "blue": 3
+          },
+          "hints": {
+            "en": [
+              "The counts must add to the target total.",
+              "For R red crystals, P(RR) = R/8 × (R − 1)/7.",
+              "Try 5 red and 3 blue crystals."
+            ],
+            "ms": [
+              "Jumlah bilangan mesti sama dengan jumlah sasaran.",
+              "Untuk R kristal merah, P(MM) = R/8 × (R − 1)/7.",
+              "Cuba 5 kristal merah dan 3 biru."
+            ]
+          },
+          "explanation": {
+            "en": "Your bag has the correct total and probability. Unlocks depend on the calculation, not a random lucky result.",
+            "ms": "Beg anda mempunyai jumlah dan kebarangkalian betul. Pembukaan bergantung pada pengiraan, bukan keputusan rawak bertuah."
+          },
+          "target": {
+            "total": 8,
+            "probability": 0.35714285714285715,
+            "probabilityFraction": "5/14"
+          }
+        },
+        {
+          "id": "guardian-roots",
+          "station": "guardian",
+          "kind": "probability-reading",
+          "reward": 50,
+          "title": {
+            "en": "Guardian: follow the branches",
+            "ms": "Penjaga: ikut cabang"
+          },
+          "prompt": {
+            "en": "A bag has 6 red and 4 blue crystals. Two draws are without replacement. After the first is red, find P(second red) and P(two reds).",
+            "ms": "Beg mengandungi 6 kristal merah dan 4 biru. Dua cabutan dibuat tanpa pengembalian. Selepas cabutan pertama merah, cari P(kedua merah) dan P(dua merah)."
+          },
+          "model": {
+            "red": 6,
+            "blue": 4,
+            "replacement": false,
+            "event": "RR"
+          },
+          "fields": [
+            {
+              "key": "conditional",
+              "label": {
+                "en": "Second branch probability",
+                "ms": "Kebarangkalian cabang kedua"
+              },
+              "type": "number"
+            },
+            {
+              "key": "combined",
+              "label": {
+                "en": "Combined event probability",
+                "ms": "Kebarangkalian peristiwa bergabung"
+              },
+              "type": "number"
+            }
+          ],
+          "answer": {
+            "conditional": 0.5555555555555556,
+            "combined": 0.3333333333333333
+          },
+          "hints": {
+            "en": [
+              "Without replacement, the first red crystal is removed.",
+              "Multiply the first branch probability by the conditional second branch.",
+              "The second branch is 5/9; the combined event is 1/3. Fractions are accepted."
+            ],
+            "ms": [
+              "Tanpa pengembalian, kristal merah pertama dikeluarkan.",
+              "Darab kebarangkalian cabang pertama dengan kebarangkalian bersyarat cabang kedua.",
+              "Cabang kedua ialah 5/9; peristiwa bergabung ialah 1/3. Pecahan diterima."
+            ]
+          },
+          "explanation": {
+            "en": "The second branch is 5/9; multiplying by 6/10 gives 1/3.",
+            "ms": "Cabang kedua ialah 5/9; darab dengan 6/10 memberikan 1/3."
+          }
+        },
+        {
+          "id": "guardian-vertex",
+          "station": "guardian",
+          "kind": "probability-reading",
+          "reward": 50,
+          "title": {
+            "en": "Guardian: follow the branches",
+            "ms": "Penjaga: ikut cabang"
+          },
+          "prompt": {
+            "en": "A bag has 5 red and 5 blue crystals. Two draws are without replacement. After the first is red, find P(second blue) and P(red then blue).",
+            "ms": "Beg mengandungi 5 kristal merah dan 5 biru. Dua cabutan dibuat tanpa pengembalian. Selepas cabutan pertama merah, cari P(kedua biru) dan P(merah kemudian biru)."
+          },
+          "model": {
+            "red": 5,
+            "blue": 5,
+            "replacement": false,
+            "event": "RB"
+          },
+          "fields": [
+            {
+              "key": "conditional",
+              "label": {
+                "en": "Second branch probability",
+                "ms": "Kebarangkalian cabang kedua"
+              },
+              "type": "number"
+            },
+            {
+              "key": "combined",
+              "label": {
+                "en": "Combined event probability",
+                "ms": "Kebarangkalian peristiwa bergabung"
+              },
+              "type": "number"
+            }
+          ],
+          "answer": {
+            "conditional": 0.5555555555555556,
+            "combined": 0.2777777777777778
+          },
+          "hints": {
+            "en": [
+              "Without replacement, the first red crystal is removed.",
+              "Multiply the first branch probability by the conditional second branch.",
+              "The second branch is 5/9; the combined event is 5/18. Fractions are accepted."
+            ],
+            "ms": [
+              "Tanpa pengembalian, kristal merah pertama dikeluarkan.",
+              "Darab kebarangkalian cabang pertama dengan kebarangkalian bersyarat cabang kedua.",
+              "Cabang kedua ialah 5/9; peristiwa bergabung ialah 5/18. Pecahan diterima."
+            ]
+          },
+          "explanation": {
+            "en": "The second branch is 5/9; multiplying by 5/10 gives 5/18.",
+            "ms": "Cabang kedua ialah 5/9; darab dengan 5/10 memberikan 5/18."
+          }
+        },
+        {
+          "id": "guardian-design",
+          "station": "guardian",
+          "kind": "probability-plan",
+          "reward": 100,
+          "title": {
+            "en": "Guardian: design the bag",
+            "ms": "Penjaga: reka beg"
+          },
+          "prompt": {
+            "en": "Fill a bag with 10 crystals, at least one of each colour. Make P(two reds without replacement) = 1/3.",
+            "ms": "Isi beg dengan 10 kristal, sekurang-kurangnya satu setiap warna. Jadikan P(dua merah tanpa pengembalian) = 1/3."
+          },
+          "model": {},
+          "fields": [
+            {
+              "key": "red",
+              "label": {
+                "en": "Red crystals",
+                "ms": "Kristal merah"
+              },
+              "type": "range",
+              "min": 1,
+              "max": 9,
+              "step": 1,
+              "initial": 1
+            },
+            {
+              "key": "blue",
+              "label": {
+                "en": "Blue crystals",
+                "ms": "Kristal biru"
+              },
+              "type": "range",
+              "min": 1,
+              "max": 9,
+              "step": 1,
+              "initial": 1
+            }
+          ],
+          "answer": {
+            "red": 6,
+            "blue": 4
+          },
+          "hints": {
+            "en": [
+              "The counts must add to the target total.",
+              "For R red crystals, P(RR) = R/10 × (R − 1)/9.",
+              "Try 6 red and 4 blue crystals."
+            ],
+            "ms": [
+              "Jumlah bilangan mesti sama dengan jumlah sasaran.",
+              "Untuk R kristal merah, P(MM) = R/10 × (R − 1)/9.",
+              "Cuba 6 kristal merah dan 4 biru."
+            ]
+          },
+          "explanation": {
+            "en": "Your bag has the correct total and probability. Unlocks depend on the calculation, not a random lucky result.",
+            "ms": "Beg anda mempunyai jumlah dan kebarangkalian betul. Pembukaan bergantung pada pengiraan, bukan keputusan rawak bertuah."
+          },
+          "target": {
+            "total": 10,
+            "probability": 0.3333333333333333,
+            "probabilityFraction": "1/3"
+          }
+        }
+      ]
+    }
+  ]
+}

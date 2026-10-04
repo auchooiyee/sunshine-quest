@@ -1,0 +1,769 @@
+{
+  "id": "f4-maths-quadratics",
+  "version": 1,
+  "subject": "Mathematics",
+  "form": 4,
+  "chapter": 1,
+  "curriculum": "KSSM Mathematics Form 4: quadratic functions and equations in one variable",
+  "reviewStatus": "prototype; teacher review pending",
+  "challenges": [
+    {
+      "id": "roots",
+      "kind": "roots",
+      "station": "roots",
+      "reward": 75,
+      "model": {
+        "a": -1,
+        "b": 6,
+        "c": 0,
+        "domain": [
+          0,
+          6
+        ]
+      },
+      "title": {
+        "en": "Find the bridge anchors",
+        "ms": "Cari titik sauh jambatan"
+      },
+      "prompt": {
+        "en": "The arch is y = −x² + 6x. Find its two ground-level anchors (y = 0). Click the graph or enter both x-coordinates in metres.",
+        "ms": "Lengkung ialah y = −x² + 6x. Cari dua titik sauh pada aras tanah (y = 0). Klik graf atau masukkan kedua-dua koordinat x dalam meter."
+      },
+      "hints": {
+        "en": [
+          "At ground level, y is zero.",
+          "Factorise: −x² + 6x = x(6 − x).",
+          "Either x = 0 or 6 − x = 0. The anchors are 0 m and 6 m."
+        ],
+        "ms": [
+          "Pada aras tanah, y ialah sifar.",
+          "Faktorkan: −x² + 6x = x(6 − x).",
+          "Sama ada x = 0 atau 6 − x = 0. Titik sauh ialah 0 m dan 6 m."
+        ]
+      },
+      "explanation": {
+        "en": "x(6 − x) = 0 gives x = 0 and x = 6. The bridge spans 6 m. The first gate is open.",
+        "ms": "x(6 − x) = 0 memberikan x = 0 dan x = 6. Rentang jambatan ialah 6 m. Pintu pertama terbuka."
+      }
+    },
+    {
+      "id": "vertex",
+      "kind": "vertex",
+      "station": "vertex",
+      "reward": 75,
+      "model": {
+        "a": -1,
+        "b": 6,
+        "c": 0,
+        "domain": [
+          0,
+          6
+        ]
+      },
+      "title": {
+        "en": "Locate the highest point",
+        "ms": "Cari titik tertinggi"
+      },
+      "prompt": {
+        "en": "Locate the maximum point of y = −x² + 6x. Click the graph or enter x and y. All coordinates are in metres.",
+        "ms": "Cari titik maksimum bagi y = −x² + 6x. Klik graf atau masukkan x dan y. Semua koordinat dalam meter."
+      },
+      "hints": {
+        "en": [
+          "The maximum lies on the axis of symmetry.",
+          "Its x-coordinate is halfway between the roots: (0 + 6) ÷ 2.",
+          "x = 3, then y = −3² + 6(3) = 9. The maximum is (3, 9)."
+        ],
+        "ms": [
+          "Titik maksimum terletak pada paksi simetri.",
+          "Koordinat x berada di tengah-tengah punca: (0 + 6) ÷ 2.",
+          "x = 3, maka y = −3² + 6(3) = 9. Titik maksimum ialah (3, 9)."
+        ]
+      },
+      "explanation": {
+        "en": "The axis is x = 3 and the maximum is (3, 9). In this idealised model the clearance there is 9 m; arch thickness is ignored.",
+        "ms": "Paksi ialah x = 3 dan titik maksimum ialah (3, 9). Dalam model ringkas ini, kelegaan di situ ialah 9 m; ketebalan lengkung diabaikan."
+      }
+    },
+    {
+      "id": "design",
+      "kind": "design",
+      "station": "design",
+      "reward": 100,
+      "model": {
+        "span": 6,
+        "k": 0.5
+      },
+      "target": {
+        "span": 8,
+        "height": 12
+      },
+      "title": {
+        "en": "Build the living bridge",
+        "ms": "Bina jambatan baharu"
+      },
+      "prompt": {
+        "en": "Use y = kx(L − x). Set the span L to exactly 8 m and the maximum height to exactly 12 m. Adjust both sliders; the graph is your live blueprint.",
+        "ms": "Gunakan y = kx(L − x). Tetapkan rentang L tepat 8 m dan tinggi maksimum tepat 12 m. Laraskan kedua-dua peluncur; graf ialah pelan langsung anda."
+      },
+      "hints": {
+        "en": [
+          "The roots are 0 and L, so L determines the span.",
+          "At x = L/2, the maximum height is kL²/4.",
+          "Set L = 8 and k = 0.75: 0.75 × 8² ÷ 4 = 12 m."
+        ],
+        "ms": [
+          "Puncanya ialah 0 dan L, jadi L menentukan rentang.",
+          "Pada x = L/2, tinggi maksimum ialah kL²/4.",
+          "Tetapkan L = 8 dan k = 0.75: 0.75 × 8² ÷ 4 = 12 m."
+        ]
+      },
+      "explanation": {
+        "en": "L = 8 and k = 0.75 give y = −0.75x² + 6x with maximum (4, 12). Your blueprint is now a bridge in the forest.",
+        "ms": "L = 8 dan k = 0.75 memberikan y = −0.75x² + 6x dengan maksimum (4, 12). Pelan anda kini menjadi jambatan di hutan."
+      }
+    },
+    {
+      "id": "guardian-roots",
+      "kind": "roots",
+      "station": "guardian",
+      "reward": 50,
+      "model": {
+        "a": -1,
+        "b": 10,
+        "c": -16,
+        "domain": [
+          2,
+          8
+        ]
+      },
+      "title": {
+        "en": "Guardian · Find a safe landing",
+        "ms": "Penjaga · Cari tempat mendarat"
+      },
+      "prompt": {
+        "en": "A new path follows y = −x² + 10x − 16. Find both ground-level landing points. This is a new model: do not reuse the previous roots.",
+        "ms": "Laluan baharu mengikut y = −x² + 10x − 16. Cari kedua-dua titik pendaratan pada aras tanah. Model ini baharu: jangan guna semula punca sebelumnya."
+      },
+      "hints": {
+        "en": [
+          "Set y = 0 before finding landing positions.",
+          "−x² + 10x − 16 = −(x − 2)(x − 8).",
+          "The landing points have x = 2 and x = 8."
+        ],
+        "ms": [
+          "Tetapkan y = 0 sebelum mencari titik pendaratan.",
+          "−x² + 10x − 16 = −(x − 2)(x − 8).",
+          "Koordinat x bagi titik pendaratan ialah 2 dan 8."
+        ]
+      },
+      "explanation": {
+        "en": "The roots are 2 and 8. These identify the two safe landing points, 6 m apart. One shield is released.",
+        "ms": "Puncanya ialah 2 dan 8. Ini menentukan dua titik pendaratan selamat, berjarak 6 m. Satu perisai dilepaskan."
+      }
+    },
+    {
+      "id": "guardian-vertex",
+      "kind": "vertex",
+      "station": "guardian",
+      "reward": 50,
+      "model": {
+        "a": -1,
+        "b": 10,
+        "c": -16,
+        "domain": [
+          2,
+          8
+        ]
+      },
+      "title": {
+        "en": "Guardian · Find the signal point",
+        "ms": "Penjaga · Cari titik isyarat"
+      },
+      "prompt": {
+        "en": "For y = −x² + 10x − 16, place the signal at the maximum point. Submit both coordinates.",
+        "ms": "Bagi y = −x² + 10x − 16, letakkan isyarat pada titik maksimum. Hantar kedua-dua koordinat."
+      },
+      "hints": {
+        "en": [
+          "The signal belongs on the axis of symmetry.",
+          "The x-coordinate is the midpoint of 2 and 8.",
+          "x = 5 and y = −25 + 50 − 16 = 9. Use (5, 9)."
+        ],
+        "ms": [
+          "Isyarat berada pada paksi simetri.",
+          "Koordinat x ialah titik tengah antara 2 dan 8.",
+          "x = 5 dan y = −25 + 50 − 16 = 9. Gunakan (5, 9)."
+        ]
+      },
+      "explanation": {
+        "en": "The maximum is (5, 9), on the axis x = 5. The signal is aligned and a second shield is released.",
+        "ms": "Titik maksimum ialah (5, 9), pada paksi x = 5. Isyarat sejajar dan perisai kedua dilepaskan."
+      }
+    },
+    {
+      "id": "guardian-design",
+      "kind": "design",
+      "station": "guardian",
+      "reward": 100,
+      "model": {
+        "span": 6,
+        "k": 0.5
+      },
+      "target": {
+        "span": 10,
+        "height": 25
+      },
+      "title": {
+        "en": "Guardian · Restore the final arch",
+        "ms": "Penjaga · Pulihkan lengkung akhir"
+      },
+      "prompt": {
+        "en": "Build a different arch using y = kx(L − x). Its span must be exactly 10 m and its maximum height exactly 25 m. Submit your design to restore the forest.",
+        "ms": "Bina lengkung berbeza menggunakan y = kx(L − x). Rentangnya mestilah tepat 10 m dan tinggi maksimum tepat 25 m. Hantar reka bentuk untuk memulihkan hutan."
+      },
+      "hints": {
+        "en": [
+          "L sets the distance between the two roots.",
+          "Maximum height = kL²/4. Use L = 10.",
+          "25 = k × 100/4, so k = 1. Set L = 10 and k = 1."
+        ],
+        "ms": [
+          "L menetapkan jarak antara dua punca.",
+          "Tinggi maksimum = kL²/4. Gunakan L = 10.",
+          "25 = k × 100/4, maka k = 1. Tetapkan L = 10 dan k = 1."
+        ]
+      },
+      "explanation": {
+        "en": "L = 10 and k = 1 give y = −x² + 10x with maximum (5, 25). All three shields are released. The forest is restored!",
+        "ms": "L = 10 dan k = 1 memberikan y = −x² + 10x dengan maksimum (5, 25). Ketiga-tiga perisai dilepaskan. Hutan dipulihkan!"
+      }
+    }
+  ],
+  "variants": [
+    {
+      "id": "practice-b-v1",
+      "reviewStatus": "prototype-awaiting-teacher-review",
+      "challenges": [
+        {
+          "id": "roots",
+          "kind": "roots",
+          "station": "roots",
+          "reward": 75,
+          "model": {
+            "a": -1,
+            "b": 8,
+            "c": 0,
+            "domain": [
+              0,
+              8
+            ]
+          },
+          "title": {
+            "en": "Find the bridge anchors",
+            "ms": "Cari titik sauh jambatan"
+          },
+          "prompt": {
+            "en": "The arch is y = −x² + 8x. Find both ground-level anchors (y = 0). Enter their x-coordinates in metres or click the graph.",
+            "ms": "Lengkung ialah y = −x² + 8x. Cari kedua-dua titik sauh pada aras tanah (y = 0). Masukkan koordinat x dalam meter atau klik graf."
+          },
+          "hints": {
+            "en": [
+              "At ground level, set y = 0.",
+              "Factorise as −(x − 0)(x − 8).",
+              "The anchors are 0 m and 8 m."
+            ],
+            "ms": [
+              "Pada aras tanah, tetapkan y = 0.",
+              "Faktorkan sebagai −(x − 0)(x − 8).",
+              "Titik sauh ialah 0 m dan 8 m."
+            ]
+          },
+          "explanation": {
+            "en": "The roots are 0 and 8; the span is 8 m.",
+            "ms": "Puncanya ialah 0 dan 8; rentangnya 8 m."
+          },
+          "answer": {
+            "first": 0,
+            "second": 8
+          }
+        },
+        {
+          "id": "vertex",
+          "kind": "vertex",
+          "station": "vertex",
+          "reward": 75,
+          "model": {
+            "a": -1,
+            "b": 8,
+            "c": 0,
+            "domain": [
+              0,
+              8
+            ]
+          },
+          "title": {
+            "en": "Locate the highest point",
+            "ms": "Cari titik tertinggi"
+          },
+          "prompt": {
+            "en": "Locate the maximum point of y = −x² + 8x. Enter both coordinates in metres or click the graph.",
+            "ms": "Cari titik maksimum bagi y = −x² + 8x. Masukkan kedua-dua koordinat dalam meter atau klik graf."
+          },
+          "hints": {
+            "en": [
+              "The maximum lies on the axis of symmetry.",
+              "x = (0 + 8)/2 = 4.",
+              "Substitution gives y = 16; use (4, 16)."
+            ],
+            "ms": [
+              "Titik maksimum terletak pada paksi simetri.",
+              "x = (0 + 8)/2 = 4.",
+              "Penggantian memberikan y = 16; gunakan (4, 16)."
+            ]
+          },
+          "explanation": {
+            "en": "The maximum is (4, 16) on the axis x = 4.",
+            "ms": "Titik maksimum ialah (4, 16) pada paksi x = 4."
+          },
+          "answer": {
+            "x": 4,
+            "y": 16
+          }
+        },
+        {
+          "id": "design",
+          "kind": "design",
+          "station": "design",
+          "reward": 100,
+          "model": {
+            "span": 6,
+            "k": 0.5
+          },
+          "target": {
+            "span": 6,
+            "height": 9
+          },
+          "title": {
+            "en": "Build the living bridge",
+            "ms": "Bina jambatan baharu"
+          },
+          "prompt": {
+            "en": "Use y = kx(L − x). Set the span to exactly 6 m and maximum height to exactly 9 m. Adjust both sliders.",
+            "ms": "Gunakan y = kx(L − x). Tetapkan rentang tepat 6 m dan tinggi maksimum tepat 9 m. Laraskan kedua-dua peluncur."
+          },
+          "hints": {
+            "en": [
+              "The roots are 0 and L, so L sets the span.",
+              "Maximum height = kL²/4.",
+              "L = 6, k = 1 give 9 m."
+            ],
+            "ms": [
+              "Puncanya ialah 0 dan L, jadi L menetapkan rentang.",
+              "Tinggi maksimum = kL²/4.",
+              "L = 6, k = 1 memberikan 9 m."
+            ]
+          },
+          "explanation": {
+            "en": "L = 6 and k = 1 give maximum (3, 9). The arch follows your design.",
+            "ms": "L = 6 dan k = 1 memberikan maksimum (3, 9). Lengkung mengikut reka bentuk anda."
+          },
+          "answer": {
+            "span": 6,
+            "k": 1
+          }
+        },
+        {
+          "id": "guardian-roots",
+          "kind": "roots",
+          "station": "guardian",
+          "reward": 50,
+          "model": {
+            "a": -1,
+            "b": 8,
+            "c": -7,
+            "domain": [
+              1,
+              7
+            ]
+          },
+          "title": {
+            "en": "Guardian · Find a safe landing",
+            "ms": "Penjaga · Cari tempat mendarat"
+          },
+          "prompt": {
+            "en": "The arch is y = −x² + 8x − 7. Find both ground-level anchors (y = 0). Enter their x-coordinates in metres or click the graph.",
+            "ms": "Lengkung ialah y = −x² + 8x − 7. Cari kedua-dua titik sauh pada aras tanah (y = 0). Masukkan koordinat x dalam meter atau klik graf."
+          },
+          "hints": {
+            "en": [
+              "At ground level, set y = 0.",
+              "Factorise as −(x − 1)(x − 7).",
+              "The anchors are 1 m and 7 m."
+            ],
+            "ms": [
+              "Pada aras tanah, tetapkan y = 0.",
+              "Faktorkan sebagai −(x − 1)(x − 7).",
+              "Titik sauh ialah 1 m dan 7 m."
+            ]
+          },
+          "explanation": {
+            "en": "The roots are 1 and 7; the span is 6 m.",
+            "ms": "Puncanya ialah 1 dan 7; rentangnya 6 m."
+          },
+          "answer": {
+            "first": 1,
+            "second": 7
+          }
+        },
+        {
+          "id": "guardian-vertex",
+          "kind": "vertex",
+          "station": "guardian",
+          "reward": 50,
+          "model": {
+            "a": -1,
+            "b": 8,
+            "c": -7,
+            "domain": [
+              1,
+              7
+            ]
+          },
+          "title": {
+            "en": "Guardian · Find the signal point",
+            "ms": "Penjaga · Cari titik isyarat"
+          },
+          "prompt": {
+            "en": "Locate the maximum point of y = −x² + 8x − 7. Enter both coordinates in metres or click the graph.",
+            "ms": "Cari titik maksimum bagi y = −x² + 8x − 7. Masukkan kedua-dua koordinat dalam meter atau klik graf."
+          },
+          "hints": {
+            "en": [
+              "The maximum lies on the axis of symmetry.",
+              "x = (1 + 7)/2 = 4.",
+              "Substitution gives y = 9; use (4, 9)."
+            ],
+            "ms": [
+              "Titik maksimum terletak pada paksi simetri.",
+              "x = (1 + 7)/2 = 4.",
+              "Penggantian memberikan y = 9; gunakan (4, 9)."
+            ]
+          },
+          "explanation": {
+            "en": "The maximum is (4, 9) on the axis x = 4.",
+            "ms": "Titik maksimum ialah (4, 9) pada paksi x = 4."
+          },
+          "answer": {
+            "x": 4,
+            "y": 9
+          }
+        },
+        {
+          "id": "guardian-design",
+          "kind": "design",
+          "station": "guardian",
+          "reward": 100,
+          "model": {
+            "span": 6,
+            "k": 0.5
+          },
+          "target": {
+            "span": 8,
+            "height": 16
+          },
+          "title": {
+            "en": "Guardian · Restore the final arch",
+            "ms": "Penjaga · Pulihkan lengkung akhir"
+          },
+          "prompt": {
+            "en": "Use y = kx(L − x). Set the span to exactly 8 m and maximum height to exactly 16 m. Adjust both sliders.",
+            "ms": "Gunakan y = kx(L − x). Tetapkan rentang tepat 8 m dan tinggi maksimum tepat 16 m. Laraskan kedua-dua peluncur."
+          },
+          "hints": {
+            "en": [
+              "The roots are 0 and L, so L sets the span.",
+              "Maximum height = kL²/4.",
+              "L = 8, k = 1 give 16 m."
+            ],
+            "ms": [
+              "Puncanya ialah 0 dan L, jadi L menetapkan rentang.",
+              "Tinggi maksimum = kL²/4.",
+              "L = 8, k = 1 memberikan 16 m."
+            ]
+          },
+          "explanation": {
+            "en": "L = 8 and k = 1 give maximum (4, 16). The arch follows your design.",
+            "ms": "L = 8 dan k = 1 memberikan maksimum (4, 16). Lengkung mengikut reka bentuk anda."
+          },
+          "answer": {
+            "span": 8,
+            "k": 1
+          }
+        }
+      ]
+    },
+    {
+      "id": "practice-c-v1",
+      "reviewStatus": "prototype-awaiting-teacher-review",
+      "challenges": [
+        {
+          "id": "roots",
+          "kind": "roots",
+          "station": "roots",
+          "reward": 75,
+          "model": {
+            "a": -1,
+            "b": 4,
+            "c": 0,
+            "domain": [
+              0,
+              4
+            ]
+          },
+          "title": {
+            "en": "Find the bridge anchors",
+            "ms": "Cari titik sauh jambatan"
+          },
+          "prompt": {
+            "en": "The arch is y = −x² + 4x. Find both ground-level anchors (y = 0). Enter their x-coordinates in metres or click the graph.",
+            "ms": "Lengkung ialah y = −x² + 4x. Cari kedua-dua titik sauh pada aras tanah (y = 0). Masukkan koordinat x dalam meter atau klik graf."
+          },
+          "hints": {
+            "en": [
+              "At ground level, set y = 0.",
+              "Factorise as −(x − 0)(x − 4).",
+              "The anchors are 0 m and 4 m."
+            ],
+            "ms": [
+              "Pada aras tanah, tetapkan y = 0.",
+              "Faktorkan sebagai −(x − 0)(x − 4).",
+              "Titik sauh ialah 0 m dan 4 m."
+            ]
+          },
+          "explanation": {
+            "en": "The roots are 0 and 4; the span is 4 m.",
+            "ms": "Puncanya ialah 0 dan 4; rentangnya 4 m."
+          },
+          "answer": {
+            "first": 0,
+            "second": 4
+          }
+        },
+        {
+          "id": "vertex",
+          "kind": "vertex",
+          "station": "vertex",
+          "reward": 75,
+          "model": {
+            "a": -1,
+            "b": 4,
+            "c": 0,
+            "domain": [
+              0,
+              4
+            ]
+          },
+          "title": {
+            "en": "Locate the highest point",
+            "ms": "Cari titik tertinggi"
+          },
+          "prompt": {
+            "en": "Locate the maximum point of y = −x² + 4x. Enter both coordinates in metres or click the graph.",
+            "ms": "Cari titik maksimum bagi y = −x² + 4x. Masukkan kedua-dua koordinat dalam meter atau klik graf."
+          },
+          "hints": {
+            "en": [
+              "The maximum lies on the axis of symmetry.",
+              "x = (0 + 4)/2 = 2.",
+              "Substitution gives y = 4; use (2, 4)."
+            ],
+            "ms": [
+              "Titik maksimum terletak pada paksi simetri.",
+              "x = (0 + 4)/2 = 2.",
+              "Penggantian memberikan y = 4; gunakan (2, 4)."
+            ]
+          },
+          "explanation": {
+            "en": "The maximum is (2, 4) on the axis x = 2.",
+            "ms": "Titik maksimum ialah (2, 4) pada paksi x = 2."
+          },
+          "answer": {
+            "x": 2,
+            "y": 4
+          }
+        },
+        {
+          "id": "design",
+          "kind": "design",
+          "station": "design",
+          "reward": 100,
+          "model": {
+            "span": 6,
+            "k": 0.5
+          },
+          "target": {
+            "span": 10,
+            "height": 12.5
+          },
+          "title": {
+            "en": "Build the living bridge",
+            "ms": "Bina jambatan baharu"
+          },
+          "prompt": {
+            "en": "Use y = kx(L − x). Set the span to exactly 10 m and maximum height to exactly 12.5 m. Adjust both sliders.",
+            "ms": "Gunakan y = kx(L − x). Tetapkan rentang tepat 10 m dan tinggi maksimum tepat 12.5 m. Laraskan kedua-dua peluncur."
+          },
+          "hints": {
+            "en": [
+              "The roots are 0 and L, so L sets the span.",
+              "Maximum height = kL²/4.",
+              "L = 10, k = 0.5 give 12.5 m."
+            ],
+            "ms": [
+              "Puncanya ialah 0 dan L, jadi L menetapkan rentang.",
+              "Tinggi maksimum = kL²/4.",
+              "L = 10, k = 0.5 memberikan 12.5 m."
+            ]
+          },
+          "explanation": {
+            "en": "L = 10 and k = 0.5 give maximum (5, 12.5). The arch follows your design.",
+            "ms": "L = 10 dan k = 0.5 memberikan maksimum (5, 12.5). Lengkung mengikut reka bentuk anda."
+          },
+          "answer": {
+            "span": 10,
+            "k": 0.5
+          }
+        },
+        {
+          "id": "guardian-roots",
+          "kind": "roots",
+          "station": "guardian",
+          "reward": 50,
+          "model": {
+            "a": -1,
+            "b": 12,
+            "c": -27,
+            "domain": [
+              3,
+              9
+            ]
+          },
+          "title": {
+            "en": "Guardian · Find a safe landing",
+            "ms": "Penjaga · Cari tempat mendarat"
+          },
+          "prompt": {
+            "en": "The arch is y = −x² + 12x − 27. Find both ground-level anchors (y = 0). Enter their x-coordinates in metres or click the graph.",
+            "ms": "Lengkung ialah y = −x² + 12x − 27. Cari kedua-dua titik sauh pada aras tanah (y = 0). Masukkan koordinat x dalam meter atau klik graf."
+          },
+          "hints": {
+            "en": [
+              "At ground level, set y = 0.",
+              "Factorise as −(x − 3)(x − 9).",
+              "The anchors are 3 m and 9 m."
+            ],
+            "ms": [
+              "Pada aras tanah, tetapkan y = 0.",
+              "Faktorkan sebagai −(x − 3)(x − 9).",
+              "Titik sauh ialah 3 m dan 9 m."
+            ]
+          },
+          "explanation": {
+            "en": "The roots are 3 and 9; the span is 6 m.",
+            "ms": "Puncanya ialah 3 dan 9; rentangnya 6 m."
+          },
+          "answer": {
+            "first": 3,
+            "second": 9
+          }
+        },
+        {
+          "id": "guardian-vertex",
+          "kind": "vertex",
+          "station": "guardian",
+          "reward": 50,
+          "model": {
+            "a": -1,
+            "b": 12,
+            "c": -27,
+            "domain": [
+              3,
+              9
+            ]
+          },
+          "title": {
+            "en": "Guardian · Find the signal point",
+            "ms": "Penjaga · Cari titik isyarat"
+          },
+          "prompt": {
+            "en": "Locate the maximum point of y = −x² + 12x − 27. Enter both coordinates in metres or click the graph.",
+            "ms": "Cari titik maksimum bagi y = −x² + 12x − 27. Masukkan kedua-dua koordinat dalam meter atau klik graf."
+          },
+          "hints": {
+            "en": [
+              "The maximum lies on the axis of symmetry.",
+              "x = (3 + 9)/2 = 6.",
+              "Substitution gives y = 9; use (6, 9)."
+            ],
+            "ms": [
+              "Titik maksimum terletak pada paksi simetri.",
+              "x = (3 + 9)/2 = 6.",
+              "Penggantian memberikan y = 9; gunakan (6, 9)."
+            ]
+          },
+          "explanation": {
+            "en": "The maximum is (6, 9) on the axis x = 6.",
+            "ms": "Titik maksimum ialah (6, 9) pada paksi x = 6."
+          },
+          "answer": {
+            "x": 6,
+            "y": 9
+          }
+        },
+        {
+          "id": "guardian-design",
+          "kind": "design",
+          "station": "guardian",
+          "reward": 100,
+          "model": {
+            "span": 6,
+            "k": 0.5
+          },
+          "target": {
+            "span": 6,
+            "height": 13.5
+          },
+          "title": {
+            "en": "Guardian · Restore the final arch",
+            "ms": "Penjaga · Pulihkan lengkung akhir"
+          },
+          "prompt": {
+            "en": "Use y = kx(L − x). Set the span to exactly 6 m and maximum height to exactly 13.5 m. Adjust both sliders.",
+            "ms": "Gunakan y = kx(L − x). Tetapkan rentang tepat 6 m dan tinggi maksimum tepat 13.5 m. Laraskan kedua-dua peluncur."
+          },
+          "hints": {
+            "en": [
+              "The roots are 0 and L, so L sets the span.",
+              "Maximum height = kL²/4.",
+              "L = 6, k = 1.5 give 13.5 m."
+            ],
+            "ms": [
+              "Puncanya ialah 0 dan L, jadi L menetapkan rentang.",
+              "Tinggi maksimum = kL²/4.",
+              "L = 6, k = 1.5 memberikan 13.5 m."
+            ]
+          },
+          "explanation": {
+            "en": "L = 6 and k = 1.5 give maximum (3, 13.5). The arch follows your design.",
+            "ms": "L = 6 dan k = 1.5 memberikan maksimum (3, 13.5). Lengkung mengikut reka bentuk anda."
+          },
+          "answer": {
+            "span": 6,
+            "k": 1.5
+          }
+        }
+      ]
+    }
+  ]
+}

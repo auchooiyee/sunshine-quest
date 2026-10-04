@@ -1,0 +1,436 @@
+{
+  "id": "f4-maths-final-expedition",
+  "kind": "finale",
+  "version": 1,
+  "form": 4,
+  "subject": "Mathematics",
+  "chapters": [
+    1,
+    6,
+    7,
+    9,
+    10
+  ],
+  "reviewStatus": "prototype-awaiting-teacher-review",
+  "scenario": {
+    "budget": 360,
+    "bridgeRate": 10,
+    "routeXRate": 10,
+    "routeYRate": 5,
+    "metresPerMarker": 8,
+    "duration": 10,
+    "secondSpeed": 2,
+    "maxSpeed": 16,
+    "speedFee": 5,
+    "timeFee": 2
+  },
+  "challenges": [
+    {
+      "id": "bridge",
+      "kind": "design",
+      "station": "bridge",
+      "gateLimit": 1072,
+      "reward": 100,
+      "title": {
+        "en": "Span the supply crossing",
+        "ms": "Rentangi lintasan bekalan"
+      },
+      "prompt": {
+        "en": "The camp starts with RM360. Build y = kx(L − x) with span exactly 8 m and maximum height exactly 12 m. Bridge cost = RM10 per metre of span. Your design opens the supply crossing.",
+        "ms": "Kem bermula dengan RM360. Bina y = kx(L − x) dengan rentang tepat 8 m dan tinggi maksimum tepat 12 m. Kos jambatan = RM10 setiap meter rentang. Reka bentuk anda membuka lintasan bekalan."
+      },
+      "hints": {
+        "en": [
+          "The roots are 0 and L.",
+          "Maximum height = kL²/4.",
+          "Set L = 8 and k = 3/4. The bridge costs RM80."
+        ],
+        "ms": [
+          "Puncanya ialah 0 dan L.",
+          "Tinggi maksimum = kL²/4.",
+          "Tetapkan L = 8 dan k = 3/4. Kos jambatan RM80."
+        ]
+      },
+      "explanation": {
+        "en": "L = 8 and k = 3/4 give maximum height 12 m. RM80 is committed to the bridge; the arch is now part of your route.",
+        "ms": "L = 8 dan k = 3/4 memberikan tinggi maksimum 12 m. RM80 diperuntukkan untuk jambatan; lengkung kini sebahagian laluan anda."
+      },
+      "model": {
+        "span": 6,
+        "k": 0.5
+      },
+      "target": {
+        "span": 8,
+        "height": 12
+      },
+      "answer": {
+        "span": 8,
+        "k": 0.75
+      },
+      "controlSteps": {
+        "span": {
+          "min": 4,
+          "max": 10,
+          "step": 1
+        },
+        "k": {
+          "min": 0.25,
+          "max": 1.5,
+          "step": 0.25
+        }
+      }
+    },
+    {
+      "id": "route",
+      "kind": "inequality",
+      "station": "route",
+      "gateLimit": 2062,
+      "reward": 100,
+      "title": {
+        "en": "Mark a safe supply route",
+        "ms": "Tandakan laluan bekalan selamat"
+      },
+      "prompt": {
+        "en": "Choose a safe route using your bridge span. Your marker changes the route fee, journey distance and signal tokens.",
+        "ms": "Pilih laluan selamat menggunakan rentang jambatan. Penanda anda mengubah caj laluan, jarak perjalanan dan token isyarat."
+      },
+      "hints": {
+        "en": [
+          "Substitute your coordinates into every restriction.",
+          "Solid boundaries are included. Use whole numbers and satisfy all four restrictions.",
+          "One safe route is (3, 3). Its route fee is RM45 and delivery distance is 48 m."
+        ],
+        "ms": [
+          "Gantikan koordinat ke dalam setiap syarat.",
+          "Sempadan penuh termasuk dalam rantau. Gunakan integer dan patuhi keempat-empat syarat.",
+          "Satu laluan selamat ialah (3, 3). Caj laluan RM45 dan jarak penghantaran 48 m."
+        ]
+      },
+      "explanation": {
+        "en": "Your marker satisfies every boundary. This selected route now sets the delivery distance, signal bag and route charge.",
+        "ms": "Penanda anda mematuhi setiap sempadan. Laluan dipilih kini menetapkan jarak penghantaran, beg isyarat dan caj laluan."
+      },
+      "model": {
+        "bound": 10,
+        "constraints": [
+          {
+            "a": 1,
+            "b": 0,
+            "op": ">=",
+            "c": 2
+          },
+          {
+            "a": 0,
+            "b": 1,
+            "op": ">=",
+            "c": 2
+          },
+          {
+            "a": 1,
+            "b": 1,
+            "op": "<=",
+            "c": 8
+          },
+          {
+            "a": 2,
+            "b": 1,
+            "op": "<=",
+            "c": 12
+          }
+        ]
+      },
+      "fields": [
+        {
+          "key": "x",
+          "label": {
+            "en": "Route x",
+            "ms": "Laluan x"
+          },
+          "type": "number"
+        },
+        {
+          "key": "y",
+          "label": {
+            "en": "Route y",
+            "ms": "Laluan y"
+          },
+          "type": "number"
+        }
+      ],
+      "answer": {
+        "x": 3,
+        "y": 3
+      },
+      "outputOrigin": 1550
+    },
+    {
+      "id": "delivery",
+      "kind": "motion-plan",
+      "station": "delivery",
+      "gateLimit": 2932,
+      "reward": 100,
+      "title": {
+        "en": "Run the supply cart",
+        "ms": "Jalankan troli bekalan"
+      },
+      "prompt": {
+        "en": "Program the cart for your route distance. Its fee enters the camp budget.",
+        "ms": "Atur troli untuk jarak laluan anda. Cajnya dimasukkan ke dalam belanjawan kem."
+      },
+      "hints": {
+        "en": [
+          "Read the total area under the speed–time graph.",
+          "Distance = v₁t₁ + 2(10 − t₁).",
+          "The example route needs 48 m: 4 s at 9 m/s, then 6 s at 2 m/s."
+        ],
+        "ms": [
+          "Baca jumlah luas di bawah graf laju–masa.",
+          "Jarak = v₁t₁ + 2(10 − t₁).",
+          "Laluan contoh memerlukan 48 m: 4 s pada 9 m/s, kemudian 6 s pada 2 m/s."
+        ]
+      },
+      "explanation": {
+        "en": "Your plan reaches the selected route distance in 10 seconds. Its charge is reserved and the cart follows your speed graph.",
+        "ms": "Pelan anda mencapai jarak laluan dipilih dalam 10 saat. Cajnya diperuntukkan dan troli mengikuti graf laju anda."
+      },
+      "model": {
+        "duration": 10,
+        "v2": 2,
+        "maxSpeed": 16
+      },
+      "target": {
+        "distance": 48
+      },
+      "fields": [
+        {
+          "key": "t1",
+          "label": {
+            "en": "First duration (s)",
+            "ms": "Tempoh pertama (s)"
+          },
+          "type": "range",
+          "min": 1,
+          "max": 9,
+          "step": 1,
+          "initial": 1
+        },
+        {
+          "key": "v1",
+          "label": {
+            "en": "First speed (m/s)",
+            "ms": "Laju pertama (m/s)"
+          },
+          "type": "range",
+          "min": 0,
+          "max": 16,
+          "step": 1,
+          "initial": 2
+        }
+      ],
+      "answer": {
+        "t1": 4,
+        "v1": 9
+      },
+      "controlSteps": {
+        "t1": {
+          "min": 1,
+          "max": 9,
+          "step": 1
+        },
+        "v1": {
+          "min": 0,
+          "max": 16,
+          "step": 1
+        }
+      },
+      "outputOrigin": 2450
+    },
+    {
+      "id": "risk",
+      "kind": "probability-reading",
+      "station": "risk",
+      "gateLimit": 3412,
+      "reward": 100,
+      "title": {
+        "en": "Calibrate the camp signal",
+        "ms": "Tentukur isyarat kem"
+      },
+      "prompt": {
+        "en": "Calculate the two-draw signal probability for the tokens issued by your route.",
+        "ms": "Kira kebarangkalian isyarat dua cabutan bagi token daripada laluan anda."
+      },
+      "hints": {
+        "en": [
+          "Use the token counts from the route you chose.",
+          "Without replacement, remove the first red token.",
+          "For the example (3, 3), second blue is 3/5 and red then blue is 3/10."
+        ],
+        "ms": [
+          "Gunakan bilangan token daripada laluan dipilih.",
+          "Tanpa pengembalian, keluarkan token merah pertama.",
+          "Bagi contoh (3, 3), kedua biru ialah 3/5 dan merah kemudian biru ialah 3/10."
+        ]
+      },
+      "explanation": {
+        "en": "Your signal calculation matches your selected route tokens.",
+        "ms": "Pengiraan isyarat anda sepadan dengan token laluan dipilih."
+      },
+      "model": {
+        "red": 3,
+        "blue": 3,
+        "replacement": false,
+        "event": "RB"
+      },
+      "fields": [
+        {
+          "key": "conditional",
+          "label": {
+            "en": "P(second blue | first red)",
+            "ms": "P(kedua biru | pertama merah)"
+          },
+          "type": "number"
+        },
+        {
+          "key": "combined",
+          "label": {
+            "en": "P(red then blue)",
+            "ms": "P(merah kemudian biru)"
+          },
+          "type": "number"
+        }
+      ],
+      "answer": {
+        "conditional": 0.6,
+        "combined": 0.3
+      },
+      "outputOrigin": 3230,
+      "issueCrystals": true
+    },
+    {
+      "id": "budget",
+      "kind": "budget-plan",
+      "station": "guardian",
+      "gateLimit": 4165,
+      "reward": 100,
+      "title": {
+        "en": "Deliver the camp essentials",
+        "ms": "Hantar keperluan asas kem"
+      },
+      "prompt": {
+        "en": "Supply the camp with the money left after your bridge, route and delivery.",
+        "ms": "Bekalkan kem menggunakan baki wang selepas jambatan, laluan dan penghantaran."
+      },
+      "hints": {
+        "en": [
+          "Subtract the expedition charges before choosing supplies.",
+          "Essential supplies cost RM85; protect at least RM30 savings.",
+          "A feasible example uses 2 food packs, 1 medical kit and 1 lamp."
+        ],
+        "ms": [
+          "Tolak caj ekspedisi sebelum memilih bekalan.",
+          "Bekalan asas berharga RM85; simpan sekurang-kurangnya RM30.",
+          "Contoh sah menggunakan 2 pek makanan, 1 kit perubatan dan 1 lampu."
+        ]
+      },
+      "explanation": {
+        "en": "Essential supplies and savings fit the money left by your earlier decisions. Your connected expedition is complete.",
+        "ms": "Bekalan asas dan simpanan muat dalam baki wang daripada keputusan terdahulu. Ekspedisi berkaitan anda selesai."
+      },
+      "model": {
+        "budget": 182,
+        "items": [
+          {
+            "key": "food",
+            "name": {
+              "en": "Food packs",
+              "ms": "Pek makanan"
+            },
+            "price": 20,
+            "minimum": 2,
+            "maximum": 6
+          },
+          {
+            "key": "medical",
+            "name": {
+              "en": "Medical kits",
+              "ms": "Kit perubatan"
+            },
+            "price": 30,
+            "minimum": 1,
+            "maximum": 4
+          },
+          {
+            "key": "lamp",
+            "name": {
+              "en": "Lamps",
+              "ms": "Lampu"
+            },
+            "price": 15,
+            "minimum": 1,
+            "maximum": 4
+          }
+        ]
+      },
+      "target": {
+        "saving": 30
+      },
+      "fields": [
+        {
+          "key": "food",
+          "label": {
+            "en": "Food packs",
+            "ms": "Pek makanan"
+          },
+          "type": "range",
+          "min": 0,
+          "max": 6,
+          "step": 1,
+          "initial": 0
+        },
+        {
+          "key": "medical",
+          "label": {
+            "en": "Medical kits",
+            "ms": "Kit perubatan"
+          },
+          "type": "range",
+          "min": 0,
+          "max": 4,
+          "step": 1,
+          "initial": 0
+        },
+        {
+          "key": "lamp",
+          "label": {
+            "en": "Lamps",
+            "ms": "Lampu"
+          },
+          "type": "range",
+          "min": 0,
+          "max": 4,
+          "step": 1,
+          "initial": 0
+        },
+        {
+          "key": "saving",
+          "label": {
+            "en": "Savings (RM)",
+            "ms": "Simpanan (RM)"
+          },
+          "type": "range",
+          "min": 0,
+          "max": 180,
+          "step": 5,
+          "initial": 0
+        }
+      ],
+      "answer": {
+        "food": 2,
+        "medical": 1,
+        "lamp": 1,
+        "saving": 95
+      },
+      "outputOrigin": 3720
+    }
+  ]
+}
