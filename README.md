@@ -10,9 +10,11 @@ Requires Node.js 20 or newer. No npm install or Python is required for the game.
 npm start
 ```
 
-If already in this directory, use `npm start`. Open http://127.0.0.1:4173 in a browser. Use HTTP rather than opening index.html as a file. The server binds only to your computer. If the port is occupied, set `PORT` to a free port. From the parent folder, you can double-click `START_GAME.cmd`.
+Run this command from the repository directory. Open http://127.0.0.1:4173 in a browser. Use HTTP rather than opening index.html as a file. The server binds only to your computer. If the port is occupied, set `PORT` to a free port.
 
 ## Deploy
+
+Student link: [Play Sunshine Math Quest](https://sunshine-quest.pages.dev/?view=regions). Push updates to this repository's `main` branch to trigger a Cloudflare Pages production deployment.
 
 This repository is prepared for Cloudflare Pages. Run `npm run build` to create the public `dist` directory. Use `npm run build` as the Pages build command and `dist` as the output directory. See [DEPLOYMENT.md](DEPLOYMENT.md) for Git integration and update instructions.
 

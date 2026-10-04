@@ -2,6 +2,10 @@
 
 Source repository: https://github.com/auchooiyee/sunshine-quest
 
+Student URL: https://sunshine-quest.pages.dev/?view=regions
+
+Pages project: `sunshine-quest`. Git integration watches `auchooiyee/sunshine-quest` on `main` and publishes production updates automatically.
+
 Use a Git-integrated Cloudflare Pages project with these settings:
 
 | Setting | Value |
