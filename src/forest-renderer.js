@@ -1,6 +1,8 @@
 // Forest rendering adapted from july-lyan/yoyo-sunshine-forest.
 import { parseNumber } from './math/quadratics.js';
 import { fetchJSON, settleLoads } from './loading.js';
+import {adventureFor} from '../config/adventures.js';
+import {regionBackdrop,regionGround,regionLandmarks,drawConstructions} from './ui/region-scenery.js';
 export const STATIONS = { roots:650, vertex:1470, design:2310, guardian:3700 };
 export function createForestRenderer(canvas, stage, game, quest, t, region=()=> 'quadratics', meta=()=>null) {
 const ctx = canvas.getContext('2d'), images = {};
@@ -99,14 +101,17 @@ function foreground() {
 }
 function render(dt) {
   const s=game.state,p=s.player;
+  const route=adventureFor(region());
   const target=Math.max(0,Math.min(s.worldWidth-viewW,p.x-viewW*.34));
   if(Math.abs(target-camera)>viewW*.9) camera=target;
   else camera += (target-camera)*(1-Math.exp(-dt*7));
   const blend=Math.max(0,Math.min(1,(camera+viewW*.45-1600)/1100));
   ctx.clearRect(0,0,viewW,620);
   background(images.forest,camera*.23);background(images['forest-east'],camera*.23,blend);
+  regionBackdrop(ctx,route,viewW,camera,clock,reducedMotion);
   // Ground, props, enemies and collision geometry all share world movement.
   terrain(images.forest,camera);terrain(images['forest-east'],camera,blend);
+  regionGround(ctx,route,viewW);
   const sun=ctx.createLinearGradient(0,0,viewW,510);sun.addColorStop(0,'#fff9b509');sun.addColorStop(.6,'#fff4af08');sun.addColorStop(1,'#ffe4a500');ctx.fillStyle=sun;ctx.fillRect(0,0,viewW,500);
   if(!reducedMotion) for(let i=0;i<20;i++) {
     const x=((i*113+Math.sin(clock*.16+i)*40-camera*.38)% (viewW+50)+viewW+50)%(viewW+50),y=140+((i*67+clock*9) %310);
@@ -116,11 +121,13 @@ function render(dt) {
   ctx.save();ctx.translate(-camera,0);
   sprite('house',150,504,264);sign(t('trailHome'),340,461,160);
   if(!reducedMotion) for(let i=0;i<4;i++){const t=(clock*.18+i*.24)%1;ctx.globalAlpha=(1-t)*.25;ctx.fillStyle='#fff9e0';ctx.beginPath();ctx.ellipse(98+Math.sin(t*4)*12,264-t*75,7+t*12,10+t*12,-.3,0,7);ctx.fill();}ctx.globalAlpha=1;
-  sprite('bench',1450,503,108);sign(region()==='finale'?t('route'):t('vertex'),1450,359,170);
+  sprite('bench',route?.bench??1450,503,108);sign(region()==='finale'?t('route'):t('vertex'),route?.bench??1450,359,170);
+  regionLandmarks(ctx,route,s,document.documentElement.lang,clock,reducedMotion);
   drawQuestWorld();
+  drawConstructions(ctx,s,document.documentElement.lang);
   for(const platform of s.platforms) {
-    if(platform.questCart)continue;
-    ctx.save();ctx.fillStyle='#745330';ctx.strokeStyle='#473d27';ctx.lineWidth=3;ctx.beginPath();ctx.roundRect(platform.x,platform.y,platform.w,23,8);ctx.fill();ctx.stroke();
+    if(platform.questCart||platform.questBridge)continue;
+    ctx.save();ctx.fillStyle=route?.colors[2]||'#745330';ctx.strokeStyle='#473d27';ctx.lineWidth=3;ctx.beginPath();ctx.roundRect(platform.x,platform.y,platform.w,23,8);ctx.fill();ctx.stroke();
     ctx.strokeStyle='#a38c52';ctx.lineWidth=2;for(let i=0;i<3;i++){ctx.beginPath();ctx.moveTo(platform.x+8,platform.y+6+i*5);ctx.bezierCurveTo(platform.x+platform.w*.35,platform.y+2+i*6,platform.x+platform.w*.65,platform.y+13+i*4,platform.x+platform.w-7,platform.y+5+i*6);ctx.stroke();}
     ctx.fillStyle='#78964b';for(let x=platform.x+3;x<platform.x+platform.w;x+=8){ctx.beginPath();ctx.moveTo(x,platform.y+2);ctx.lineTo(x+4,platform.y-6);ctx.lineTo(x+9,platform.y+2);ctx.fill();}ctx.restore();
   }
@@ -132,7 +139,7 @@ function render(dt) {
   for(const rock of s.rocks){if(rock.depleted)continue;sprite('rocks',rock.x+(rock.hitTimer>0?Math.sin(clock*75)*3:0),503,72);if(Math.abs(rock.x-p.x)<125){label('J · '+t('stone'),rock.x,407);ctx.fillStyle='#394832';ctx.fillRect(rock.x-20,421,40,4);ctx.fillStyle='#c3c7a6';ctx.fillRect(rock.x-20,421,40*rock.hp/rock.maxHp,4);}}
   for(const reward of s.platformRewards){if(reward.collected)continue;const yy=reward.y+Math.sin(clock*3+reward.x)*2;if(reward.type==='stone'){sprite('stone',reward.x,yy,24);label(t('stone')+' ×3',reward.x,yy-37,'#ffeab4',12);}else label('♥',reward.x,yy,'#f3b482',26);}
   for(const e of s.enemies) {
-    if(!e.alive)continue;
+    if(!e.alive||(route&&e.type==='boss'))continue;
     const h=e.type==='boss'?151:e.type==='hopper'?80:e.type==='spore'?70:69;
     shadow(e.x,501,e.type==='boss'?59:27);
     if(e.type==='boss' && ['windup','air'].includes(e.skillPhase)){
@@ -169,14 +176,15 @@ function render(dt) {
     ctx.save();ctx.translate(p.x+p.actionFacing*30,p.y-48);ctx.scale(p.actionFacing,1);ctx.strokeStyle=p.action==='axe'?'#ffe0a1b0':'#fff7c6b0';ctx.lineWidth=3;ctx.beginPath();ctx.arc(0,0,56,-1.0,.7);ctx.stroke();ctx.restore();
   }
   for(const part of s.particles){ctx.globalAlpha=part.life/part.maxLife;ctx.fillStyle=part.color;ctx.fillRect(part.x,part.y,4,4);}ctx.globalAlpha=1;
-  ctx.restore();foreground();
+  ctx.restore();if(!route||route.id==='quadratics')foreground();
   if(s.trophy){ctx.fillStyle='#edaf5a12';ctx.fillRect(0,0,viewW,620);}
 }
 
 function drawQuestWorld() {
   const complete = quest().completed;
   const next = quest().next?.station;
-  for (const [id,x] of Object.entries(meta()?.stations&&!Array.isArray(meta().stations)?meta().stations:STATIONS)) {
+  const route=adventureFor(region());
+  for (const [id,x] of Object.entries(route?.stations||(meta()?.stations&&!Array.isArray(meta().stations)?meta().stations:STATIONS))) {
     if (id === 'guardian') continue;
     const done=complete.includes(id), active=next===id;
     ctx.save();ctx.translate(x,0);
@@ -186,27 +194,28 @@ function drawQuestWorld() {
     if(active&&!reducedMotion){ctx.strokeStyle='#fff3b880';ctx.beginPath();ctx.arc(0,386,30+Math.sin(clock*2)*3,0,Math.PI*2);ctx.stroke();}
     label(t(id),0,344,'#fff6d7',14);ctx.restore();
   }
-  for (const [id,x] of (meta()?.gates||[['roots',1100],['vertex',2090],['design',2960]])) {
+  for (const [id,x] of (route?.gates||meta()?.gates||[['roots',1100],['vertex',2090],['design',2960]])) {
     if(complete.includes(id))continue;
     ctx.save();ctx.fillStyle='#688a6140';ctx.fillRect(x-10,330,20,170);ctx.strokeStyle='#f9e3a1';ctx.lineWidth=2;ctx.setLineDash([5,5]);ctx.strokeRect(x-10,330,20,170);ctx.setLineDash([]);label(t('locked'),x,312,'#fff5c9',13);ctx.restore();
   }
   const bridgeId=region()==='finale'?'bridge':'design';
-  if (['quadratics','finale'].includes(region()) && complete.includes(bridgeId)) {
-    const draft=quest().save().sessions[bridgeId].draft, span=parseNumber(draft.span),k=parseNumber(draft.k),origin=region()==='finale'?820:2520;
+  const bridges=route?(game.state.constructions||[]).filter(i=>i.kind==='design').map(i=>({...i.values,origin:i.origin})):complete.includes(bridgeId)?[{...quest().save().sessions[bridgeId].draft,origin:820}]:[];
+  for(const bridge of bridges){
+    const span=parseNumber(bridge.span),k=parseNumber(bridge.k),origin=bridge.origin;
     ctx.save();ctx.beginPath();
-    for(let i=0;i<=64;i++){const x=span*i/64,y=500-k*x*(span-x)*7; if(i===0)ctx.moveTo(origin,y);else ctx.lineTo(origin+i*4,y);}
+    for(let i=0;i<=64;i++){const x=span*i/64,y=500-k*x*(span-x)*7; if(i===0)ctx.moveTo(origin,y);else ctx.lineTo(origin+x*32,y);}
     ctx.lineWidth=13;ctx.strokeStyle='#7f6542';ctx.stroke();ctx.lineWidth=3;ctx.strokeStyle='#efd594';ctx.stroke();ctx.restore();
   }
   const effects=game.state.application?.kind==='expedition'?game.state.application.effects:game.state.application?[game.state.application]:[];
   for(const application of effects){
   ctx.save();
   if(application.kind==='waypoint'){
-    ctx.strokeStyle='#e5d299';ctx.lineWidth=3;ctx.setLineDash([8,8]);ctx.beginPath();ctx.moveTo(region()==='finale'?1450:2450,500);ctx.lineTo(application.x,application.y);ctx.lineTo(region()==='finale'?1900:2860,500);ctx.stroke();ctx.setLineDash([]);
+    ctx.strokeStyle='#e5d299';ctx.lineWidth=3;ctx.setLineDash([8,8]);ctx.beginPath();ctx.moveTo(region()==='finale'?1450:application.x-80,500);ctx.lineTo(application.x,application.y);ctx.lineTo(region()==='finale'?1900:application.x+80,500);ctx.stroke();ctx.setLineDash([]);
     ctx.fillStyle='#e5c16c';ctx.fillRect(application.x,application.y-60,3,60);ctx.beginPath();ctx.moveTo(application.x+3,application.y-60);ctx.lineTo(application.x+35,application.y-47);ctx.lineTo(application.x+3,application.y-35);ctx.fill();label(`(${application.point.x}, ${application.point.y})`,application.x,application.y-83,'#fff6d7',14);
   }else if(application.kind==='cart'){
-    const x=game.state.platforms.find(p=>p.questCart)?.x??2520;
+    const x=game.state.platforms.find(p=>p.questCart&&p.effectId===application.id)?.x??application.origin??2520;
     ctx.fillStyle='#cbaa66';ctx.fillRect(x,450,80,27);ctx.fillStyle='#334837';for(const w of [12,65]){ctx.beginPath();ctx.arc(x+w,482,9,0,Math.PI*2);ctx.fill();}
-    label(`${Math.min(application.elapsed,application.duration).toFixed(1)} s · ${application.distance} m`,x+40,420,'#fff6d7',13);
+    if(!route)label(`${Math.min(application.elapsed,application.duration).toFixed(1)} s · ${t('target')} ${application.distance} m`,x+40,420,'#fff6d7',13);
   }else if(application.kind==='crystals'){
     const origin=application.origin??2505;
     for(let i=0;i<application.red+application.blue;i++){const x=origin+i*26;ctx.fillStyle=i<application.red?'#c47773':'#769bbb';ctx.beginPath();ctx.moveTo(x,466);ctx.lineTo(x+8,450);ctx.lineTo(x+16,466);ctx.lineTo(x+8,482);ctx.closePath();ctx.fill();ctx.strokeStyle='#fff0bd';ctx.stroke();}

@@ -1,4 +1,4 @@
-# Content review register — v0.5
+# Content review register — v0.6
 
 Status: all entries await teacher review. This records task versions, not claims of full chapter coverage. For each row replace Pending with a review result, exact learning standard and reviewer/date. Check the English/BM prompt, all hints, diagrams, units, accepted alternatives and example solution in the game and source bank. The finale changes with earlier choices; review at least the two routes in TEACHER_REVIEW_GUIDE.md.
 
@@ -113,3 +113,7 @@ Status: all entries await teacher review. This records task versions, not claims
 | finale.json / original / budget | budget-plan | Deliver the camp essentials | Hantar keperluan asas kem | Pending |
 
 Total: 95 task versions. The separate introductory guide contains one unscored example (y = −x² + 6x; anchors 0 and 6). Review its wording in locales/pilot.js as well.
+
+## v0.6 adventure review
+
+The 95 task versions above are unchanged. Review the new guide briefings and Guardian names in `config/adventures.js`, UI wording in `locales/adventure.js`, construction summaries, exact probability fractions, and the finale choice ledger in both languages. Confirm that a student can explain how each accepted answer changes the visible construction. Status: Pending teacher review.

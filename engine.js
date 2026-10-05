@@ -6,7 +6,7 @@ export function createGame(saved, options = {}) {
   const number = (v, fallback, min = 0, max = 1e6) => typeof v === 'number' && Number.isFinite(v) ? clamp(v, min, max) : fallback;
   let sequence = 0, previous = {}, state;
   let questLimit = WORLD - 35, assistance = options.assist !== false;
-  let applicationSignature='';
+  let applicationSignature='',routeSignature='',questCheckpoint=180,pendingCartProgress=[];
   function fresh() {
     return {
       mode: 'ready', worldWidth: WORLD, groundY: GROUND,
@@ -30,6 +30,7 @@ export function createGame(saved, options = {}) {
     if (typeof data === 'string') { try { data = JSON.parse(data); } catch { return; } }
     if (!data || ![1, 2].includes(data.version) || typeof data !== 'object') return;
     const legacy = data.version === 1;
+    if(options.mathQuest&&Array.isArray(data.cartProgress))pendingCartProgress=data.cartProgress.slice(0,10);
     state.wood = Math.floor(number(data.wood, 0, 0, 999));
     state.stone = Math.floor(number(data.stone, 0, 0, 999));
     for (const id of Object.keys(state.upgrades)) state.upgrades[id] = data.upgrades?.[id] === true;
@@ -80,7 +81,7 @@ export function createGame(saved, options = {}) {
     if (['sword', 'axe', 'hurt'].includes(state.player.action)) return false;
     state.equipment = id; return true;
   }
-  function atBench() { return Math.abs(state.player.x - 1450) < 150 && Math.abs(state.player.y - GROUND) < 70; }
+  function atBench() { return Math.abs(state.player.x - (state.benchX??1450)) < 150 && Math.abs(state.player.y - GROUND) < 70; }
   function getRecipes() {
     return Object.entries(BALANCE.recipes).map(([id, recipe]) => ({ id, ...recipe, owned: state.upgrades[id], available: !state.upgrades[id] && (!recipe.requires || state.upgrades[recipe.requires]) && state.wood >= recipe.wood && state.stone >= recipe.stone, atBench: atBench() }));
   }
@@ -112,7 +113,7 @@ export function createGame(saved, options = {}) {
     p.invulnerable = 1.4; p.action = 'hurt'; p.actionElapsed = 0; p.actionDuration = .32; p.actionHit = true;
     sound('hurt'); puff(p.x, p.y - 30, '#f2b77c');
     if (p.hp <= 0) {
-      Object.assign(p, { hp: p.maxHp, x: 180, y: GROUND, vx: 0, vy: 0, onGround: true, action: 'idle', actionElapsed: 0, actionDuration: 0 });
+      Object.assign(p, { hp: p.maxHp, x: options.mathQuest?questCheckpoint:180, y: GROUND, vx: 0, vy: 0, onGround: true, action: 'idle', actionElapsed: 0, actionDuration: 0 });
       state.projectiles.length = 0; state.shockwaves.length = 0;
       for (const e of state.enemies) if (e.type === 'boss') { e.skillPhase = 'idle'; e.skillTimer = BALANCE.enemies.boss.stomp.cycle; e.y = GROUND; e.vy = 0; }
       emit('小狗把你接回家啦！休息好了，材料和冒险进度都还在。');
@@ -313,41 +314,60 @@ export function createGame(saved, options = {}) {
     previous = { ...input };
   }
   function save() {
-    return { version: 2, player: { x: state.player.x, hp: state.player.hp }, wood: state.wood, stone: state.stone, equipment: state.equipment, upgrades: { ...state.upgrades }, crafted: state.crafted, trophy: state.trophy, elapsed: state.elapsed, completed: state.mode === 'complete', trees: state.trees.map(({ id, hp }) => ({ id, hp })), rocks: state.rocks.map(({ id, hp }) => ({ id, hp })), enemies: state.enemies.map(({ id, hp }) => ({ id, hp })), platformRewards: state.platformRewards.map(({ id, collected }) => ({ id, collected })), drops: state.drops.map(({ type, x, y, amount }) => ({ type, x, y, amount })) };
+    return { version: 2, player: { x: state.player.x, hp: state.player.hp }, wood: state.wood, stone: state.stone, equipment: state.equipment, upgrades: { ...state.upgrades }, crafted: state.crafted, trophy: state.trophy, elapsed: state.elapsed, completed: state.mode === 'complete', trees: state.trees.map(({ id, hp }) => ({ id, hp })), rocks: state.rocks.map(({ id, hp }) => ({ id, hp })), enemies: state.enemies.map(({ id, hp }) => ({ id, hp })), platformRewards: state.platformRewards.map(({ id, collected }) => ({ id, collected })), drops: state.drops.map(({ type, x, y, amount }) => ({ type, x, y, amount })), ...(options.mathQuest?{cartProgress:applicationEffects().filter(a=>a.kind==='cart').map(a=>({signature:cartSignature(a),elapsed:a.elapsed}))}:{}) };
   }
-  function restart() { state = fresh(); previous = {}; sequence = 0; applicationSignature=''; }
+  function restart() { state = fresh(); previous = {}; sequence = 0; applicationSignature='';routeSignature='';questCheckpoint=180;pendingCartProgress=[]; }
   const applicationEffects=()=>state.application?.kind==='expedition'?state.application.effects:state.application?[state.application]:[];
   const cartSignature=a=>a?JSON.stringify({...a,elapsed:undefined}):'';
-  function cartPosition(a){const distance=Math.min(a.elapsed,a.t1)*a.v1+Math.max(0,a.elapsed-a.t1)*a.v2;return (a.origin??2520)+Math.min(1,distance/a.distance)*360;}
+  function cartPosition(a){const distance=Math.min(a.elapsed,a.t1)*a.v1+Math.max(0,a.elapsed-a.t1)*a.v2;return (a.origin??2520)+Math.min(1,distance/a.distance)*(a.trackWidth??360);}
   function updateCart(step) {
-    const a=applicationEffects().find(a=>a.kind==='cart');if(!a)return;
-    const platform=state.platforms.find(p=>p.questCart);if(!platform)return;
+    for(const a of applicationEffects().filter(a=>a.kind==='cart')){
+    const platform=state.platforms.find(p=>p.questCart&&p.effectId===a.id);if(!platform)continue;
     const oldX=platform.x,carrying=state.player.onGround&&Math.abs(state.player.y-platform.y)<1&&state.player.x>=oldX-14&&state.player.x<=oldX+platform.w+14;
     if(state.player.x>=(a.origin??2520)-70)a.elapsed=Math.min(a.duration,a.elapsed+step);
     platform.x=cartPosition(a);
     if(carrying)state.player.x=clamp(state.player.x+platform.x-oldX,35,questLimit);
+    }
   }
-  function configureQuest({ limit, blueprint, application=null, shields = 3, complete = false, assist = true }) {
+  function configureQuest({ limit, blueprint, blueprints, application=null, shields = 3, complete = false, assist = true, route=null, checkpoint=180, constructions=[] }) {
     if (!options.mathQuest) return;
     questLimit = number(limit, WORLD - 35, 35, WORLD - 35);
     state.player.x = Math.min(state.player.x, questLimit);
     assistance = assist;
+    questCheckpoint=number(checkpoint,180,35,questLimit);
+    state.constructions=constructions;
+    if(route&&route.id!==routeSignature){
+      state.routeId=route.id;state.benchX=route.bench;
+      state.platforms=route.platforms.map(p=>({...p}));
+      for(const [i,reward] of state.platformRewards.entries()){const platform=route.platforms[Math.floor(i/2)];reward.x=platform.x+(i%2?platform.w-40:40);reward.y=platform.y-20;}
+      const guardian=state.enemies.find(e=>e.type==='boss');guardian.x=guardian.homeX=guardian.skillOriginX=route.stations.guardian;
+      // Stable enemy/resource IDs preserve collected materials and defeated enemies.
+      for(const [i,e] of state.enemies.filter(e=>e.type!=='boss').entries()){e.x=e.homeX=route.stations.roots+220+i*(route.stations.guardian-route.stations.roots-520)/6;}
+      routeSignature=route.id;
+    }
     state.platforms = state.platforms.filter(p => !p.questBridge&&!p.questApplication);
-    if (blueprint && Number.isFinite(blueprint.span) && Number.isFinite(blueprint.k) && blueprint.span >= 4 && blueprint.span <= 10 && blueprint.k >= .25 && blueprint.k <= 1.5) {
+    for(const bridge of blueprints??(blueprint?[blueprint]:[])){
+    if (bridge && Number.isFinite(bridge.span) && Number.isFinite(bridge.k) && bridge.span >= 4 && bridge.span <= 10 && bridge.k >= .25 && bridge.k <= 1.5) {
       for (let i = 0; i < 16; i++) {
-        const x = blueprint.span * (i + .5) / 16;
-        state.platforms.push({x:number(blueprint.origin,2520,35,WORLD-300)+i*16,y:GROUND-blueprint.k*x*(blueprint.span-x)*7,w:17,questBridge:true});
+        const x = bridge.span * (i + .5) / 16;
+        const segment=bridge.span*32/16;
+        state.platforms.push({x:number(bridge.origin,2520,35,WORLD-320)+i*segment,y:GROUND-bridge.k*x*(bridge.span-x)*7,w:segment+1,questBridge:true,bridgeId:bridge.id});
       }
+    }
     }
     const signature=JSON.stringify(application);
     if(signature!==applicationSignature){
-      const previousCart=applicationEffects().find(a=>a.kind==='cart');state.application=application?JSON.parse(signature):null;
-      for(const effect of applicationEffects())if(effect.kind==='cart')effect.elapsed=cartSignature(effect)===cartSignature(previousCart)?previousCart.elapsed:0;
+      const previousCarts=applicationEffects().filter(a=>a.kind==='cart');state.application=application?JSON.parse(signature):null;
+      for(const effect of applicationEffects())if(effect.kind==='cart'){
+        const previousCart=previousCarts.find(a=>cartSignature(a)===cartSignature(effect)),saved=pendingCartProgress.find(a=>a?.signature===cartSignature(effect));
+        effect.elapsed=previousCart?.elapsed??number(saved?.elapsed,0,0,effect.duration);
+      }
+      pendingCartProgress=[];
       applicationSignature=signature;
     }
     for(const effect of applicationEffects()){
       if(effect.kind==='waypoint')state.platforms.push({x:effect.x-28,y:effect.y,w:56,questApplication:true});
-      if(effect.kind==='cart')state.platforms.push({x:cartPosition(effect),y:450,w:80,questApplication:true,questCart:true});
+      if(effect.kind==='cart')state.platforms.push({x:cartPosition(effect),y:450,w:80,questApplication:true,questCart:true,effectId:effect.id});
     }
     const guardian = state.enemies.find(e => e.type === 'boss');
     guardian.hp = Math.max(0,Math.min(3,shields))*10;
@@ -355,6 +375,13 @@ export function createGame(saved, options = {}) {
     state.trophy = complete;
     if (complete) { state.mode = 'complete'; state.shockwaves.length = 0; state.projectiles.length = 0; }
   }
+  function replayCarts(){
+    for(const a of applicationEffects().filter(a=>a.kind==='cart')){
+      const p=state.platforms.find(p=>p.questCart&&p.effectId===a.id);
+      if(p&&state.player.onGround&&Math.abs(state.player.y-p.y)<1&&state.player.x>=p.x-14&&state.player.x<=p.x+p.w+14)Object.assign(state.player,{x:a.origin??2520,y:GROUND,vy:0});
+      a.elapsed=0;if(p)p.x=cartPosition(a);
+    }
+  }
   state = fresh(); restore(saved);
-  return { get state() { return state; }, start, update, attack, interact, jump, restart, save, getPrompt, togglePause, returnHome, getWeapon, getRecipes, craft, equip, configureQuest };
+  return { get state() { return state; }, start, update, attack, interact, jump, restart, save, getPrompt, togglePause, returnHome, getWeapon, getRecipes, craft, equip, configureQuest, replayCarts, restoreSave(data){restart();restore(data);} };
 }

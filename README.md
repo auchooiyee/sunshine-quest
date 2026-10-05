@@ -1,6 +1,6 @@
 # MathWithCYE · Sunshine Math Quest
 
-A playable Form 4 Mathematics adventure built on the original Sunshine Forest Canvas game. Version 0.5.1 adds six-digit classroom codes and a Copy code button. Version 0.5.0 added an interactive introductory guide, direct entry actions, retryable loading and damaged-save protection to the five chapter routes, connected final expedition, three question sets per chapter, CSV learning reports and configurable local class missions. English and Bahasa Melayu are available throughout.
+A playable Form 4 Mathematics adventure built on the original Sunshine Forest Canvas game. Version 0.6 adds five distinct routes and environments, named guide briefings, persistent mathematical constructions, chapter Guardians, a restoration collection and a clearer finale cost ledger. English/BM, six-digit classroom codes, three question sets per chapter, local saves and CSV reports are supported.
 
 ## Run locally
 
@@ -87,7 +87,7 @@ The Learning journal's **Export learning CSV** exports one row per task in visit
 npm test
 ```
 
-54 tests cover the 16 upstream engine regressions, M1/M2/finale progression, all 60 additional task versions, multiple valid answers, storage and set restoration, mission-code validation/isolation, report evidence, CSV quoting, and applied cart/platform behavior.
+59 tests cover the 16 upstream engine regressions, M1/M2/finale progression, all 60 additional task versions, multiple valid answers, storage and set restoration, mission-code validation/isolation, report evidence, CSV quoting, and applied cart/platform behavior.
 
 For browser checks, keep the server running and provide Playwright plus installed Chrome. Set `PLAYWRIGHT_PACKAGE` to the installed package directory if it is not locally resolvable:
 
@@ -95,17 +95,21 @@ For browser checks, keep the server running and provide Playwright plus installe
 npm run test:browser
 ```
 
-`tests/browser-smoke.mjs` has 10 baseline flow groups; `browser-expedition.mjs` has 12; `browser-finale.mjs` has 10. `browser-practice.mjs` adds 8 groups covering set replay, all 60 additional task versions, teacher-set selection, JSON recovery, CSV evidence/scope and phone reports. `browser-pilot.mjs` adds 7 groups for the isolated tutorial, direct Continue/Join, loading retries, protected damaged saves and phone layouts. All 47 groups passed. Reports and screenshots are saved under Git-ignored `artifacts/`.
+`tests/browser-smoke.mjs` has 10 baseline flow groups; `browser-expedition.mjs` has 12; `browser-finale.mjs` has 10. `browser-practice.mjs` adds 8 groups covering set replay, all 60 additional task versions, teacher-set selection, JSON recovery, CSV evidence/scope and phone reports. `browser-pilot.mjs` adds 7 groups for the isolated tutorial, direct Continue/Join, loading retries, protected damaged saves and phone layouts. `browser-codes.mjs` covers 4 short-code and compatibility groups; `browser-adventures.mjs` adds 6 region, construction and restoration groups. All 57 groups passed for v0.6. Reports and screenshots are saved under Git-ignored `artifacts/`.
 
 Six-digit code verification: all 248 supported configurations round-trip without collisions; single-digit errors and adjacent digit swaps are rejected. `tests/browser-codes.mjs` covers teacher copying, phone entry and legacy-link save continuity.
 
 Content and BM wording await teacher review. Chrome desktop and mobile emulation are verified; real Android/iOS and classroom observations remain pending. See `docs/TEACHER_REVIEW_GUIDE.md`.
+
+See [v0.6 release notes](docs/V06_RELEASE.md) for route changes, saved cart animation, keepsakes and compatibility.
 
 ## Source structure
 
 - `engine.js`, `balance.js`: original simulation and balance; optional math mode adds route gates, a bridge, moving cart/platforms and Guardian protection.
 - `src/forest-renderer.js`: original forest rendering plus stations, barriers and answer-driven objects.
 - `app.js`, `index.html`, `quest.css`: interaction, local mission setup and modal lifecycle.
+- `config/adventures.js`: route geometry, environmental palettes and bilingual guide/Guardian identity.
+- `src/missions/constructions.js`, `src/ui/region-scenery.js`: validated world constructions, exact summaries and Canvas scenery.
 - `config/worlds.js`, `config/finale.js`: chapter-route catalog and bilingual region/finale narrative.
 - `data/mathematics/f4/`: `bab01`, `bab06`, `bab07`, `bab09`, `bab10`, `finale` JSON tasks.
 - `scripts/curriculum-templates.mjs`: shared authored templates for the four applied chapters.

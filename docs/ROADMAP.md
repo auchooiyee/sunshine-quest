@@ -2,6 +2,8 @@
 
 Planning date: 5 October 2026 (Malaysia). Baseline: v0.4.0, deployed on Cloudflare Pages. This is a proposed delivery plan, not a record of completed features.
 
+Implementation update, 5 October 2026: v0.5 pilot features and v0.5.1 six-digit codes are delivered. v0.6 route, construction, Guardian, keepsake and ledger changes are documented in [V06_RELEASE.md](V06_RELEASE.md). Teacher content sign-off and real-device pilot observations remain pending. This roadmap retains its original planning estimates below.
+
 ## 1. Define what we are completing
 
 **First finish v1.0: a polished, teacher-reviewed Form 4 adventure with five distinct regions and one connected finale.** Students should understand how to play, see mathematics change the world, recover from mistakes, replay without losing earlier evidence, and share useful results with their teacher.

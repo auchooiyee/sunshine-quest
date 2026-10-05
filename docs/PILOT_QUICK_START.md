@@ -1,4 +1,4 @@
-# Classroom pilot — Sunshine Math Quest v0.5.1
+# Classroom pilot — Sunshine Math Quest v0.6
 
 Allow 15 minutes for a first session with 5–10 students. Use the [student site](https://sunshine-quest.pages.dev/?view=regions). Confirm which version you are testing before recording results.
 
@@ -14,7 +14,7 @@ Allow 15 minutes for a first session with 5–10 students. Use the [student site
 - Minutes 0–2: students open the mission. **How to play** offers a skippable movement practice, bridge example and saving instructions. It does not award XP or alter assignment evidence.
 - Minutes 2–12: complete the three stations. With assistance enabled, **Go to checkpoint** reduces navigation demands. Observe when a student needs help rather than giving every student the same hint.
 - Minutes 12–15: ask the student what changed in the forest and why. In **Learning journal**, enter a pseudonymous learner code and download **Export learning CSV**. Collect files using your normal classroom method.
-- Ask a fresh follow-up question to distinguish understanding from remembering a previously displayed answer. Record the explanation in the observation sheet.
+- Ask a fresh follow-up question to distinguish understanding from remembering a previously displayed answer. Record the explanation in the observation sheet. Use **What you changed** below the game to inspect the accepted constructions. Each region has a named guide briefing and a different route.
 
 ## If something goes wrong
 
