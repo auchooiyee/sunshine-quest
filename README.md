@@ -1,6 +1,6 @@
 # MathWithCYE · Sunshine Math Quest
 
-A playable Form 4 Mathematics adventure built on the original Sunshine Forest Canvas game. Version 0.6 adds five distinct routes and environments, named guide briefings, persistent mathematical constructions, chapter Guardians, a restoration collection and a clearer finale cost ledger. English/BM, six-digit classroom codes, three question sets per chapter, local saves and CSV reports are supported.
+A playable Form 4 Mathematics adventure built on the original Sunshine Forest Canvas game. Version 0.7 adds retained run history, separate review checks, targeted feedback, lesson-specific links and local class CSV summaries. English/BM, six-digit classroom codes, three question sets per chapter, local saves and CSV reports are supported.
 
 ## Run locally
 
@@ -57,7 +57,7 @@ Complete all six checks in each of the five chapter routes to unlock the formal 
 
 Each chapter has its original six tasks and two additional six-task sets: Practice B and Practice C. This adds 60 bilingual task versions, giving 90 chapter task versions and five connected finale stages. These finite authored sets change mathematical data, diagrams, hints and example answers together. They cover the same selected learning goals; they do not add full-chapter coverage.
 
-In the Learning journal, **Try another question set** cycles Original → B → C → Original after confirmation. It replaces the current route's progress and evidence; export first to retain the previous run. Other routes keep their progress. **Restart** resets the current route while retaining its selected set. Completion and XP are based only on the current run. A restarted prerequisite must be completed again to enter the formal finale.
+In the Learning journal, **Try another question set** cycles Original → B → C → Original after confirmation. It archives the current run before starting the next set. Up to 20 earlier runs are retained, including attempts, hints and review checks. When full, export and explicitly clear earlier runs before replaying. Other routes keep their progress. **Restart** resets the current route while retaining its selected set. Completion and XP are based only on the current run. A restarted prerequisite must be completed again to enter the formal finale.
 
 Question-set identity is saved with drafts, hints and attempts. Refreshing, switching language or exporting/importing JSON retains the same mathematics. Old saves keep the original tasks. Class missions use the teacher's chosen set; students cannot cycle it from the journal. The connected finale retains its existing scenario and answer-dependent questions.
 
@@ -65,21 +65,29 @@ Question-set identity is saved with drafts, hints and attempts. Refreshing, swit
 
 Select a chapter, its question set, and three stations or all six checks; or choose the final expedition with all five connected decisions. Choose independent or guided practice, adventure assistance, and the starting language. Expand the answer preview to inspect tasks and one example solution. For the finale, the example follows a complete connected plan; students' different choices change later questions. Generate a six-digit task code and mission link; students can paste either into the region map's Join mission form.
 
-Guided missions automatically show the first hint and therefore do not count as independent first answers. Three-station missions finish before the Guardian. Codes configure local practice; they do not create online rooms, logins, multiplayer or a results dashboard. The same configuration resumes that mission's local progress in that browser. Restart from the learning journal for a fresh practice run.
+Guided missions automatically show the first hint and therefore do not count as independent first answers. Three-station missions finish before the Guardian. Codes configure local practice and remain six digits. A code-only mission resumes the shared configuration save. Each generated lesson link additionally carries a separate lesson ID and optional due-date label; use that link for the whole class to distinguish lessons with identical settings. These links do not create online rooms, logins or automatic result collection. Restart from the learning journal for a fresh practice run.
 
 Students must first open their own copy of the game. A localhost link works only on that computer; a publicly usable link requires a hosted copy. The current local server does not provide cross-device classroom hosting. The task code is portable between accessible copies of this version.
+
+## Review and class reports
+
+The journal offers a separate different-number check after a completed answer used hints or retries. It uses the next authored question set for the same objective. Results persist without changing the original answer, adventure XP or gates. These finite sets may have been seen previously; they are not new learning objectives. Finale review is not yet included.
+
+Teachers can import multiple student CSVs from Teacher mode. Students must supply a learner code before exporting. The summary retains the newest snapshot per learner/lesson/run/task, separates review checks, lists submitted learners, and optionally compares a roster within the selected lesson scope. Task cards show runs, started/completed tasks, independent first answers, hint use and runs with misses, sorted by misses. Export the summary before closing the page; imported reports are held in memory only.
+
+CSV version 2 includes current and archived runs, review checks, run IDs, lesson identities, due labels and skill tags. Version 1 imports remain supported, with a warning that separate historical runs cannot be reconstructed. Local files are editable student-submitted evidence.
 
 ## Evidence and saves
 
 The journal separates adventure XP from independent first answers and completion with support or retries. There are 35 prototype checks, covering parts of five chapters and one connected expedition. They do not certify full-chapter mastery, PBD levels or SPM performance.
 
-Expeditions use the existing `mathwithcye-sunshine-quest-v1` storage key. Previous saves migrate in place to schema 2 / content 4, preserving valid completed mathematics, drafts, hints and materials. Each region has separate math and adventure state. New classroom codes contain exactly six digits, including a checksum to reject typing errors. Every supported combination of chapter, question set, length, support, assistance and language has one code; choosing the same settings gives the same code. Existing long codes and mission links still work and use the same classroom save as their short equivalent. Different configurations retain separate saves. Finale restoration validates each completed step against the restored earlier answers, so inconsistent downstream answers do not unlock later stages. Unknown question-set identifiers cannot restore completed evidence under another set.
+Expeditions use the existing `mathwithcye-sunshine-quest-v1` storage key. Previous saves migrate in place to schema 2 / content 5, preserving valid completed mathematics, drafts, hints and materials. Each region has separate math and adventure state. New classroom codes contain exactly six digits, including a checksum to reject typing errors. Every supported combination of chapter, question set, length, support, assistance and language has one code; choosing the same settings gives the same code. Existing long codes and mission links still work and use the same classroom save as their short equivalent. Different configurations retain separate saves. Finale restoration validates each completed step against the restored earlier answers, so inconsistent downstream answers do not unlock later stages. Unknown question-set identifiers cannot restore completed evidence under another set.
 
 Export all visited regions or the current class mission as JSON. M1, M2 and current progress exports can be imported after confirmation. Import targets the appropriate expedition or class save. Restarting a region or the finale leaves the other regions intact. No account or automatic upload is involved.
 
 If storage is blocked or full, the current session remains playable, including region switching, and the page reports that saving is unavailable. Export to keep a copy. Clearing browser data removes local saves; localStorage does not provide offline hosting.
 
-The Learning journal's **Export learning CSV** exports one row per task in visited expedition routes, or only the configured class mission. It includes set identity, completion status, attempts, hints, independent first-answer evidence, XP, answer drafts and UTC timestamps. An optional player-entered learner code helps teachers identify files. CSV is a local learning report; JSON remains the restore format. See `docs/LEARNING_CSV_GUIDE.md` for columns and interpretation.
+The Learning journal's **Export learning CSV** exports one row per task in each retained current or archived run, plus any started review checks. It covers visited expedition routes, or only the configured class mission. It includes set identity, completion status, attempts, hints, independent first-answer evidence, XP, answer drafts and UTC timestamps. An optional player-entered learner code helps teachers identify files. CSV is a local learning report; JSON remains the restore format. See `docs/LEARNING_CSV_GUIDE.md` for columns and interpretation.
 
 ## Verification
 
@@ -87,7 +95,7 @@ The Learning journal's **Export learning CSV** exports one row per task in visit
 npm test
 ```
 
-59 tests cover the 16 upstream engine regressions, M1/M2/finale progression, all 60 additional task versions, multiple valid answers, storage and set restoration, mission-code validation/isolation, report evidence, CSV quoting, and applied cart/platform behavior.
+68 tests cover the 16 upstream engine regressions, M1/M2/finale progression, all 60 additional task versions, multiple valid answers, storage and set restoration, mission-code validation/isolation, report evidence, CSV quoting, and applied cart/platform behavior.
 
 For browser checks, keep the server running and provide Playwright plus installed Chrome. Set `PLAYWRIGHT_PACKAGE` to the installed package directory if it is not locally resolvable:
 
@@ -95,13 +103,13 @@ For browser checks, keep the server running and provide Playwright plus installe
 npm run test:browser
 ```
 
-`tests/browser-smoke.mjs` has 10 baseline flow groups; `browser-expedition.mjs` has 12; `browser-finale.mjs` has 10. `browser-practice.mjs` adds 8 groups covering set replay, all 60 additional task versions, teacher-set selection, JSON recovery, CSV evidence/scope and phone reports. `browser-pilot.mjs` adds 7 groups for the isolated tutorial, direct Continue/Join, loading retries, protected damaged saves and phone layouts. `browser-codes.mjs` covers 4 short-code and compatibility groups; `browser-adventures.mjs` adds 6 region, construction and restoration groups. All 57 groups passed for v0.6. Reports and screenshots are saved under Git-ignored `artifacts/`.
+`tests/browser-smoke.mjs` has 10 baseline flow groups; `browser-expedition.mjs` has 12; `browser-finale.mjs` has 10. `browser-practice.mjs` adds 8 groups covering set replay, all 60 additional task versions, teacher-set selection, JSON recovery, CSV evidence/scope and phone reports. `browser-pilot.mjs` adds 7 groups for the isolated tutorial, direct Continue/Join, loading retries, protected damaged saves and phone layouts. `browser-codes.mjs` covers 4 short-code and compatibility groups; `browser-adventures.mjs` adds 6 region, construction and restoration groups. These 57 groups form the regression baseline. `browser-learning.mjs` adds six groups for review persistence, archive/export recovery, CSV aggregation, lesson identity and phone layouts. Reports and screenshots are saved under Git-ignored `artifacts/`.
 
 Six-digit code verification: all 248 supported configurations round-trip without collisions; single-digit errors and adjacent digit swaps are rejected. `tests/browser-codes.mjs` covers teacher copying, phone entry and legacy-link save continuity.
 
 Content and BM wording await teacher review. Chrome desktop and mobile emulation are verified; real Android/iOS and classroom observations remain pending. See `docs/TEACHER_REVIEW_GUIDE.md`.
 
-See [v0.6 release notes](docs/V06_RELEASE.md) for route changes, saved cart animation, keepsakes and compatibility.
+See [v0.7 release notes](docs/V07_RELEASE.md) for learning tools and remaining content work; [v0.6 notes](docs/V06_RELEASE.md) document the adventure regions.
 
 ## Source structure
 

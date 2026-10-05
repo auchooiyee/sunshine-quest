@@ -8,7 +8,9 @@ export function checkAssignment(value){
   if(!value||value.v!==ASSIGNMENT_VERSION||!REGIONS.some(w=>w.id===value.world)||(value.world==='finale'?value.tasks!==5:![3,6].includes(value.tasks))||typeof value.assist!=='boolean'||typeof value.guided!=='boolean'||!['en','ms'].includes(value.language))return null;
   const variant=value.variant??0;
   if(!Number.isInteger(variant)||variant<0||variant>2||(value.world==='finale'&&variant!==0))return null;
-  return {v:ASSIGNMENT_VERSION,world:value.world,tasks:value.tasks,assist:value.assist,guided:value.guided,language:value.language,...(variant?{variant}:{})};
+  if(value.instanceId!==undefined&&(typeof value.instanceId!=='string'||!/^lesson-[\w-]{1,64}$/.test(value.instanceId)))return null;
+  if(value.dueLabel!==undefined&&(typeof value.dueLabel!=='string'||value.dueLabel.length>60||/[\u0000-\u001f]/.test(value.dueLabel)))return null;
+  return {v:ASSIGNMENT_VERSION,world:value.world,tasks:value.tasks,assist:value.assist,guided:value.guided,language:value.language,...(variant?{variant}:{}),...(value.instanceId?{instanceId:value.instanceId,...(value.dueLabel?{dueLabel:value.dueLabel}:{})}:{})};
 }
 export function encodeAssignment(config){
   const value=checkAssignment(config);if(!value)throw new Error('Invalid assignment');
@@ -32,7 +34,18 @@ export function decodeAssignment(code){
   }catch{return null;}
 }
 // Keep the original storage identity so short and legacy codes resume the same work.
-export function assignmentKey(config){const value=checkAssignment(config);if(!value)throw new Error('Invalid assignment');return 'mathwithcye-class-'+legacyCode(value);}
+export function assignmentKey(config){const value=checkAssignment(config);if(!value)throw new Error('Invalid assignment');const {instanceId,dueLabel,...base}=value;return 'mathwithcye-class-'+legacyCode(base)+(instanceId?'-'+instanceId:'');}
+export function assignmentURL(config,base){
+  const value=checkAssignment(config);if(!value)throw new Error('Invalid assignment');
+  const url=new URL(base);url.search='';url.hash='';url.searchParams.set('assignment',encodeAssignment(value));
+  if(value.instanceId){url.searchParams.set('lesson',value.instanceId);if(value.dueLabel)url.searchParams.set('due',value.dueLabel);}
+  return url;
+}
+export function assignmentFromURL(input){
+  try{const url=new URL(input),base=decodeAssignment(url.searchParams.get('assignment'));if(!base)return null;
+    return checkAssignment({...base,...(url.searchParams.has('lesson')?{instanceId:url.searchParams.get('lesson'),dueLabel:url.searchParams.get('due')||''}:{})});
+  }catch{return null;}
+}
 export function assignmentCurriculum(data,config){
   if(!config)return data;
   const selected=selectVariant(data,config.variant||0);

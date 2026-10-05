@@ -22,16 +22,22 @@ import {createTutorial} from './src/ui/tutorial.js';
 import {adventureFor} from './config/adventures.js';
 import {constructionsFor,constructionSummary} from './src/missions/constructions.js';
 import {en as adventureEN,ms as adventureMS} from './locales/adventure.js';
+import {en as learningEN,ms as learningMS} from './locales/learning.js';
+import {newRun,archiveRun} from './src/learning/history.js';
+import {diagnostic} from './src/learning/feedback.js';
+import {createLearningTools,download} from './src/ui/learning-tools.js';
+import {assignmentURL,assignmentFromURL} from './src/missions/assignment.js';
 
 const $ = id => document.getElementById(id);
 const storage = { getItem:key=>localStorage.getItem(key), setItem:(key,value)=>localStorage.setItem(key,value) };
 const assignmentParam=new URLSearchParams(location.search).get('assignment');
-const assignment=assignmentParam?decodeAssignment(assignmentParam):null;
+const assignment=assignmentParam?assignmentFromURL(location.href):null;
 const saveKey=assignment?assignmentKey(assignment):STORAGE_KEY;
 const stored = loadSave(storage,saveKey);
 let currentWorld=getWorld(assignment?.world||stored.data?.currentRegion),regions=stored.data?.regions||{};
 let language=stored.data?.language || assignment?.language || 'en', assist=assignment?assignment.assist:stored.data?.assist !== false;
-const messages={en:{...en,...expeditionEN,...finaleEN,...practiceEN,...pilotEN,...adventureEN},ms:{...ms,...expeditionMS,...finaleMS,...practiceMS,...pilotMS,...adventureMS}};
+let history=stored.data?.history||[];
+const messages={en:{...en,...expeditionEN,...finaleEN,...practiceEN,...pilotEN,...adventureEN,...learningEN},ms:{...ms,...expeditionMS,...finaleMS,...practiceMS,...pilotMS,...adventureMS,...learningMS}};
 const t = key => assignment?.tasks===3&&['questLead','introText','finishedText'].includes(key)?messages[language].shortMissionText:key==='guardian'&&adventureFor(currentWorld.id)?adventureFor(currentWorld.id).guardian[language]:worldText(currentWorld,key,language) || messages[language][key] || messages.en[key] || key;
 const game=createGame(regions[currentWorld.id]?.world,{mathQuest:true,assist});
 const curricula=new Map();
@@ -49,7 +55,8 @@ const dialogs=[...document.querySelectorAll('dialog')];
 const anyModal=()=>dialogs.some(d=>d.open);
 const escaped = value => String(value).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 function clearInput(){for(const key of Object.keys(input))input[key]=false;document.querySelectorAll('[data-control]').forEach(b=>b.classList.remove('pressed'));}
-function snapshotSave(){regions[currentWorld.id]={world:game.save(),quest:quest.save()};return {regions,currentRegion:currentWorld.id,assignment,language,assist,reportLabel};}
+function snapshotSave(){const previous=regions[currentWorld.id]||{};regions[currentWorld.id]={...previous,run:previous.run||newRun(),reviews:previous.reviews||{},world:game.save(),quest:quest.save()};return {regions,history,currentRegion:currentWorld.id,assignment,language,assist,reportLabel};}
+const learningTools=createLearningTools({context:()=>{snapshotSave();return {region:regions[currentWorld.id],history,bank:curricula.get(currentWorld.id),bankFor:id=>assignmentCurriculum(curricula.get(id),assignment),quest,language};},persist,t,openDialog,openJournal:()=>{renderJournal();openDialog($('journal'));}});
 function persist(){if(!loaded||!quest||replacingSave)return;if(!recoveryPending)stored.available=writeSave(storage,snapshotSave(),saveKey);$('save-status').textContent=t(recoveryPending?'recoveryStatus':stored.available?'saveOK':'saveBad');}
 function toast(key){$('toast').textContent=t(key);$('toast').hidden=false;toastUntil=performance.now()+3500;}
 function tone(name){
@@ -81,10 +88,10 @@ function applyLanguage(){
   $('question-set').hidden=currentWorld.id==='finale';
   $('region-number').textContent=currentWorld.id==='finale'?t('finale'):`${String(WORLDS.indexOf(currentWorld)+1).padStart(2,'0')} / 05`;
   $('class-banner').hidden=!assignment;
-  $('class-label').textContent=assignment?`${t('classMode')} · ${assignment.tasks} ${t('checks')} · ${t(assignment.guided?'guided':'independentMode')}`:'';
+  $('class-label').textContent=assignment?`${t('classMode')} · ${assignment.tasks} ${t('checks')} · ${t(assignment.guided?'guided':'independentMode')}${assignment.instanceId?` · ${t('lessonIdentity')}: ${assignment.instanceId.slice(-8)}${assignment.dueLabel?' · '+assignment.dueLabel:''}`:''}`:'';
   $('leave-class').hidden=!assignment;
   if($('region-map').open)renderRegionMap();
-  if($('teacher').open)renderTeacherPreview();
+  if($('teacher').open){renderTeacherPreview();learningTools.renderReports();}
   if(loaded){$('start-button').textContent=t(game.state.elapsed>0 || quest.completed.length?'continue':'start');updateUI(true);}
   if($('challenge').open)renderChallenge();
   if($('journal').open)renderJournal();
@@ -256,7 +263,7 @@ function renderFeedback(){
   $('feedback').hidden=!feedback;if(!feedback)return;
   $('feedback').classList.toggle('error',!feedback.correct);
   const title=document.createElement('strong');title.textContent=t(feedback.correct?'correct':'incorrect');
-  const message=document.createElement('span');message.textContent=feedback.correct?quest.active.explanation[language]:t(feedback.reason==='invalid'?'invalid':'wrong'+feedback.reason[0].toUpperCase()+feedback.reason.slice(1));
+  const message=document.createElement('span');message.textContent=feedback.correct?quest.active.explanation[language]:t(feedback.reason==='invalid'?'invalid':diagnostic(quest.active,quest.session.draft)||'wrong'+feedback.reason[0].toUpperCase()+feedback.reason.slice(1));
   $('feedback').replaceChildren(title,message);
   if(feedback.correct){const reward=document.createElement('small');reward.textContent=` +${feedback.reward} ${t('earned')}`;$('feedback').append(reward);}
 }
@@ -284,6 +291,7 @@ function renderJournal(){
   $('variant-note').hidden=currentWorld.id==='finale';
   $('reset-message').textContent=t(restartWithVariant?'variantResetPrompt':'resetPrompt');
   renderCollection();
+  learningTools.renderJournal();
   for(const def of quest.challenges){
     const session=quest.save().sessions[def.id],complete=quest.completed.includes(def.id);
     const status=complete?t(session.independent?'independentPass':'supportedPass'):session.attempts?t('working'):t('notStarted');
@@ -397,19 +405,19 @@ function renderTeacherPreview(){
   }
   $('teacher-output').hidden=true;
 }
-$('teacher-button').onclick=()=>{if(!loaded)return;if(!$('teacher-world').options.length)for(const world of REGIONS){const option=new Option(world.name[language],world.id);$('teacher-world').add(option);}$('teacher-world').value=currentWorld.id;$('teacher-variant').value=String(quest.variantIndex);$('teacher-language').value=language;renderTeacherPreview();openDialog($('teacher'));};
+$('teacher-button').onclick=()=>{if(!loaded)return;if(!$('teacher-world').options.length)for(const world of REGIONS){const option=new Option(world.name[language],world.id);$('teacher-world').add(option);}$('teacher-world').value=currentWorld.id;$('teacher-variant').value=String(quest.variantIndex);$('teacher-language').value=language;renderTeacherPreview();learningTools.renderReports();openDialog($('teacher'));};
 for(const id of ['teacher-world','teacher-variant','teacher-tasks','teacher-support','teacher-assist','teacher-language'])$(id).onchange=renderTeacherPreview;
 $('generate-code').onclick=()=>{
-  const code=encodeAssignment(teacherConfig()),url=new URL(location.href);url.search='';url.searchParams.set('assignment',code);url.hash='';
+  const config={...teacherConfig(),instanceId:'lesson-'+crypto.randomUUID(),dueLabel:$('teacher-due').value.trim()},code=encodeAssignment(config),url=assignmentURL(config,location.href);
   $('generated-code').value=code;$('generated-link').value=url.href;$('teacher-output').hidden=false;
 };
-function launchAssignment(config){persist();const url=new URL(location.href);url.search='';url.searchParams.set('assignment',encodeAssignment(config));url.hash='';replacingSave=true;location.assign(url.href);}
-$('launch-class').onclick=()=>launchAssignment(decodeAssignment($('generated-code').value));
+$('teacher-due').oninput=()=>{$('teacher-output').hidden=true;};
+function launchAssignment(config){persist();replacingSave=true;location.assign(assignmentURL(config,location.href).href);}
+$('launch-class').onclick=()=>launchAssignment(assignmentFromURL($('generated-link').value));
 $('copy-class-code').onclick=async()=>{try{await navigator.clipboard.writeText($('generated-code').value);$('copy-status').textContent=t('codeCopySuccess');}catch{$('generated-code').focus();$('generated-code').select();$('copy-status').textContent=t('codeCopyFallback');}};
 $('copy-class-link').onclick=async()=>{try{await navigator.clipboard.writeText($('generated-link').value);$('copy-status').textContent=t('codeCopied');}catch{$('generated-link').focus();$('generated-link').select();$('copy-status').textContent=t('copyFallback');}};
 $('join-form').onsubmit=event=>{
-  event.preventDefault();let code=$('join-input').value.trim();try{if(/^https?:\/\//.test(code))code=new URL(code).searchParams.get('assignment');}catch{code=null;}
-  const config=decodeAssignment(code);if(!config){$('join-error').textContent=t('invalidCode');return;}launchAssignment(config);
+  event.preventDefault();const input=$('join-input').value.trim(),config=/^https?:\/\//.test(input)?assignmentFromURL(input):decodeAssignment(input);if(!config){$('join-error').textContent=t('invalidCode');return;}launchAssignment(config);
 };
 $('leave-class').onclick=()=>{persist();const url=new URL(location.href);url.search='';url.hash='';replacingSave=true;location.assign(url.href);};
 $('preview-action').onclick=()=>{previewTime=0;previewRunning=true;renderGraph();};
@@ -430,8 +438,15 @@ $('finish-exit').onclick=()=>{game.start();$('completion').close();updateUI(true
 $('restart-button').onclick=()=>{restartWithVariant=false;renderJournal();$('reset-confirm').hidden=false;};$('cancel-restart').onclick=()=>{$('reset-confirm').hidden=true;};
 $('next-variant').onclick=()=>{if(assignment||currentWorld.id==='finale')return;restartWithVariant=true;renderJournal();$('reset-confirm').hidden=false;};
 $('confirm-restart').onclick=()=>{
+  snapshotSave();try{history=archiveRun(history,currentWorld.id,regions[currentWorld.id],reportLabel);}catch{ $('history-status').textContent=t('historyFull');$('history-status').scrollIntoView({block:'center'});return;}
+  regions[currentWorld.id]={run:newRun(),reviews:{}};
   const index=restartWithVariant?(quest.variantIndex+1)%variantOptions(curricula.get(currentWorld.id)).length:quest.variantIndex;
   modalWasPlaying=false;$('journal').close();curriculum=assignmentCurriculum(curricula.get(currentWorld.id),assignment);quest=createQuest(selectVariant(curriculum,index));game.restart();feedback=null;configureWorld();renderer.resetCamera();$('reset-confirm').hidden=true;restartWithVariant=false;persist();applyLanguage();updateUI(true);
+};
+$('clear-history').onclick=()=>{
+  if(!history.length||!confirm(t('clearHistoryConfirm')))return;
+  download(JSON.stringify({...snapshotSave(),schemaVersion:2,contentVersion:CONTENT_VERSION},null,2),'mathwithcye-history-backup.json','application/json');
+  history=[];persist();renderJournal();$('history-status').textContent=t('historyCleared');
 };
 $('report-label').oninput=()=>{reportLabel=$('report-label').value.slice(0,40);persist();};
 $('export-csv').onclick=()=>{
@@ -445,7 +460,7 @@ $('import-file').onchange=async()=>{
   if(file.size>1000000){alert(t('importInvalid'));return;}
   try{const data=decodeSave(await file.text());if(!data){alert(t('importInvalid'));return;}if(!confirm(t('importConfirm')))return;
     const destinationKey=data.assignment?assignmentKey(data.assignment):STORAGE_KEY;
-    if(!writeSave(storage,data,destinationKey)){alert(t('saveBad'));return;}replacingSave=true;const url=new URL(location.href);url.search='';if(data.assignment)url.searchParams.set('assignment',encodeAssignment(data.assignment));location.assign(url.href);
+    if(!writeSave(storage,data,destinationKey)){alert(t('saveBad'));return;}replacingSave=true;const url=data.assignment?assignmentURL(data.assignment,location.href):new URL(location.pathname,location.origin);location.assign(url.href);
   }catch{alert(t('importInvalid'));}
 };
 const keys={ArrowLeft:'left',KeyA:'left',ArrowRight:'right',KeyD:'right',Space:'jump',ArrowUp:'jump',KeyW:'jump',KeyJ:'attack',KeyE:'interact'};

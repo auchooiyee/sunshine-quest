@@ -74,5 +74,5 @@ test('CSV preserves Unicode, commas, quotes and line breaks, blocks text formula
   assert.equal(csvCell('A,"B"\nC'),'"A,""B""\nC"');assert.equal(csvCell('  =1+1'),'"\'  =1+1"');assert.equal(csvCell('@SUM(1,2)'),'"\'@SUM(1,2)"');assert.equal(csvCell(-2),'"-2"');
   const q=createQuest(banks.get('motion')),state=q.save();state.records=[{id:'roots',at:1e100,correct:false,hints:0,first:true}];
   const csv=learningCSV({reportLabel:'=HYPERLINK("x")',regions:{motion:{quest:state}}},banks,'2026-10-04T00:00:00.000Z');
-  assert.ok(csv.startsWith('\ufeff'));assert.ok(csv.includes('\r\n'));assert.ok(csv.includes('"\'=HYPERLINK(""x"")"'));assert.ok(csv.includes('"Baca trek"'));assert.equal(learningRows({regions:{motion:{quest:state}}},banks)[0].at(-1),'');
+  assert.ok(csv.startsWith('\ufeff'));assert.ok(csv.includes('\r\n'));assert.ok(csv.includes('"\'=HYPERLINK(""x"")"'));assert.ok(csv.includes('"Baca trek"'));assert.equal(learningRows({regions:{motion:{quest:state}}},banks)[0][REPORT_COLUMNS.indexOf('last_attempt_at_utc')],'');
 });

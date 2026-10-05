@@ -85,6 +85,8 @@ Acceptance: every model change is reflected consistently in question text, graph
 
 ## 6. v0.7 — Improve feedback, replay and teacher evidence
 
+6 October delivery: v0.7.0 implements bounded run archives, separate next-set review checks, conservative condition feedback, v2 CSVs, local multi-file class summaries, roster comparison and lesson-instance links while preserving six-digit configuration codes. See [V07_RELEASE.md](V07_RELEASE.md). Structurally different difficulty groups, broader reviewed skill/misconception metadata and new transfer/finale review content remain open; the roadmap below is not a claim that every item has shipped.
+
 ### Student learning
 
 - Add skill tags and misconception codes to authored tasks. Give targeted feedback such as a boundary being excluded or a draw changing the denominator. Fall back to a general hint if the reason cannot be inferred reliably.

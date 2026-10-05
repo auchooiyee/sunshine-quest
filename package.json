@@ -1,12 +1,12 @@
 {
   "name": "mathwithcye-sunshine-math-quest",
-  "version": "0.6.0",
+  "version": "0.7.0",
   "private": true,
   "type": "module",
   "scripts": {
     "build": "node scripts/build-site.mjs",
     "test": "node --test engine.test.mjs tests/*.test.mjs",
     "start": "node server.mjs",
-    "test:browser": "node tests/browser-smoke.mjs && node tests/browser-expedition.mjs && node tests/browser-finale.mjs && node tests/browser-practice.mjs && node tests/browser-pilot.mjs && node tests/browser-codes.mjs && node tests/browser-adventures.mjs"
+    "test:browser": "node tests/browser-smoke.mjs && node tests/browser-expedition.mjs && node tests/browser-finale.mjs && node tests/browser-practice.mjs && node tests/browser-pilot.mjs && node tests/browser-codes.mjs && node tests/browser-adventures.mjs && node tests/browser-learning.mjs"
   }
 }
