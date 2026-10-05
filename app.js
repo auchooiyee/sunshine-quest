@@ -16,6 +16,9 @@ import ms from './locales/ms.js';
 import { en as expeditionEN, ms as expeditionMS } from './locales/expedition.js';
 import { en as finaleEN, ms as finaleMS } from './locales/finale.js';
 import {en as practiceEN,ms as practiceMS} from './locales/practice.js';
+import {en as pilotEN,ms as pilotMS} from './locales/pilot.js';
+import {fetchJSON,settleLoads} from './src/loading.js';
+import {createTutorial} from './src/ui/tutorial.js';
 
 const $ = id => document.getElementById(id);
 const storage = { getItem:key=>localStorage.getItem(key), setItem:(key,value)=>localStorage.setItem(key,value) };
@@ -25,23 +28,25 @@ const saveKey=assignment?assignmentKey(assignment):STORAGE_KEY;
 const stored = loadSave(storage,saveKey);
 let currentWorld=getWorld(assignment?.world||stored.data?.currentRegion),regions=stored.data?.regions||{};
 let language=stored.data?.language || assignment?.language || 'en', assist=assignment?assignment.assist:stored.data?.assist !== false;
-const messages={en:{...en,...expeditionEN,...finaleEN,...practiceEN},ms:{...ms,...expeditionMS,...finaleMS,...practiceMS}};
+const messages={en:{...en,...expeditionEN,...finaleEN,...practiceEN,...pilotEN},ms:{...ms,...expeditionMS,...finaleMS,...practiceMS,...pilotMS}};
 const t = key => assignment?.tasks===3&&['questLead','introText','finishedText'].includes(key)?messages[language].shortMissionText:worldText(currentWorld,key,language) || messages[language][key] || messages.en[key] || key;
 const game=createGame(regions[currentWorld.id]?.world,{mathQuest:true,assist});
 const curricula=new Map();
 let previewTime=0,previewRunning=false;
 let curriculum, quest, loaded=false, autosave=0, last=0, toastUntil=0, uiSignature='', feedback=null, rootPick=0, soundOn=false, audioContext;
 let modalWasPlaying=false, openingModal=false, replacingSave=false;
+let loadingNow=false, loadingPhase='loadingLessons', loadFailed=false, recoveryPending=stored.damaged, modalOpener=null;
 let reportLabel=stored.data?.reportLabel||'',restartWithVariant=false;
 const input={}, stage=$('stage');
 const renderer=createForestRenderer($('world'),stage,game,()=>quest,t,()=>currentWorld.id,()=>currentWorld);
+const tutorial=createTutorial({t,openDialog,switchLanguage});
 const stationX=id=>currentWorld.id==='finale'?FINAL_WORLD.stations[id]:STATIONS[id];
 const dialogs=[...document.querySelectorAll('dialog')];
 const anyModal=()=>dialogs.some(d=>d.open);
 const escaped = value => String(value).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 function clearInput(){for(const key of Object.keys(input))input[key]=false;document.querySelectorAll('[data-control]').forEach(b=>b.classList.remove('pressed'));}
 function snapshotSave(){regions[currentWorld.id]={world:game.save(),quest:quest.save()};return {regions,currentRegion:currentWorld.id,assignment,language,assist,reportLabel};}
-function persist(){if(!quest||replacingSave)return;stored.available=writeSave(storage,snapshotSave(),saveKey);$('save-status').textContent=t(stored.available?'saveOK':'saveBad');}
+function persist(){if(!loaded||!quest||replacingSave)return;if(!recoveryPending)stored.available=writeSave(storage,snapshotSave(),saveKey);$('save-status').textContent=t(recoveryPending?'recoveryStatus':stored.available?'saveOK':'saveBad');}
 function toast(key){$('toast').textContent=t(key);$('toast').hidden=false;toastUntil=performance.now()+3500;}
 function tone(name){
   if(!soundOn)return;
@@ -78,12 +83,15 @@ function applyLanguage(){
   if($('challenge').open)renderChallenge();
   if($('journal').open)renderJournal();
   if($('workshop').open)renderWorkshop();
+  tutorial.render();
+  $('load-message').textContent=t(loadFailed?'loadError':loadingPhase);
+  $('save-recovery').hidden=!recoveryPending;
   persist();
 }
 function switchLanguage(){language=language==='en'?'ms':'en';applyLanguage();}
 function openDialog(dialog){
   if(anyModal())return false;
-  clearInput();modalWasPlaying=game.state.mode==='playing';
+  clearInput();modalOpener=document.activeElement;modalWasPlaying=game.state.mode==='playing';
   if(modalWasPlaying)game.togglePause();openingModal=true;dialog.showModal();openingModal=false;updateUI(true);return true;
 }
 function handleDialogClose(dialog){
@@ -96,7 +104,8 @@ function handleDialogClose(dialog){
     if(completedChallenge && quest.complete){modalWasPlaying=false;showCompletion();return;}
   }
   if(modalWasPlaying && game.state.mode==='paused')game.togglePause();
-  modalWasPlaying=false;stage.focus({preventScroll:true});persist();updateUI(true);
+  modalWasPlaying=false;persist();updateUI(true);
+  if(!anyModal())(modalOpener?.isConnected&&modalOpener.getClientRects().length?modalOpener:stage).focus({preventScroll:true});
 }
 for(const dialog of dialogs)dialog.addEventListener('close',()=>handleDialogClose(dialog));
 for(const button of document.querySelectorAll('[data-close]'))button.onclick=()=>$(button.dataset.close).close();
@@ -126,7 +135,7 @@ function updateUI(force=false){
   $('interaction').hidden=s.mode!=='playing'||(!near&&!workshop);
   $('interaction').querySelector('span').textContent=t(near?at:'craft');
   $('location').textContent=p.x<420?t('trailHome'):currentWorld.id==='finale'?t(FINAL_WORLD.gates.find(([,x])=>p.x<x)?.[0]||'guardian'):p.x<1100?t('roots'):p.x<2090?t('vertex'):p.x<2960?t('design'):t('guardian');
-  $('save-status').textContent=t(stored.available?'saveOK':'saveBad');
+  $('save-status').textContent=t(recoveryPending?'recoveryStatus':stored.available?'saveOK':'saveBad');
   $('pause-button').textContent=t(s.mode==='paused'?'resume':'pause');
   $('completion-stats').textContent=`${quest.xp} XP · ${quest.independent} / ${checks} ${t('independent')}`;
   renderManifest();
@@ -277,6 +286,16 @@ function renderWorkshop(){
   }
 }
 $('start-button').onclick=begin;$('interaction').onclick=interact;
+for(const id of ['guide-button','intro-guide'])$(id).onclick=()=>{if(loaded)tutorial.open();};
+$('intro-regions').onclick=()=>$('region-button').click();
+function joinFromEntry(){if(!loaded)return;if(!$('region-map').open)$('region-button').click();$('join-input').scrollIntoView({block:'center'});$('join-input').focus();}
+$('intro-join').onclick=$('map-join').onclick=joinFromEntry;
+$('map-continue').onclick=()=>{modalWasPlaying=false;modalOpener=stage;$('region-map').close();if(game.state.mode==='paused')game.togglePause();begin();};
+$('recovery-download').onclick=()=>{
+  const url=URL.createObjectURL(new Blob([stored.damagedRaw??''],{type:'application/json'})),link=document.createElement('a');
+  link.href=url;link.download='mathwithcye-original-save.json';link.click();setTimeout(()=>URL.revokeObjectURL(url),1000);
+};
+$('recovery-replace').onclick=()=>{if(!loaded||!confirm(t('recoveryConfirm')))return;recoveryPending=false;$('save-recovery').hidden=true;persist();};
 function regionQuest(world){return world.id===currentWorld.id?quest:createQuest(curricula.get(world.id),regions[world.id]?.quest);}
 function finalUnlocked(){return isFinaleUnlocked(WORLDS.map(regionQuest));}
 function changeRegion(world){
@@ -300,6 +319,7 @@ function renderManifest(){
   if(final){$('manifest-values').innerHTML=manifestMarkup();$('completion-manifest').innerHTML=manifestMarkup();}
 }
 function renderRegionMap(){
+  $('map-continue').textContent=`${t(game.state.elapsed>0||quest.completed.length?'resumeRegion':'start')} · ${currentWorld.name[language]}`;
   $('region-cards').replaceChildren();let total=0,complete=0;
   for(const world of WORLDS){
     const progress=regionQuest(world);total+=progress.xp;if(progress.complete)complete++;
@@ -354,7 +374,7 @@ $('language').onclick=$('challenge-language').onclick=switchLanguage;
 $('journal-button').onclick=()=>{if(!loaded)return;renderJournal();openDialog($('journal'));};
 $('pause-button').onclick=$('resume-button').onclick=()=>{if(!loaded||anyModal()||game.state.mode==='ready'||game.state.mode==='complete')return;game.togglePause();clearInput();stage.focus({preventScroll:true});updateUI(true);};
 $('sound-button').onclick=()=>{soundOn=!soundOn;$('sound-button').setAttribute('aria-pressed',String(soundOn));tone('pickup');};
-$('assist').onchange=()=>{assist=$('assist').checked;const exploring=quest.complete&&game.state.mode==='playing';configureWorld();if(exploring)game.start();persist();updateUI(true);};
+$('assist').onchange=()=>{assist=$('assist').checked;if(!loaded)return;const exploring=quest.complete&&game.state.mode==='playing';configureWorld();if(exploring)game.start();persist();updateUI(true);};
 $('checkpoint').onclick=()=>{
   if(!loaded||anyModal()||!assist||quest.complete)return;if(game.state.mode==='ready')game.start();
   if(game.state.mode!=='playing')return;
@@ -424,18 +444,25 @@ function frame(now){
   requestAnimationFrame(frame);
 }
 async function init(){
+  if(loadingNow||loaded)return;
+  loadingNow=true;loadFailed=false;loadingPhase='loadingLessons';$('retry-load').hidden=true;$('retry-load').disabled=true;$('load-note').hidden=true;
   applyLanguage();
   try{
-    await Promise.all(REGIONS.map(async world=>{const response=await fetch(world.path);if(!response.ok)throw new Error('Curriculum unavailable');curricula.set(world.id,await response.json());}));
+    await settleLoads(REGIONS.filter(world=>!curricula.has(world.id)).map(async world=>{
+      const data=await fetchJSON(world.path);if(!Array.isArray(data?.challenges)||!data.challenges.length)throw new Error('Invalid curriculum');curricula.set(world.id,data);
+    }));
     let relocked=false;
     if(currentWorld.id==='finale'&&!assignment&&!isFinaleUnlocked(WORLDS.map(w=>createQuest(curricula.get(w.id),regions[w.id]?.quest)))){
       currentWorld=getWorld('quadratics');game.restart();Object.assign(game.state,createGame(regions.quadratics?.world,{mathQuest:true,assist}).state);relocked=true;
     }
     curriculum=assignmentCurriculum(curricula.get(currentWorld.id),assignment);quest=createQuest(curriculum,regions[currentWorld.id]?.quest);configureWorld();
+    loadingPhase='loadingForest';$('load-message').textContent=t(loadingPhase);
     await renderer.load();loaded=true;$('loading').hidden=true;$('start-button').disabled=false;applyLanguage();updateUI(true);requestAnimationFrame(frame);
     if(stored.damaged)toast('saveDamaged');if(assignmentParam&&!assignment)toast('invalidCode');if(relocked)toast('finaleLocked');if(quest.complete)showCompletion();else if(new URLSearchParams(location.search).get('view')==='regions')$('region-button').click();
-  }catch(error){$('loading').textContent=t('loadError');console.error(error);}
+  }catch(error){loadFailed=true;$('load-message').textContent=t('loadError');$('load-note').hidden=false;$('retry-load').hidden=false;$('retry-load').disabled=false;}
+  finally{loadingNow=false;}
 }
+$('retry-load').onclick=init;
 // Read-only QA snapshot; all user actions still go through the displayed controls.
 window.mathQuest={snapshot:()=>JSON.parse(JSON.stringify({loaded,language,assist,region:currentWorld.id,assignment,world:game.state,quest:quest?.save(),xp:quest?.xp,independent:quest?.independent,active:quest?.active?.id,next:quest?.next?.id,manifest:currentWorld.id==='finale'&&quest?supplyManifest(quest.save()):null,graph:graphGeometry}))};
 init();

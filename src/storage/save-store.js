@@ -22,7 +22,7 @@ export function decodeSave(text){
   }catch{return null;}
 }
 export function loadSave(storage,key=STORAGE_KEY){
-  try{const raw=storage.getItem(key),data=decodeSave(raw);return {data,available:true,damaged:raw!==null&&!data};}
+  try{const raw=storage.getItem(key),data=decodeSave(raw);return {data,available:true,damaged:raw!==null&&!data,...(raw!==null&&!data?{damagedRaw:raw}:{})};}
   catch{return {data:null,available:false,damaged:false};}
 }
 export function writeSave(storage,data,key=STORAGE_KEY){

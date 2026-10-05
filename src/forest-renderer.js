@@ -1,5 +1,6 @@
 // Forest rendering adapted from july-lyan/yoyo-sunshine-forest.
 import { parseNumber } from './math/quadratics.js';
+import { fetchJSON, settleLoads } from './loading.js';
 export const STATIONS = { roots:650, vertex:1470, design:2310, guardian:3700 };
 export function createForestRenderer(canvas, stage, game, quest, t, region=()=> 'quadratics', meta=()=>null) {
 const ctx = canvas.getContext('2d'), images = {};
@@ -220,9 +221,12 @@ function drawQuestWorld() {
   }
 }
 async function load() {
-  const response=await fetch('assets/animations.json');if(!response.ok)throw new Error('Animation data unavailable');animationData=await response.json();
-  await Promise.all(['armed-walk','rocks','stone','wood-shield','stone-shield','wood-axe','stone-sword','hero-animation','mushroom-animation','forest','forest-east','hero','house','logs','red','hopper','spore','boss','wood','bench'].map(name=>new Promise((resolve,reject)=>{
-    const img=new Image();img.onload=()=>{images[name]=img;resolve();};img.onerror=()=>reject(new Error('Asset unavailable: '+name));img.src='assets/'+name+'.'+(name==='armed-walk'||name.startsWith('forest')||name.endsWith('animation')?'webp':'png');
+  animationData ||= await fetchJSON('assets/animations.json');
+  await settleLoads(['armed-walk','rocks','stone','wood-shield','stone-shield','wood-axe','stone-sword','hero-animation','mushroom-animation','forest','forest-east','hero','house','logs','red','hopper','spore','boss','wood','bench'].filter(name=>!images[name]).map(name=>new Promise((resolve,reject)=>{
+    const img=new Image();
+    const finish=ok=>{clearTimeout(timer);img.onload=img.onerror=null;if(ok){images[name]=img;resolve();}else{img.src='';reject(new Error('Asset unavailable: '+name));}};
+    const timer=setTimeout(()=>finish(false),20000);
+    img.onload=()=>finish(true);img.onerror=()=>finish(false);img.src='assets/'+name+'.'+(name==='armed-walk'||name.startsWith('forest')||name.endsWith('animation')?'webp':'png');
   })));
   equipmentVariants();resize();
 }

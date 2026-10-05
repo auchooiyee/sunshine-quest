@@ -1,0 +1,122 @@
+/** Pilot entry, isolated tutorial and load/save recovery through visible controls. */
+import assert from 'node:assert/strict';
+import { createRequire } from 'node:module';
+import { mkdir, readFile, writeFile } from 'node:fs/promises';
+import { fileURLToPath } from 'node:url';
+import { encodeAssignment } from '../src/missions/assignment.js';
+const { chromium } = createRequire(import.meta.url)(process.env.PLAYWRIGHT_PACKAGE || 'playwright');
+const browser = await chromium.launch({ headless: true, channel: 'chrome' });
+const url = process.env.QUEST_URL || 'http://127.0.0.1:4173';
+const output = fileURLToPath(new URL('../artifacts/', import.meta.url));
+await mkdir(output, { recursive: true });
+const key = 'mathwithcye-sunshine-quest-v1', checks = [], errors = [];
+const snap = page => page.evaluate(() => window.mathQuest.snapshot());
+async function page(options) { const p = await browser.newPage(options); p.on('pageerror', error => errors.push(error.message)); return p; }
+async function ready(p, target = url) { await p.goto(target); await p.waitForFunction(() => window.mathQuest?.snapshot().loaded); }
+try {
+  const p = await page({ viewport: { width: 1440, height: 1000 } });
+  await ready(p);
+  await p.locator('#intro-guide').click();
+  const before = await snap(p);
+  for (let n = 0; n < 4; n++) await p.keyboard.press('ArrowRight');
+  assert.match(await p.locator('#guide-movement').innerText(), /reached/);
+  assert.equal((await snap(p)).world.player.x, before.world.player.x);
+  await p.locator('#guide-next').click();
+  await p.locator('#guide-first').fill('1'); await p.locator('#guide-second').fill('6');
+  await p.locator('#guide-form button').click(); assert.match(await p.locator('#guide-feedback').innerText(), /Check both/);
+  await p.locator('#guide-hint').click();
+  await p.locator('#guide-language').click();
+  assert.equal(await p.locator('#guide-first').inputValue(), '1');
+  assert.match(await p.locator('#guide-hint-text').innerText(), /Faktorkan/);
+  await p.locator('#guide-first').fill('0'); await p.locator('#guide-form button').click();
+  assert.equal(await p.locator('#guide-arch').getAttribute('stroke-dasharray'), 'none');
+  await p.screenshot({ path: output + '/pilot-tutorial-desktop.png', fullPage: true });
+  await p.locator('#guide-next').click(); await p.locator('#guide-next').click();
+  assert.deepEqual((await snap(p)).quest, before.quest); assert.equal((await snap(p)).xp, 0);
+  await p.locator('#language').click(); await p.locator('#start-button').click();
+  await p.locator('#guide-button').click(); assert.equal((await snap(p)).world.mode, 'paused');
+  await p.locator('#play-guide [data-i18n="guideSkip"]').click();
+  await p.waitForFunction(() => window.mathQuest.snapshot().world.mode === 'playing');
+  assert.equal(await p.evaluate(() => document.activeElement.id), 'guide-button');
+  checks.push('Interactive tutorial: keyboard movement, wrong answer, hint, BM switch, bridge and isolated evidence');
+
+  await p.locator('#region-button').click();
+  await p.locator('.region-card').filter({ hasText: 'Finance Camp' }).locator('button').click();
+  await p.locator('#start-button').click(); await p.reload(); await p.waitForFunction(() => window.mathQuest?.snapshot().loaded);
+  await p.locator('#intro-regions').click(); assert.match(await p.locator('#map-continue').innerText(), /Finance Camp/);
+  await p.locator('#map-continue').click();
+  await p.waitForFunction(() => window.mathQuest.snapshot().world.mode === 'playing');
+  assert.equal((await snap(p)).region, 'finance');
+  checks.push('Continue from region map restores the selected saved region and starts play');
+
+  await p.locator('#region-button').click(); await p.locator('#map-join').click();
+  assert.equal(await p.evaluate(() => document.activeElement.id), 'join-input');
+  await p.locator('#join-input').fill('invalid'); await p.locator('#join-form button').click();
+  assert.ok(await p.locator('#join-error').innerText());
+  const mission = encodeAssignment({ v: 1, world: 'probability', tasks: 3, assist: true, guided: true, language: 'ms', variant: 1 });
+  await p.locator('#join-input').fill(mission); await p.locator('#join-form button').click();
+  await p.waitForFunction(() => window.mathQuest?.snapshot().loaded && window.mathQuest.snapshot().assignment?.world === 'probability');
+  assert.equal((await snap(p)).language, 'ms'); assert.equal((await snap(p)).quest.variantId, 'practice-b-v1');
+  await p.locator('#guide-button').click(); await p.keyboard.press('Escape');
+  assert.equal((await snap(p)).assignment.world, 'probability');
+  checks.push('Join action focuses input, validates codes and opens the selected isolated BM classroom mission');
+
+  const retry = await page(); let fail = true, lessonRequests = 0;
+  await retry.route('**/data/mathematics/f4/bab01.json', route => { lessonRequests++; return fail ? route.fulfill({ status: 503, body: 'temporarily unavailable' }) : route.continue(); });
+  await retry.goto(url); await retry.locator('#retry-load').waitFor({ state: 'visible' });
+  assert.equal((await snap(retry)).loaded, false);
+  assert.equal(await retry.evaluate(key => localStorage.getItem(key), key), null);
+  await retry.locator('#language').click(); assert.match(await retry.locator('#retry-load').innerText(), /Cuba/);
+  fail = false; await retry.locator('#retry-load').click();
+  await retry.waitForFunction(() => window.mathQuest.snapshot().loaded);
+  assert.equal(lessonRequests, 2); assert.equal((await snap(retry)).language, 'ms');
+  checks.push('Failed curriculum fetch can retry in BM without replacing a save or reloading the page');
+
+  const assetRetry = await page(); let failImage = true, goodImages = 0;
+  const existingSave = await p.evaluate(key => localStorage.getItem(key), key);
+  await assetRetry.addInitScript(({ key, text }) => localStorage.setItem(key, text), { key, text: existingSave });
+  await assetRetry.route('**/assets/forest.webp', route => failImage ? route.abort() : route.continue());
+  assetRetry.on('request', r => { if (r.url().endsWith('/assets/armed-walk.webp')) goodImages++; });
+  await assetRetry.goto(url); await assetRetry.locator('#retry-load').waitFor({ state: 'visible' });
+  assert.equal(await assetRetry.evaluate(key => localStorage.getItem(key), key), existingSave);
+  failImage = false; await assetRetry.locator('#retry-load').click();
+  await assetRetry.waitForFunction(() => window.mathQuest.snapshot().loaded);
+  assert.equal(goodImages, 1);
+  assert.equal((await snap(assetRetry)).region, 'finance');
+  await assetRetry.locator('#start-button').click();
+  checks.push('Asset retry preserves the existing save, reuses successful images and resumes the saved region');
+
+  const corrupt = await page();
+  await corrupt.addInitScript(key => { if (!sessionStorage.seeded) { localStorage.setItem(key, '{broken original'); sessionStorage.seeded = '1'; } }, key);
+  await ready(corrupt); await corrupt.locator('#start-button').click();
+  await corrupt.locator('#checkpoint').click(); await corrupt.locator('#interaction').click();
+  await corrupt.locator('#answer-first').fill('0'); await corrupt.locator('#answer-second').fill('6');
+  await corrupt.locator('#submit-answer').click(); await corrupt.locator('#continue-challenge').click();
+  assert.equal(await corrupt.evaluate(key => localStorage.getItem(key), key), '{broken original');
+  const downloadPromise = corrupt.waitForEvent('download'); await corrupt.locator('#recovery-download').click();
+  const download = await downloadPromise; assert.equal(await readFile(await download.path(), 'utf8'), '{broken original');
+  corrupt.once('dialog', dialog => dialog.dismiss()); await corrupt.locator('#recovery-replace').click();
+  assert.equal(await corrupt.evaluate(key => localStorage.getItem(key), key), '{broken original');
+  corrupt.once('dialog', dialog => dialog.accept()); await corrupt.locator('#recovery-replace').click();
+  await corrupt.reload(); await corrupt.waitForFunction(() => window.mathQuest?.snapshot().loaded);
+  assert.equal((await snap(corrupt)).xp, 75); assert.equal(await corrupt.locator('#save-recovery').isVisible(), false);
+  checks.push('Damaged save is protected during play, downloadable, and replaced only after explicit confirmation');
+
+  const phone = await page({ viewport: { width: 390, height: 844 }, isMobile: true, hasTouch: true });
+  await ready(phone); await phone.locator('#intro-guide').tap(); await phone.locator('#guide-next').tap();
+  await phone.locator('#guide-first').fill('6'); await phone.locator('#guide-second').fill('0'); await phone.locator('#guide-form button').tap();
+  assert.match(await phone.locator('#guide-feedback').innerText(), /Bridge built/);
+  assert.equal(await phone.locator('#play-guide').evaluate(el => el.scrollWidth > el.clientWidth), false);
+  await phone.screenshot({ path: output + '/pilot-tutorial-phone.png', fullPage: true });
+  await phone.locator('#play-guide [data-i18n="guideSkip"]').tap();
+  await phone.locator('#intro-join').tap(); assert.equal(await phone.evaluate(() => document.activeElement.id), 'join-input');
+  await phone.locator('[data-close="region-map"]').tap();
+  await phone.setViewportSize({ width: 844, height: 390 });
+  await phone.locator('#intro-guide').tap(); await phone.locator('#guide-next').tap(); await phone.locator('#guide-next').tap(); await phone.locator('#guide-next').tap();
+  assert.equal(await phone.evaluate(() => document.documentElement.scrollWidth > innerWidth), false);
+  checks.push('Phone portrait and landscape support tutorial, inputs, scrolling, join and close controls');
+  assert.deepEqual(errors, []);
+  const report = { at: new Date().toISOString(), checks, errors, note: 'Chrome desktop and mobile emulation; actual Android/iOS pilot remains pending.' };
+  await writeFile(output + '/pilot-browser-report.json', JSON.stringify(report, null, 2));
+  console.log(JSON.stringify(report, null, 2));
+} finally { await browser.close(); }

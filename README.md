@@ -1,6 +1,6 @@
 # MathWithCYE · Sunshine Math Quest
 
-A playable Form 4 Mathematics adventure built on the original Sunshine Forest Canvas game. Version 0.4.0 offers five chapter routes, a connected final expedition, three question sets per chapter, CSV learning reports, and configurable local class missions. English and Bahasa Melayu are available throughout.
+A playable Form 4 Mathematics adventure built on the original Sunshine Forest Canvas game. Version 0.5.0 adds an interactive introductory guide, direct entry actions, retryable loading and damaged-save protection to the five chapter routes, connected final expedition, three question sets per chapter, CSV learning reports and configurable local class missions. English and Bahasa Melayu are available throughout.
 
 ## Run locally
 
@@ -19,6 +19,12 @@ Student link: [Play Sunshine Math Quest](https://sunshine-quest.pages.dev/?view=
 This repository is prepared for Cloudflare Pages. Run `npm run build` to create the public `dist` directory. Use `npm run build` as the Pages build command and `dist` as the output directory. See [DEPLOYMENT.md](DEPLOYMENT.md) for Git integration and update instructions.
 
 ## Play
+
+**How to play** opens a skippable three-step practice guide: move an explorer, build an example bridge and learn how hints/saving work. Its practice answers never change expedition XP or learning evidence. Reopen it from the header whenever no other dialog is open. The region map has direct Continue/Begin and Join teacher mission actions.
+
+If lessons or artwork fail to load, use **Try loading again** after checking the connection. Requests have deadlines and successful resources are reused on retry. Existing saves are not written during incomplete loading. An unreadable save is protected until you explicitly confirm **Use this new save**; **Download original save** preserves the raw file first. While protection is active, new play remains in memory and can be exported from the journal.
+
+For classroom trials, use [PILOT_QUICK_START.md](docs/PILOT_QUICK_START.md), which includes a lesson flow, observation sheet and real-device checklist. [CONTENT_REVIEW_REGISTER.md](docs/CONTENT_REVIEW_REGISTER.md) lists all 95 authored task versions for review. The guide example also needs teacher review.
 
 - A/D or arrows: move. Space, W or up: jump.
 - J or left click: collect materials / defend against ordinary mushrooms.
@@ -81,7 +87,7 @@ The Learning journal's **Export learning CSV** exports one row per task in visit
 npm test
 ```
 
-49 tests cover the 16 upstream engine regressions, M1/M2/finale progression, all 60 additional task versions, multiple valid answers, storage and set restoration, mission-code validation/isolation, report evidence, CSV quoting, and applied cart/platform behavior.
+51 tests cover the 16 upstream engine regressions, M1/M2/finale progression, all 60 additional task versions, multiple valid answers, storage and set restoration, mission-code validation/isolation, report evidence, CSV quoting, and applied cart/platform behavior.
 
 For browser checks, keep the server running and provide Playwright plus installed Chrome. Set `PLAYWRIGHT_PACKAGE` to the installed package directory if it is not locally resolvable:
 
@@ -89,7 +95,7 @@ For browser checks, keep the server running and provide Playwright plus installe
 npm run test:browser
 ```
 
-`tests/browser-smoke.mjs` has 10 baseline flow groups; `browser-expedition.mjs` has 12; `browser-finale.mjs` has 10. `browser-practice.mjs` adds 8 groups covering set replay, all 60 additional task versions, teacher-set selection, JSON recovery, CSV evidence/scope and phone reports. All 40 groups passed. Reports and screenshots are saved under Git-ignored `artifacts/`.
+`tests/browser-smoke.mjs` has 10 baseline flow groups; `browser-expedition.mjs` has 12; `browser-finale.mjs` has 10. `browser-practice.mjs` adds 8 groups covering set replay, all 60 additional task versions, teacher-set selection, JSON recovery, CSV evidence/scope and phone reports. `browser-pilot.mjs` adds 7 groups for the isolated tutorial, direct Continue/Join, loading retries, protected damaged saves and phone layouts. All 47 groups passed. Reports and screenshots are saved under Git-ignored `artifacts/`.
 
 Content and BM wording await teacher review. Chrome desktop and mobile emulation are verified; real Android/iOS and classroom observations remain pending. See `docs/TEACHER_REVIEW_GUIDE.md`.
 
