@@ -1,4 +1,4 @@
-# Classroom pilot — Sunshine Math Quest v0.5
+# Classroom pilot — Sunshine Math Quest v0.5.1
 
 Allow 15 minutes for a first session with 5–10 students. Use the [student site](https://sunshine-quest.pages.dev/?view=regions). Confirm which version you are testing before recording results.
 
@@ -7,7 +7,7 @@ Allow 15 minutes for a first session with 5–10 students. Use the [student site
 1. Open the game on a school computer and one of the phones students will use. Check that a region loads, sound can stay off and buttons are readable.
 2. Review the chosen task set through **Teacher mode → Teacher answer preview**. Review the mathematical content, units, hints and BM wording. These are still prototype materials awaiting teacher sign-off.
 3. Choose a chapter and **three stations** for this first pilot. Select Original, Practice B or Practice C, the language, independent/guided practice and Adventure assistance. Guided practice shows the first hint automatically.
-4. Generate and copy the mission link. A public/preview HTTPS link works across devices; a `127.0.0.1` link works only on the developer's computer. The current mission is local practice, not an online classroom room.
+4. Generate a six-digit task code and use **Copy code**, or copy the mission link. Students enter the six digits through **Join mission**. The same settings produce the same code; old long codes and links continue to work. A public/preview HTTPS link works across devices; a `127.0.0.1` link works only on the developer's computer. The current mission is local practice, not an online classroom room.
 
 ## During the lesson
 

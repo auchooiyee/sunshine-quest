@@ -44,7 +44,7 @@ test('question set identity, drafts, hints and validated rewards survive restore
   const different=createQuest(selectVariant(data,2),q.save());assert.equal(different.xp,0);assert.equal(different.next.model.b,4);
   const old=createQuest(data);pass(old,{first:0,second:6});const legacy=old.save();delete legacy.variantId;assert.equal(createQuest(data,legacy).xp,75);assert.equal(createQuest(data,legacy).variantId,ORIGINAL_VARIANT);
 });
-test('teacher sets keep old canonical task codes stable and isolate different question sets',()=>{
+test('teacher sets keep canonical task codes stable and isolate different question sets',()=>{
   const config={v:1,world:'motion',tasks:3,assist:true,guided:false,language:'ms'},original=encodeAssignment(config);
   assert.equal(encodeAssignment({...config,variant:0}),original);
   for(const variant of [1,2]){const code=encodeAssignment({...config,variant}),decoded=decodeAssignment(code);assert.equal(decoded.variant,variant);assert.notEqual(assignmentKey(decoded),assignmentKey(config));const short=assignmentCurriculum(banks.get('motion'),decoded);assert.equal(short.challenges.length,3);assert.equal(createQuest(short).variantIndex,variant);}

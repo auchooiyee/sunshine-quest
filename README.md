@@ -1,6 +1,6 @@
 # MathWithCYE · Sunshine Math Quest
 
-A playable Form 4 Mathematics adventure built on the original Sunshine Forest Canvas game. Version 0.5.0 adds an interactive introductory guide, direct entry actions, retryable loading and damaged-save protection to the five chapter routes, connected final expedition, three question sets per chapter, CSV learning reports and configurable local class missions. English and Bahasa Melayu are available throughout.
+A playable Form 4 Mathematics adventure built on the original Sunshine Forest Canvas game. Version 0.5.1 adds six-digit classroom codes and a Copy code button. Version 0.5.0 added an interactive introductory guide, direct entry actions, retryable loading and damaged-save protection to the five chapter routes, connected final expedition, three question sets per chapter, CSV learning reports and configurable local class missions. English and Bahasa Melayu are available throughout.
 
 ## Run locally
 
@@ -63,7 +63,7 @@ Question-set identity is saved with drafts, hints and attempts. Refreshing, swit
 
 ## Teacher mode
 
-Select a chapter, its question set, and three stations or all six checks; or choose the final expedition with all five connected decisions. Choose independent or guided practice, adventure assistance, and the starting language. Expand the answer preview to inspect tasks and one example solution. For the finale, the example follows a complete connected plan; students' different choices change later questions. Generate a versioned task code and mission link; students can paste either into the region map's Join mission form.
+Select a chapter, its question set, and three stations or all six checks; or choose the final expedition with all five connected decisions. Choose independent or guided practice, adventure assistance, and the starting language. Expand the answer preview to inspect tasks and one example solution. For the finale, the example follows a complete connected plan; students' different choices change later questions. Generate a six-digit task code and mission link; students can paste either into the region map's Join mission form.
 
 Guided missions automatically show the first hint and therefore do not count as independent first answers. Three-station missions finish before the Guardian. Codes configure local practice; they do not create online rooms, logins, multiplayer or a results dashboard. The same configuration resumes that mission's local progress in that browser. Restart from the learning journal for a fresh practice run.
 
@@ -73,7 +73,7 @@ Students must first open their own copy of the game. A localhost link works only
 
 The journal separates adventure XP from independent first answers and completion with support or retries. There are 35 prototype checks, covering parts of five chapters and one connected expedition. They do not certify full-chapter mastery, PBD levels or SPM performance.
 
-Expeditions use the existing `mathwithcye-sunshine-quest-v1` storage key. Previous saves migrate in place to schema 2 / content 4, preserving valid completed mathematics, drafts, hints and materials. Each region has separate math and adventure state. Classroom missions retain their version 1 codes; original-set codes keep the same canonical value and storage key, while B/C codes include the set and have separate saves. Finale restoration validates each completed step against the restored earlier answers, so inconsistent downstream answers do not unlock later stages. Unknown question-set identifiers cannot restore completed evidence under another set.
+Expeditions use the existing `mathwithcye-sunshine-quest-v1` storage key. Previous saves migrate in place to schema 2 / content 4, preserving valid completed mathematics, drafts, hints and materials. Each region has separate math and adventure state. New classroom codes contain exactly six digits, including a checksum to reject typing errors. Every supported combination of chapter, question set, length, support, assistance and language has one code; choosing the same settings gives the same code. Existing long codes and mission links still work and use the same classroom save as their short equivalent. Different configurations retain separate saves. Finale restoration validates each completed step against the restored earlier answers, so inconsistent downstream answers do not unlock later stages. Unknown question-set identifiers cannot restore completed evidence under another set.
 
 Export all visited regions or the current class mission as JSON. M1, M2 and current progress exports can be imported after confirmation. Import targets the appropriate expedition or class save. Restarting a region or the finale leaves the other regions intact. No account or automatic upload is involved.
 
@@ -87,7 +87,7 @@ The Learning journal's **Export learning CSV** exports one row per task in visit
 npm test
 ```
 
-51 tests cover the 16 upstream engine regressions, M1/M2/finale progression, all 60 additional task versions, multiple valid answers, storage and set restoration, mission-code validation/isolation, report evidence, CSV quoting, and applied cart/platform behavior.
+54 tests cover the 16 upstream engine regressions, M1/M2/finale progression, all 60 additional task versions, multiple valid answers, storage and set restoration, mission-code validation/isolation, report evidence, CSV quoting, and applied cart/platform behavior.
 
 For browser checks, keep the server running and provide Playwright plus installed Chrome. Set `PLAYWRIGHT_PACKAGE` to the installed package directory if it is not locally resolvable:
 
@@ -96,6 +96,8 @@ npm run test:browser
 ```
 
 `tests/browser-smoke.mjs` has 10 baseline flow groups; `browser-expedition.mjs` has 12; `browser-finale.mjs` has 10. `browser-practice.mjs` adds 8 groups covering set replay, all 60 additional task versions, teacher-set selection, JSON recovery, CSV evidence/scope and phone reports. `browser-pilot.mjs` adds 7 groups for the isolated tutorial, direct Continue/Join, loading retries, protected damaged saves and phone layouts. All 47 groups passed. Reports and screenshots are saved under Git-ignored `artifacts/`.
+
+Six-digit code verification: all 248 supported configurations round-trip without collisions; single-digit errors and adjacent digit swaps are rejected. `tests/browser-codes.mjs` covers teacher copying, phone entry and legacy-link save continuity.
 
 Content and BM wording await teacher review. Chrome desktop and mobile emulation are verified; real Android/iOS and classroom observations remain pending. See `docs/TEACHER_REVIEW_GUIDE.md`.
 

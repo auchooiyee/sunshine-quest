@@ -363,6 +363,7 @@ $('generate-code').onclick=()=>{
 };
 function launchAssignment(config){persist();const url=new URL(location.href);url.search='';url.searchParams.set('assignment',encodeAssignment(config));url.hash='';replacingSave=true;location.assign(url.href);}
 $('launch-class').onclick=()=>launchAssignment(decodeAssignment($('generated-code').value));
+$('copy-class-code').onclick=async()=>{try{await navigator.clipboard.writeText($('generated-code').value);$('copy-status').textContent=t('codeCopySuccess');}catch{$('generated-code').focus();$('generated-code').select();$('copy-status').textContent=t('codeCopyFallback');}};
 $('copy-class-link').onclick=async()=>{try{await navigator.clipboard.writeText($('generated-link').value);$('copy-status').textContent=t('codeCopied');}catch{$('generated-link').focus();$('generated-link').select();$('copy-status').textContent=t('copyFallback');}};
 $('join-form').onsubmit=event=>{
   event.preventDefault();let code=$('join-input').value.trim();try{if(/^https?:\/\//.test(code))code=new URL(code).searchParams.get('assignment');}catch{code=null;}
