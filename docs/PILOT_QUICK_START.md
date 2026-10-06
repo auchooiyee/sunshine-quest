@@ -1,6 +1,8 @@
-# Classroom pilot — Sunshine Math Quest v0.7
+# Classroom pilot — Sunshine Math Quest v0.8
 
-Updated for v0.7: share the generated lesson link to distinguish lessons with identical settings; six-digit codes remain configuration-only. Have students enter learner codes before CSV export. Teacher mode now imports multiple student CSVs, compares an optional roster and exports task summaries. The journal retains up to 20 earlier runs and offers separate review checks. See [V07_RELEASE.md](V07_RELEASE.md) for the complete workflow and limits.
+v0.8 adds Task group selection: Foundation and Challenge each have three tasks in two sets; Standard retains the previous adventures. Try one group that fits the lesson, and review the extra checking fields for Challenge. New content still needs teacher sign-off.
+
+Learning tools from v0.7: share the generated lesson link to distinguish lessons with identical settings; six-digit codes remain configuration-only. Have students enter learner codes before CSV export. Teacher mode now imports multiple student CSVs, compares an optional roster and exports task summaries. The journal retains up to 20 earlier runs and offers separate review checks. See [V07_RELEASE.md](V07_RELEASE.md) for the complete workflow and limits.
 
 Allow 15 minutes for a first session with 5–10 students. Use the [student site](https://sunshine-quest.pages.dev/?view=regions). Confirm which version you are testing before recording results.
 

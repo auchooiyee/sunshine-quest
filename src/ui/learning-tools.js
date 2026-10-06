@@ -19,7 +19,7 @@ export function createLearningTools({context,persist,t,openDialog,openJournal}){
     $('fresh-fields').replaceChildren();
     const fallback={first:t('firstRoot'),second:t('secondRoot'),x:t('vertexX'),y:t('vertexY'),span:t('span'),k:t('scale')};
     for(const key of fieldKeys(def)){
-      const f=def.fields?.find(f=>f.key===key),range=f?.type==='range'?f:def.kind==='design'?(key==='span'?{min:4,max:10,step:1}:{min:.25,max:1.5,step:.25}):null;
+      const f=[...(def.fields||[]),...(def.evidence||[])].find(f=>f.key===key),range=f?.type==='range'?f:def.kind==='design'&&['span','k'].includes(key)?(key==='span'?{min:4,max:10,step:1}:{min:.25,max:1.5,step:.25}):null;
       const label=element('label',f?.label[c.language]||fallback[key]||key,'field'),input=document.createElement('input'),value=element('output','');
       input.name=key;input.type=range?'range':'text';input.inputMode='decimal';input.maxLength=32;input.autocomplete='off';
       if(range){input.min=range.min;input.max=range.max;input.step=range.step;}
@@ -67,7 +67,7 @@ export function createLearningTools({context,persist,t,openDialog,openJournal}){
     $('class-counts').textContent=rows.length?`${t('submitted')}: ${s.learners.length} · ${s.learners.join(', ')}${$('report-roster').value.trim()?` · ${t('missingReports')}: ${s.missing.join(', ')||'—'}`:''}`:t('noReports');
     $('report-warnings').textContent=[s.legacy?t('legacyReports'):'',s.unscoped?t('unscopedReports'):''].filter(Boolean).join(' ');
     $('class-task-rows').replaceChildren();
-    for(const task of s.tasks){const row=element('li',''),metrics=element('div','','report-metrics'),set=t(task.set==='practice-b-v1'?'setB':task.set==='practice-c-v1'?'setC':'setOriginal');
+    for(const task of s.tasks){const row=element('li',''),metrics=element('div','','report-metrics'),set=(task.set.startsWith('foundation')?t('foundation')+' · ':task.set.startsWith('challenge')?t('challengeLevel')+' · ':'')+t(task.set.includes('-b-')?'setB':task.set==='practice-c-v1'?'setC':'setOriginal');
       row.append(element('strong',`${scopeLabel(task.lesson)} · ${context().language==='ms'?task.titleMS:task.title} · ${set} · ${t(task.kind==='review'?'reviewTitle':'routePractice')}`));
       for(const key of ['runs','started','completed','independent','supported','missed']){const item=element('span','');item.append(element('b',task[key]),element('small',t('metric'+key)));metrics.append(item);}
       row.append(metrics);$('class-task-rows').append(row);

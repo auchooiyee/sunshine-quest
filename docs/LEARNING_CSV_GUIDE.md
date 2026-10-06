@@ -1,6 +1,6 @@
 # 教师 CSV 学习报告
 
-版本 0.7.0，CSV schema 2。报告描述学生在本地游戏中的当前、历史及独立复习记录，不转换为 PBD 等级、章节掌握度或 SPM 成绩。
+版本 0.8.0，CSV schema 2。报告描述学生在本地游戏中的当前、历史及独立复习记录，不转换为 PBD 等级、章节掌握度或 SPM 成绩。
 
 ## 导出
 
@@ -25,7 +25,7 @@ JSON 导出仍用于恢复游戏存档，CSV 用于查看与整理学习记录�
 | `exported_at_utc` | 本次报告导出时间，ISO 格式 UTC |
 | `mode` / `mission_code` | 自由冒险或课堂任务；课堂码可辨认其配置 |
 | `region_id` / `chapter` | 区域与章节；综合关列出 1、6、7、9、10 |
-| `question_set` | `original-v1`、`practice-b-v1` 或 `practice-c-v1` |
+| `question_set` | Standard 使用 `original-v1`、`practice-b-v1`、`practice-c-v1`；新分组使用 `foundation-v1` / `foundation-b-v1` 和 `challenge-v1` / `challenge-b-v1` |
 | `task_id` / `task_title_en` / `task_title_ms` | 当前题组中的检查标识与双语标题 |
 | `status` | 未开始、进行中、独立首答完成或有支持完成，见下表 |
 | `completed` | 经过当前数学模型验证的完成状态 |
@@ -56,3 +56,5 @@ Teacher mode 的 **Class report summary** 可以一次导入多个学生 CSV。�
 重玩或更换题组之前，游戏把原轮次存入历史（最多 20 轮）。历史满时拒绝自动覆盖，须先确认下载完整 JSON 备份再清理。复习用下一题组的同目标题，保留原始成绩；不额外获得 XP。
 
 导入内容及名单只保存在当前打开页面的内存中。关闭前导出任务汇总 CSV；原始学生 CSV 和 JSON 请保留。报告来自可编辑的学生文件，不验证身份或上传云端。数学、BM 审核与真机试用仍待完成。
+
+新分组每次任务三题。Challenge 额外计算与主答案共同验证；缺少字段不计有效尝试，填错则计错题。分组身份通过任务码和 question_set 保留，复习留在相同分组的另一题组。

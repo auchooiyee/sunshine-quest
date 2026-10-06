@@ -1,8 +1,8 @@
 import { parseNumber, validate as quadraticValidate } from './quadratics.js';
 
 export function fieldKeys(def) {
-  if (def.fields) return def.fields.map(f => f.key);
-  return def.kind === 'design' ? ['span','k'] : def.kind === 'roots' ? ['first','second'] : ['x','y'];
+  const base=def.fields?def.fields.map(f=>f.key):def.kind==='design'?['span','k']:def.kind==='roots'?['first','second']:['x','y'];
+  return [...base,...(def.evidence||[]).map(f=>f.key)];
 }
 const near = (a,b) => Math.abs(a-b) < 1e-6;
 export function satisfies(point, constraint) {
@@ -20,6 +20,24 @@ export function budgetTotal(def, draft) {
   return def.model.items.reduce((sum,item)=>sum+item.price*(parseNumber(draft[item.key])??0),0);
 }
 export function validate(def, draft={}) {
+  if(def.evidence||def.decisions){
+    for(const key of fieldKeys(def))if(parseNumber(draft?.[key])===null)return {correct:false,reason:'invalid'};
+    const {evidence,decisions,...base}=def,result=validate(base,draft);
+    if(!result.correct)return result;
+    const n=key=>parseNumber(draft[key]);
+    if(decisions?.routes){
+      const {routes,weights}=decisions,cost=p=>weights[0]*p.x+weights[1]*p.y;
+      const feasible=routes.filter(p=>def.model.constraints.every(c=>satisfies(p,c)));
+      if(!feasible.some(p=>p.x===n('x')&&p.y===n('y'))||cost({x:n('x'),y:n('y')})!==Math.min(...feasible.map(cost)))return {correct:false,reason:'evidence'};
+    }
+    if(decisions?.deliveryBudget!==undefined&&5*n('v1')+2*n('t1')>decisions.deliveryBudget)return {correct:false,reason:'evidence'};
+    if(decisions?.maximumSaving){const maximum=def.model.budget-def.model.items.reduce((s,i)=>s+i.minimum*i.price,0);if(!near(n('saving'),maximum))return {correct:false,reason:'evidence'};}
+    for(const f of evidence||[]){
+      const expected=f.rule==='routeCost'?decisions.weights[0]*n('x')+decisions.weights[1]*n('y'):f.rule==='deliveryFee'?5*n('v1')+2*n('t1'):f.rule==='crossProbability'?n('red')/(n('red')+n('blue'))*n('blue')/(n('red')+n('blue')-1):f.expected;
+      if(!near(n(f.key),expected))return {correct:false,reason:'evidence'};
+    }
+    return {correct:true,reason:'success'};
+  }
   if(def.controlSteps){
     for(const [key,rule] of Object.entries(def.controlSteps)){
       const n=parseNumber(draft?.[key]);if(n===null)return {correct:false,reason:'invalid'};

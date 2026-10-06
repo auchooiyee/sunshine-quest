@@ -1,4 +1,4 @@
-# Content review register — v0.6
+# Content review register — v0.8
 
 Status: all entries await teacher review. This records task versions, not claims of full chapter coverage. For each row replace Pending with a review result, exact learning standard and reviewer/date. Check the English/BM prompt, all hints, diagrams, units, accepted alternatives and example solution in the game and source bank. The finale changes with earlier choices; review at least the two routes in TEACHER_REVIEW_GUIDE.md.
 
@@ -117,3 +117,70 @@ Total: 95 task versions. The separate introductory guide contains one unscored e
 ## v0.6 adventure review
 
 The 95 task versions above are unchanged. Review the new guide briefings and Guardian names in `config/adventures.js`, UI wording in `locales/adventure.js`, construction summaries, exact probability fractions, and the finale choice ledger in both languages. Confirm that a student can explain how each accepted answer changes the visible construction. Status: Pending teacher review.
+
+## Foundation and Challenge task versions (v0.8)
+
+60 additional task versions: five regions × two groups × two sets × three checks. Group names describe task structure, not student ability, mastery or exam grades. Standards alignment and bilingual review remain pending. See [V08_RELEASE.md](V08_RELEASE.md) for the structural differences.
+
+| Bank / group / set / task | Skill tag | English title | BM title | Maths / BM / standard / reviewer-date |
+| --- | --- | --- | --- | --- |
+| bab01.json / foundation / foundation-v1 / roots | quadratics-roots | Read the factors | Baca faktor | Pending |
+| bab01.json / foundation / foundation-v1 / vertex | quadratics-vertex | Read the vertex form | Baca bentuk bucu | Pending |
+| bab01.json / foundation / foundation-v1 / design | quadratics-design | Complete the arch rule | Lengkapkan petua lengkung | Pending |
+| bab01.json / foundation / foundation-b-v1 / roots | quadratics-roots | Read the factors | Baca faktor | Pending |
+| bab01.json / foundation / foundation-b-v1 / vertex | quadratics-vertex | Read the vertex form | Baca bentuk bucu | Pending |
+| bab01.json / foundation / foundation-b-v1 / design | quadratics-design | Complete the arch rule | Lengkapkan petua lengkung | Pending |
+| bab01.json / challenge / challenge-v1 / roots | quadratics-roots | Anchors and crossing width | Tambatan dan lebar lintasan | Pending |
+| bab01.json / challenge / challenge-v1 / vertex | quadratics-vertex | Peak and off-centre clearance | Puncak dan kelegaan luar pusat | Pending |
+| bab01.json / challenge / challenge-v1 / design | quadratics-design | Design and inspect the arch | Reka dan periksa lengkung | Pending |
+| bab01.json / challenge / challenge-b-v1 / roots | quadratics-roots | Anchors and crossing width | Tambatan dan lebar lintasan | Pending |
+| bab01.json / challenge / challenge-b-v1 / vertex | quadratics-vertex | Peak and off-centre clearance | Puncak dan kelegaan luar pusat | Pending |
+| bab01.json / challenge / challenge-b-v1 / design | quadratics-design | Design and inspect the arch | Reka dan periksa lengkung | Pending |
+| bab06.json / foundation / foundation-v1 / roots | inequalities-inequality | One boundary | Satu sempadan | Pending |
+| bab06.json / foundation / foundation-v1 / vertex | inequalities-inequality | Stay below the line | Kekal di bawah garis | Pending |
+| bab06.json / foundation / foundation-v1 / design | inequalities-inequality | Combine two conditions | Gabungkan dua syarat | Pending |
+| bab06.json / foundation / foundation-b-v1 / roots | inequalities-inequality | One boundary | Satu sempadan | Pending |
+| bab06.json / foundation / foundation-b-v1 / vertex | inequalities-inequality | Stay below the line | Kekal di bawah garis | Pending |
+| bab06.json / foundation / foundation-b-v1 / design | inequalities-inequality | Combine two conditions | Gabungkan dua syarat | Pending |
+| bab06.json / challenge / challenge-v1 / roots | inequalities-inequality | Compare surveyed routes | Bandingkan laluan ditinjau | Pending |
+| bab06.json / challenge / challenge-v1 / vertex | inequalities-inequality | Compare surveyed routes | Bandingkan laluan ditinjau | Pending |
+| bab06.json / challenge / challenge-v1 / design | inequalities-inequality | Compare surveyed routes | Bandingkan laluan ditinjau | Pending |
+| bab06.json / challenge / challenge-b-v1 / roots | inequalities-inequality | Compare surveyed routes | Bandingkan laluan ditinjau | Pending |
+| bab06.json / challenge / challenge-b-v1 / vertex | inequalities-inequality | Compare surveyed routes | Bandingkan laluan ditinjau | Pending |
+| bab06.json / challenge / challenge-b-v1 / design | inequalities-inequality | Compare surveyed routes | Bandingkan laluan ditinjau | Pending |
+| bab07.json / foundation / foundation-v1 / roots | motion-motion-reading | Read the track | Baca trek | Pending |
+| bab07.json / foundation / foundation-v1 / vertex | motion-motion-reading | Distance from area | Jarak daripada luas | Pending |
+| bab07.json / foundation / foundation-v1 / design | motion-motion-plan | Program the delivery cart | Atur troli penghantaran | Pending |
+| bab07.json / foundation / foundation-b-v1 / roots | motion-motion-reading | Read the track | Baca trek | Pending |
+| bab07.json / foundation / foundation-b-v1 / vertex | motion-motion-reading | Distance from area | Jarak daripada luas | Pending |
+| bab07.json / foundation / foundation-b-v1 / design | motion-motion-plan | Program the delivery cart | Atur troli penghantaran | Pending |
+| bab07.json / challenge / challenge-v1 / roots | motion-motion-reading | Moving speed versus average speed | Laju bergerak berbanding laju purata | Pending |
+| bab07.json / challenge / challenge-v1 / vertex | motion-motion-reading | Distance from area | Jarak daripada luas | Pending |
+| bab07.json / challenge / challenge-v1 / design | motion-motion-plan | Program the delivery cart | Atur troli penghantaran | Pending |
+| bab07.json / challenge / challenge-b-v1 / roots | motion-motion-reading | Moving speed versus average speed | Laju bergerak berbanding laju purata | Pending |
+| bab07.json / challenge / challenge-b-v1 / vertex | motion-motion-reading | Distance from area | Jarak daripada luas | Pending |
+| bab07.json / challenge / challenge-b-v1 / design | motion-motion-plan | Program the delivery cart | Atur troli penghantaran | Pending |
+| bab09.json / foundation / foundation-v1 / roots | probability-probability-reading | Follow the branches | Ikut cabang | Pending |
+| bab09.json / foundation / foundation-v1 / vertex | probability-probability-reading | Follow the branches | Ikut cabang | Pending |
+| bab09.json / foundation / foundation-v1 / design | probability-probability-reading | Follow the branches | Ikut cabang | Pending |
+| bab09.json / foundation / foundation-b-v1 / roots | probability-probability-reading | Follow the branches | Ikut cabang | Pending |
+| bab09.json / foundation / foundation-b-v1 / vertex | probability-probability-reading | Follow the branches | Ikut cabang | Pending |
+| bab09.json / foundation / foundation-b-v1 / design | probability-probability-reading | Follow the branches | Ikut cabang | Pending |
+| bab09.json / challenge / challenge-v1 / roots | probability-probability-reading | Follow the branches | Ikut cabang | Pending |
+| bab09.json / challenge / challenge-v1 / vertex | probability-probability-reading | Follow the branches | Ikut cabang | Pending |
+| bab09.json / challenge / challenge-v1 / design | probability-probability-plan | Design the crystal bag | Reka beg kristal | Pending |
+| bab09.json / challenge / challenge-b-v1 / roots | probability-probability-reading | Follow the branches | Ikut cabang | Pending |
+| bab09.json / challenge / challenge-b-v1 / vertex | probability-probability-reading | Follow the branches | Ikut cabang | Pending |
+| bab09.json / challenge / challenge-b-v1 / design | probability-probability-plan | Design the crystal bag | Reka beg kristal | Pending |
+| bab10.json / foundation / foundation-v1 / roots | finance-finance-reading | Monthly balance | Baki bulanan | Pending |
+| bab10.json / foundation / foundation-v1 / vertex | finance-finance-reading | A savings goal | Matlamat simpanan | Pending |
+| bab10.json / foundation / foundation-v1 / design | finance-budget-plan | Supply the camp | Bekalkan kem | Pending |
+| bab10.json / foundation / foundation-b-v1 / roots | finance-finance-reading | Monthly balance | Baki bulanan | Pending |
+| bab10.json / foundation / foundation-b-v1 / vertex | finance-finance-reading | A savings goal | Matlamat simpanan | Pending |
+| bab10.json / foundation / foundation-b-v1 / design | finance-budget-plan | Supply the camp | Bekalkan kem | Pending |
+| bab10.json / challenge / challenge-v1 / roots | finance-finance-reading | A savings goal | Matlamat simpanan | Pending |
+| bab10.json / challenge / challenge-v1 / vertex | finance-finance-reading | Monthly balance | Baki bulanan | Pending |
+| bab10.json / challenge / challenge-v1 / design | finance-budget-plan | Supply the camp | Bekalkan kem | Pending |
+| bab10.json / challenge / challenge-b-v1 / roots | finance-finance-reading | A savings goal | Matlamat simpanan | Pending |
+| bab10.json / challenge / challenge-b-v1 / vertex | finance-finance-reading | Monthly balance | Baki bulanan | Pending |
+| bab10.json / challenge / challenge-b-v1 / design | finance-budget-plan | Supply the camp | Bekalkan kem | Pending |

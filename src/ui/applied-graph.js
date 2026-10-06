@@ -42,6 +42,7 @@ export function renderAppliedGraph(def,draft,language,previewTime=0){
       if(end)markup+=`<line x1="${p.sx(border[0].x)}" y1="${p.sy(border[0].y)}" x2="${p.sx(end.x)}" y2="${p.sy(end.y)}" stroke="#226954" stroke-width="2.5" ${['<','>'].includes(c.op)?'stroke-dasharray="7 5"':''}/>`;
     }
     const x=parseNumber(draft.x),y=parseNumber(draft.y);
+    for(const [i,route] of (def.decisions?.routes||[]).entries())markup+=`<circle cx="${p.sx(route.x)}" cy="${p.sy(route.y)}" r="5" fill="#657ba6"/>`+text(p.sx(route.x)+9,p.sy(route.y)-9,String.fromCharCode(65+i));
     if(x!==null&&y!==null)markup+=`<circle cx="${p.sx(x)}" cy="${p.sy(y)}" r="7" fill="#d1a443" stroke="#fff" stroke-width="2"/>`;
     equation=def.model.constraints.map(constraintLabel).join(' · ');
     summary=x===null||y===null?local('Select a route marker.','Pilih penanda laluan.'):`(${x}, ${y})`;
@@ -79,7 +80,7 @@ export function renderAppliedGraph(def,draft,language,previewTime=0){
     markup+=text(320,75,redProbability===null?'?':fmt(redProbability))+text(320,138,redProbability===null?'?':fmt(1-redProbability));
     if(plan)markup+=text(60,330,`P(${local('RR','MM')}) = ${fraction(red*(red-1),total*(total-1))}`);
     equation=replacement?local('With replacement','Dengan pengembalian'):local('Without replacement','Tanpa pengembalian');
-    summary=plan?`${local('Total','Jumlah')}: ${total} / ${def.target.total} · P(${local('RR','MM')})=${fraction(red*(red-1),total*(total-1))} · ${local('Target','Sasaran')}: ${def.target.probabilityFraction}`:local('Fill the second-branch and combined probabilities.','Isi kebarangkalian cabang kedua dan peristiwa bergabung.');
+    summary=plan?`${local('Total','Jumlah')}: ${total} / ${def.target.total} · P(${local('RR','MM')})=${fraction(red*(red-1),total*(total-1))} · ${local('Target','Sasaran')}: ${def.target.probabilityFraction}`:def.focus==='conditional'?local('Find only the next-draw probability.','Cari kebarangkalian cabutan seterusnya sahaja.'):local('Fill the second-branch and combined probabilities.','Isi kebarangkalian cabang kedua dan peristiwa bergabung.');
     instructions=local('The expanded branches follow a first red draw. Fractions such as 3/10 are accepted.','Cabang dikembangkan selepas cabutan pertama merah. Pecahan seperti 3/10 diterima.');
   }else if(def.kind.startsWith('budget')||def.kind.startsWith('finance')){
     const plan=def.kind==='budget-plan';const total=plan?def.model.budget:def.model.income;

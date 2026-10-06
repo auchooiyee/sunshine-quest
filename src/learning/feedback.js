@@ -1,6 +1,6 @@
 import {parseNumber} from '../math/quadratics.js';
 import {satisfies,budgetTotal} from '../math/challenges.js';
-export const skillTag = def => ({roots:'quadratic-roots',vertex:'quadratic-vertex',design:'quadratic-design',inequality:'feasible-coordinates','motion-plan':'motion-distance','probability-plan':'probability-without-replacement','budget-plan':'budget-constraints'}[def.kind]||def.kind);
+export const skillTag = def => def.skill||({roots:'quadratic-roots',vertex:'quadratic-vertex',design:'quadratic-design',inequality:'feasible-coordinates','motion-plan':'motion-distance','probability-plan':'probability-without-replacement','budget-plan':'budget-constraints'}[def.kind]||def.kind);
 // Only report a condition directly evidenced by the submitted values, never infer intent.
 export function diagnostic(def,draft){
   const values=Object.fromEntries(Object.entries(draft).map(([k,v])=>[k,parseNumber(v)]));

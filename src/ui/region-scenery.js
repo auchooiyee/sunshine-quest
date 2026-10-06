@@ -99,7 +99,7 @@ export function drawConstructions(ctx,state,language){
       const probabilities=branchFractions(m);
       line(ctx,[[x,445],[x+80,385],[x+205,350]],'#f3dfb3',3);line(ctx,[[x+80,385],[x+205,425]],'#f3dfb3',3);
       dot(ctx,x+80,385,11,'#c97575');text(ctx,'R',x+80,390,12);dot(ctx,x+205,350,11,m.event[1]==='R'?'#c97575':'#799dc9');text(ctx,m.event[1],x+205,355,12);
-      text(ctx,`${m.red} R + ${m.blue} B`,x+30,469);text(ctx,`P(${m.event})=${probabilities.combined}`,x+135,327);text(ctx,probabilities.conditional,x+133,379,11);
+      text(ctx,`${m.red} R + ${m.blue} B`,x+30,469);text(ctx,item.focus==='conditional'?`P(${m.event[1]} | R)=${probabilities.conditional}`:`P(${m.event})=${probabilities.combined}`,x+135,327);text(ctx,probabilities.conditional,x+133,379,11);
       text(ctx,local(m.replacement?'replace':'no replacement',m.replacement?'kembali':'tanpa kembali'),x+126,297,11);
     }else if(item.kind==='probability-plan'){
       text(ctx,`P(RR)=${item.target.probabilityFraction||fmt(item.target.probability)}`,x+110,398);

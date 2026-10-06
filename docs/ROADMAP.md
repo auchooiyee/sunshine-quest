@@ -2,7 +2,7 @@
 
 Planning date: 5 October 2026 (Malaysia). Baseline: v0.4.0, deployed on Cloudflare Pages. This is a proposed delivery plan, not a record of completed features.
 
-Implementation update, 5 October 2026: v0.5 pilot features and v0.5.1 six-digit codes are delivered. v0.6 route, construction, Guardian, keepsake and ledger changes are documented in [V06_RELEASE.md](V06_RELEASE.md). Teacher content sign-off and real-device pilot observations remain pending. This roadmap retains its original planning estimates below.
+Implementation update: v0.8 Foundation/Challenge task groups are delivered on 6 October 2026; see [V08_RELEASE.md](V08_RELEASE.md). Earlier milestones: v0.5 pilot features and v0.5.1 six-digit codes are delivered. v0.6 route, construction, Guardian, keepsake and ledger changes are documented in [V06_RELEASE.md](V06_RELEASE.md). Teacher content sign-off and real-device pilot observations remain pending. This roadmap retains its original planning estimates below.
 
 ## 1. Define what we are completing
 
@@ -85,7 +85,7 @@ Acceptance: every model change is reflected consistently in question text, graph
 
 ## 6. v0.7 — Improve feedback, replay and teacher evidence
 
-6 October delivery: v0.7.0 implements bounded run archives, separate next-set review checks, conservative condition feedback, v2 CSVs, local multi-file class summaries, roster comparison and lesson-instance links while preserving six-digit configuration codes. See [V07_RELEASE.md](V07_RELEASE.md). Structurally different difficulty groups, broader reviewed skill/misconception metadata and new transfer/finale review content remain open; the roadmap below is not a claim that every item has shipped.
+6 October delivery: v0.7.0 implements bounded run archives, separate next-set review checks, conservative condition feedback, v2 CSVs, local multi-file class summaries, roster comparison and lesson-instance links while preserving six-digit configuration codes. See [V07_RELEASE.md](V07_RELEASE.md). Follow-up v0.8 delivers structurally different Foundation/Challenge groups and authored skill/candidate misconception tags. Teacher review, broader new transfer/finale review content remain open; the roadmap below is not a claim that every item has shipped.
 
 ### Student learning
 

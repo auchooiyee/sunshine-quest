@@ -18,7 +18,7 @@ export function constructionsFor(region,quest){
     const values=Object.fromEntries(Object.entries(draft).map(([key,v])=>[key,parseNumber(v)]));
     const guardian=def.station==='guardian',phase=Math.max(0,quest.challenges.filter(d=>d.station==='guardian').findIndex(d=>d.id===def.id));
     const origin=guardian?route.stations.guardian-260+phase*120:route.stations[def.station]+70;
-    const item={id:def.id,kind:def.kind,title:def.title,guardian,origin,values,model:def.model,target:def.target};
+    const item={id:def.id,kind:def.kind,title:def.title,guardian,origin,values,model:def.model,target:def.target,focus:def.focus};
     if(def.kind==='design'){
       item.origin=guardian?route.stations.guardian+100:2520;
       const bridge={id:def.id,span:values.span,k:values.k,origin:item.origin};bridges.push(bridge);
@@ -38,7 +38,7 @@ export function constructionSummary(item,language){
   if(item.kind==='inequality')return local(`Platform at (${v.x}, ${v.y}); all ${m.constraints.length} restrictions satisfied`,`Pelantar di (${v.x}, ${v.y}); semua ${m.constraints.length} syarat dipatuhi`);
   if(item.kind==='motion-plan')return `${v.v1} m/s × ${v.t1} s + ${m.v2} m/s × ${m.duration-v.t1} s = ${item.target.distance} m`;
   if(item.kind==='motion-reading')return local(`Journey calibrated: ${v.value} ${m.graph==='distance'?'m/s':'m'}`,`Perjalanan ditentukur: ${v.value} ${m.graph==='distance'?'m/s':'m'}`);
-  if(item.kind==='probability-reading'){const p=branchFractions(m);return `${m.red} R + ${m.blue} B · ${local(m.replacement?'with replacement':'without replacement',m.replacement?'dengan pengembalian':'tanpa pengembalian')} · P(${m.event[1]} | R) = ${p.conditional} · P(${m.event}) = ${p.combined}`;}
+  if(item.kind==='probability-reading'){const p=branchFractions(m);return `${m.red} R + ${m.blue} B · ${local(m.replacement?'with replacement':'without replacement',m.replacement?'dengan pengembalian':'tanpa pengembalian')} · P(${m.event[1]} | R) = ${p.conditional}${item.focus==='conditional'?'':` · P(${m.event}) = ${p.combined}`}`;}
   if(item.kind==='probability-plan')return `${v.red} R + ${v.blue} B · P(RR) = ${item.target.probabilityFraction||n(item.target.probability)}`;
   if(item.kind==='finance-reading')return m.chart==='savings'?local(`Goal reached after ${v.value} full months`,`Sasaran dicapai selepas ${v.value} bulan penuh`):local(`Monthly savings: RM${v.value}`,`Simpanan bulanan: RM${v.value}`);
   return local(`Supplies RM${item.spent} + savings RM${v.saving} + unspent RM${item.remaining} = RM${m.budget}`,`Bekalan RM${item.spent} + simpanan RM${v.saving} + baki RM${item.remaining} = RM${m.budget}`);

@@ -3,6 +3,7 @@ import {createQuest} from '../missions/quest.js';
 import {assignmentCurriculum,encodeAssignment} from '../missions/assignment.js';
 import {reviewQueue} from './review.js';
 import {skillTag} from './feedback.js';
+import {selectDifficulty} from '../math/variants.js';
 
 export const LEGACY_REPORT_COLUMNS=['report_version','exported_at_utc','learner_code','mode','mission_code','form','subject','chapter','region_id','region_name_en','region_name_ms','question_set','task_id','task_title_en','task_title_ms','status','completed','attempts','hints_used','independent_first_answer','xp','answer_draft','last_attempt_at_utc'];
 export const REPORT_COLUMNS=[...LEGACY_REPORT_COLUMNS,'run_id','run_kind','assignment_instance','due_label','skill_tag','source_run_id','migrated_run'];
@@ -16,7 +17,7 @@ export function learningRows(save,curricula,exportedAt=new Date().toISOString())
     const world=REGIONS.find(w=>w.id===run.regionId),saved=run.quest,data=curricula.get(run.regionId);
     if(!saved||!data)return [];
     const original=createQuest(assignmentCurriculum(data,assignment),saved);
-    const groups=[{quest:original,kind:run.kind,id:run.run?.id||`legacy-${world.id}`},...reviewQueue(data,saved,run.reviews).filter(r=>run.reviews?.[r.id]).map(r=>({quest:r.practice,kind:'review',id:`${run.run?.id||`legacy-${world.id}`}:review:${r.id}`}))];
+    const groups=[{quest:original,kind:run.kind,id:run.run?.id||`legacy-${world.id}`},...reviewQueue(selectDifficulty(data,assignment?.level),saved,run.reviews).filter(r=>run.reviews?.[r.id]).map(r=>({quest:r.practice,kind:'review',id:`${run.run?.id||`legacy-${world.id}`}:review:${r.id}`}))];
     return groups.flatMap(({quest,kind,id})=>{const state=quest.save();return quest.challenges.map(def=>{
       const session=state.sessions[def.id],completed=quest.completed.includes(def.id),independent=completed&&session.independent;
       const started=session.attempts>0||session.hints>0||Object.keys(session.draft).length>0;

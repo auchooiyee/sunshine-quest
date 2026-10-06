@@ -2,7 +2,7 @@ import { createGame } from './engine.js';
 import { createForestRenderer } from './src/forest-renderer.js';
 import { createQuest } from './src/missions/quest.js';
 import { designModel, valueAt, vertex, roots, parseNumber, formatQuadratic } from './src/math/quadratics.js';
-import {selectVariant,variantOptions} from './src/math/variants.js';
+import {selectVariant,variantOptions,selectDifficulty} from './src/math/variants.js';
 import {learningCSV} from './src/learning/report.js';
 import { loadSave, writeSave, decodeSave, STORAGE_KEY, CONTENT_VERSION } from './src/storage/save-store.js';
 import { WORLDS, REGIONS, getWorld, worldText } from './config/worlds.js';
@@ -27,6 +27,7 @@ import {newRun,archiveRun} from './src/learning/history.js';
 import {diagnostic} from './src/learning/feedback.js';
 import {createLearningTools,download} from './src/ui/learning-tools.js';
 import {assignmentURL,assignmentFromURL} from './src/missions/assignment.js';
+import {en as levelsEN,ms as levelsMS} from './locales/levels.js';
 
 const $ = id => document.getElementById(id);
 const storage = { getItem:key=>localStorage.getItem(key), setItem:(key,value)=>localStorage.setItem(key,value) };
@@ -37,7 +38,7 @@ const stored = loadSave(storage,saveKey);
 let currentWorld=getWorld(assignment?.world||stored.data?.currentRegion),regions=stored.data?.regions||{};
 let language=stored.data?.language || assignment?.language || 'en', assist=assignment?assignment.assist:stored.data?.assist !== false;
 let history=stored.data?.history||[];
-const messages={en:{...en,...expeditionEN,...finaleEN,...practiceEN,...pilotEN,...adventureEN,...learningEN},ms:{...ms,...expeditionMS,...finaleMS,...practiceMS,...pilotMS,...adventureMS,...learningMS}};
+const messages={en:{...en,...expeditionEN,...finaleEN,...practiceEN,...pilotEN,...adventureEN,...learningEN,...levelsEN},ms:{...ms,...expeditionMS,...finaleMS,...practiceMS,...pilotMS,...adventureMS,...learningMS,...levelsMS}};
 const t = key => assignment?.tasks===3&&['questLead','introText','finishedText'].includes(key)?messages[language].shortMissionText:key==='guardian'&&adventureFor(currentWorld.id)?adventureFor(currentWorld.id).guardian[language]:worldText(currentWorld,key,language) || messages[language][key] || messages.en[key] || key;
 const game=createGame(regions[currentWorld.id]?.world,{mathQuest:true,assist});
 const curricula=new Map();
@@ -56,7 +57,7 @@ const anyModal=()=>dialogs.some(d=>d.open);
 const escaped = value => String(value).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 function clearInput(){for(const key of Object.keys(input))input[key]=false;document.querySelectorAll('[data-control]').forEach(b=>b.classList.remove('pressed'));}
 function snapshotSave(){const previous=regions[currentWorld.id]||{};regions[currentWorld.id]={...previous,run:previous.run||newRun(),reviews:previous.reviews||{},world:game.save(),quest:quest.save()};return {regions,history,currentRegion:currentWorld.id,assignment,language,assist,reportLabel};}
-const learningTools=createLearningTools({context:()=>{snapshotSave();return {region:regions[currentWorld.id],history,bank:curricula.get(currentWorld.id),bankFor:id=>assignmentCurriculum(curricula.get(id),assignment),quest,language};},persist,t,openDialog,openJournal:()=>{renderJournal();openDialog($('journal'));}});
+const learningTools=createLearningTools({context:()=>{snapshotSave();return {region:regions[currentWorld.id],history,bank:selectDifficulty(curricula.get(currentWorld.id),assignment?.level),bankFor:id=>assignmentCurriculum(curricula.get(id),assignment),quest,language};},persist,t,openDialog,openJournal:()=>{renderJournal();openDialog($('journal'));}});
 function persist(){if(!loaded||!quest||replacingSave)return;if(!recoveryPending)stored.available=writeSave(storage,snapshotSave(),saveKey);$('save-status').textContent=t(recoveryPending?'recoveryStatus':stored.available?'saveOK':'saveBad');}
 function toast(key){$('toast').textContent=t(key);$('toast').hidden=false;toastUntil=performance.now()+3500;}
 function tone(name){
@@ -84,7 +85,7 @@ function applyLanguage(){
   $('stage').setAttribute('aria-label',`${t('moveHelp')}: A / D. ${t('jumpHelp')}: Space. ${t('actionHelp')}: J. ${t('interactHelp')}: E.`);
   $('assist').checked=assist;
   $('assist').disabled=Boolean(assignment);
-  $('question-set').textContent=`${t('questionSet')}: ${t(['setOriginal','setB','setC'][quest?.variantIndex||0])}`;
+  $('question-set').textContent=`${assignment?.level?t(assignment.level==='foundation'?'foundation':'challengeLevel')+' · ':''}${t('questionSet')}: ${t(['setOriginal','setB','setC'][quest?.variantIndex||0])}`;
   $('question-set').hidden=currentWorld.id==='finale';
   $('region-number').textContent=currentWorld.id==='finale'?t('finale'):`${String(WORLDS.indexOf(currentWorld)+1).padStart(2,'0')} / 05`;
   $('class-banner').hidden=!assignment;
@@ -144,7 +145,7 @@ function updateUI(force=false){
     const status=done?t('completed'):active?t('next'):t('locked');
     return `<li class="${done?'done':active?'active':'locked'}" ${active?'aria-current="step"':''}><span class="mission-number">${done?'✓':String(i+1).padStart(2,'0')}</span><span><b>${escaped(t(id))}</b><small>${escaped(status)}${id==='guardian'&&group.length>1&&!done?' · '+remaining+' '+escaped(t('shields')):''}</small></span></li>`;
   }).join('');
-  $('objective-text').textContent=t(next?'objective'+at[0].toUpperCase()+at.slice(1):'objectiveDone');
+  $('objective-text').textContent=assignment?.level&&next?next.prompt[language]:t(next?'objective'+at[0].toUpperCase()+at.slice(1):'objectiveDone');
   $('checkpoint').hidden=!assist||quest.complete;$('checkpoint').disabled=!loaded||anyModal();
   $('interaction').hidden=s.mode!=='playing'||(!near&&!workshop);
   $('interaction').querySelector('span').textContent=t(near?at:'craft');
@@ -207,6 +208,7 @@ function renderChallenge(){
     addField('span',t('span'),draft.span,{min:4,max:10,step:1});addField('k',t('scale'),draft.k,{min:.25,max:1.5,step:.25});
   }else if(def.kind==='roots'){addField('first',t('firstRoot'),draft.first);addField('second',t('secondRoot'),draft.second);}
   else{addField('x',t('vertexX'),draft.x);addField('y',t('vertexY'),draft.y);}
+  if(def.evidence?.length){const title=document.createElement('h3');title.textContent=t('reasoningCheck');$('answer-fields').append(title);for(const f of def.evidence)addField(f.key,f.label[language],draft[f.key]);}
   $('submit-answer').hidden=feedback?.correct===true;$('continue-challenge').hidden=feedback?.correct!==true;
   $('continue-challenge').textContent=t(def.station==='guardian'&&!quest.complete?'nextPhase':'continueQuest');
   $('preview-action').hidden=def.kind!=='motion-plan';$('preview-action').textContent=t('previewPlan');
@@ -388,25 +390,32 @@ function renderRegionMap(){
 }
 $('region-button').onclick=()=>{if(!loaded)return;renderRegionMap();openDialog($('region-map'));};
 $('next-region').onclick=()=>{$('completion').close();setTimeout(()=>$('region-button').click(),0);};
-function teacherConfig(){const variant=Number($('teacher-variant').value);return {v:1,world:$('teacher-world').value,tasks:Number($('teacher-tasks').value),assist:$('teacher-assist').checked,guided:$('teacher-support').value==='guided',language:$('teacher-language').value,...(variant?{variant}:{})};}
+function teacherConfig(){const variant=Number($('teacher-variant').value),level=$('teacher-level').value;return {v:1,world:$('teacher-world').value,tasks:Number($('teacher-tasks').value),assist:$('teacher-assist').checked,guided:$('teacher-support').value==='guided',language:$('teacher-language').value,...(variant?{variant}:{}),...(level!=='standard'?{level}:{})};}
 function renderTeacherPreview(){
   for(const option of $('teacher-world').options){const w=getWorld(option.value);option.textContent=`${w.chapter??t('finale')} · ${w.name[language]}`;}
   const final=$('teacher-world').value==='finale';
+  $('teacher-level').disabled=final;if(final)$('teacher-level').value='standard';
+  const level=$('teacher-level').value,special=level!=='standard';
   $('teacher-variant').disabled=final;if(final)$('teacher-variant').value='0';
-  for(const option of $('teacher-tasks').options){option.disabled=option.hidden=final?option.value!=='5':option.value==='5';}
-  if(final)$('teacher-tasks').value='5';else if($('teacher-tasks').value==='5')$('teacher-tasks').value='6';
+  for(const option of $('teacher-variant').options)option.disabled=option.hidden=special&&option.value==='2';
+  if(special&&$('teacher-variant').value==='2')$('teacher-variant').value='0';
+  for(const option of $('teacher-tasks').options){option.disabled=option.hidden=final?option.value!=='5':special?option.value!=='3':option.value==='5';}
+  if(final)$('teacher-tasks').value='5';else if(special)$('teacher-tasks').value='3';else if($('teacher-tasks').value==='5')$('teacher-tasks').value='6';
+  $('teacher-level-note').textContent=t(final?'finaleTeacherNote':level==='foundation'?'foundationNote':level==='challenge'?'challengeLevelNote':'standardNote');
+  $('teacher-level-review').hidden=!special;
   const config=teacherConfig(),data=assignmentCurriculum(curricula.get(config.world),config);
   $('finale-teacher-note').hidden=!final;
   $('teacher-answers').replaceChildren();
   for(const def of final?finaleExample(data):data.challenges){
     const answer=def.answer||(def.kind==='roots'?Object.fromEntries(roots(def.model).map((v,i)=>[i?'second':'first',v])):def.kind==='vertex'?vertex(def.model):{span:def.target.span,k:4*def.target.height/def.target.span**2});
     const labels=def.fields?Object.fromEntries(def.fields.map(f=>[f.key,f.label[language]])):{first:t('firstRoot'),second:t('secondRoot'),x:t('vertexX'),y:t('vertexY'),span:t('span'),k:t('scale')};
-    const item=document.createElement('li');item.innerHTML=`<strong>${escaped(def.title[language])}</strong><p>${escaped(def.prompt[language])}</p><code>${escaped(Object.entries(answer).map(([k,v])=>`${labels[k]} = ${Number.isFinite(v)?Number(v.toFixed(6)):v}`).join(' · '))}</code>`;$('teacher-answers').append(item);
+    for(const f of def.evidence||[])labels[f.key]=f.label[language];
+    const item=document.createElement('li');item.innerHTML=`<strong>${escaped(def.title[language])}</strong><p>${escaped(def.prompt[language])}</p><code>${escaped(Object.entries(answer).map(([k,v])=>`${labels[k]} = ${Number.isFinite(v)?Number(v.toFixed(6)):v}`).join(' · '))}</code><p>${escaped(def.explanation[language])}</p>`;$('teacher-answers').append(item);
   }
   $('teacher-output').hidden=true;
 }
-$('teacher-button').onclick=()=>{if(!loaded)return;if(!$('teacher-world').options.length)for(const world of REGIONS){const option=new Option(world.name[language],world.id);$('teacher-world').add(option);}$('teacher-world').value=currentWorld.id;$('teacher-variant').value=String(quest.variantIndex);$('teacher-language').value=language;renderTeacherPreview();learningTools.renderReports();openDialog($('teacher'));};
-for(const id of ['teacher-world','teacher-variant','teacher-tasks','teacher-support','teacher-assist','teacher-language'])$(id).onchange=renderTeacherPreview;
+$('teacher-button').onclick=()=>{if(!loaded)return;if(!$('teacher-world').options.length)for(const world of REGIONS){const option=new Option(world.name[language],world.id);$('teacher-world').add(option);}$('teacher-world').value=currentWorld.id;$('teacher-level').value=assignment?.level||'standard';$('teacher-variant').value=String(quest.variantIndex);$('teacher-language').value=language;renderTeacherPreview();learningTools.renderReports();openDialog($('teacher'));};
+for(const id of ['teacher-world','teacher-level','teacher-variant','teacher-tasks','teacher-support','teacher-assist','teacher-language'])$(id).onchange=renderTeacherPreview;
 $('generate-code').onclick=()=>{
   const config={...teacherConfig(),instanceId:'lesson-'+crypto.randomUUID(),dueLabel:$('teacher-due').value.trim()},code=encodeAssignment(config),url=assignmentURL(config,location.href);
   $('generated-code').value=code;$('generated-link').value=url.href;$('teacher-output').hidden=false;

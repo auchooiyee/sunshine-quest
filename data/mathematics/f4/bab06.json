@@ -1371,5 +1371,1201 @@
         }
       ]
     }
-  ]
+  ],
+  "levels": {
+    "foundation": {
+      "variantBaseId": "foundation-v1",
+      "challenges": [
+        {
+          "id": "roots",
+          "station": "roots",
+          "kind": "inequality",
+          "reward": 75,
+          "title": {
+            "en": "One boundary",
+            "ms": "Satu sempadan"
+          },
+          "prompt": {
+            "en": "Choose non-negative whole coordinates from 0 to 10 with x ≥ 2. y is unrestricted within that grid.",
+            "ms": "Pilih koordinat integer bukan negatif dari 0 hingga 10 dengan x ≥ 2. y bebas dalam grid itu."
+          },
+          "model": {
+            "bound": 10,
+            "constraints": [
+              {
+                "a": 1,
+                "b": 0,
+                "op": ">=",
+                "c": 2
+              }
+            ]
+          },
+          "fields": [
+            {
+              "key": "x",
+              "label": {
+                "en": "Landing x",
+                "ms": "Pendaratan x"
+              },
+              "type": "number"
+            },
+            {
+              "key": "y",
+              "label": {
+                "en": "Landing y",
+                "ms": "Pendaratan y"
+              },
+              "type": "number"
+            }
+          ],
+          "answer": {
+            "x": 2,
+            "y": 0
+          },
+          "hints": {
+            "en": [
+              "Substitute a candidate point into every inequality.",
+              "A solid line includes its boundary; a dashed line excludes it. Use non-negative whole coordinates.",
+              "One valid landing is (2, 0). Check each restriction."
+            ],
+            "ms": [
+              "Gantikan titik calon ke dalam setiap ketaksamaan.",
+              "Garis penuh termasuk sempadannya; garis putus-putus tidak termasuk. Gunakan koordinat integer bukan negatif.",
+              "Satu pendaratan sah ialah (2, 0). Semak setiap syarat."
+            ]
+          },
+          "explanation": {
+            "en": "Your coordinates satisfy every restriction. Other feasible whole-number points also work.",
+            "ms": "Koordinat anda mematuhi setiap syarat. Titik integer lain dalam rantau tersaur juga diterima."
+          },
+          "skill": "inequalities-inequality",
+          "difficulty": "foundation",
+          "reviewStatus": "awaiting-mathematics-and-BM-review",
+          "difficultyRationale": {
+            "en": "Simpler representation or fewer choices; practise the prerequisite before combining decisions.",
+            "ms": "Perwakilan lebih mudah atau kurang pilihan; latih prasyarat sebelum menggabungkan keputusan."
+          },
+          "misconceptionCodes": [
+            "excluded-boundary",
+            "all-constraints",
+            "feasibility-before-cost"
+          ]
+        },
+        {
+          "id": "vertex",
+          "station": "vertex",
+          "kind": "inequality",
+          "reward": 75,
+          "title": {
+            "en": "Stay below the line",
+            "ms": "Kekal di bawah garis"
+          },
+          "prompt": {
+            "en": "Choose whole coordinates from 0 to 10 with y < 4. The horizontal line is excluded.",
+            "ms": "Pilih koordinat integer dari 0 hingga 10 dengan y < 4. Garis mengufuk tidak termasuk."
+          },
+          "model": {
+            "bound": 10,
+            "constraints": [
+              {
+                "a": 0,
+                "b": 1,
+                "op": "<",
+                "c": 4
+              }
+            ]
+          },
+          "fields": [
+            {
+              "key": "x",
+              "label": {
+                "en": "Landing x",
+                "ms": "Pendaratan x"
+              },
+              "type": "number"
+            },
+            {
+              "key": "y",
+              "label": {
+                "en": "Landing y",
+                "ms": "Pendaratan y"
+              },
+              "type": "number"
+            }
+          ],
+          "answer": {
+            "x": 1,
+            "y": 3
+          },
+          "hints": {
+            "en": [
+              "Substitute a candidate point into every inequality.",
+              "A solid line includes its boundary; a dashed line excludes it. Use non-negative whole coordinates.",
+              "One valid landing is (1, 3). Check each restriction."
+            ],
+            "ms": [
+              "Gantikan titik calon ke dalam setiap ketaksamaan.",
+              "Garis penuh termasuk sempadannya; garis putus-putus tidak termasuk. Gunakan koordinat integer bukan negatif.",
+              "Satu pendaratan sah ialah (1, 3). Semak setiap syarat."
+            ]
+          },
+          "explanation": {
+            "en": "Your coordinates satisfy every restriction. Other feasible whole-number points also work.",
+            "ms": "Koordinat anda mematuhi setiap syarat. Titik integer lain dalam rantau tersaur juga diterima."
+          },
+          "skill": "inequalities-inequality",
+          "difficulty": "foundation",
+          "reviewStatus": "awaiting-mathematics-and-BM-review",
+          "difficultyRationale": {
+            "en": "Simpler representation or fewer choices; practise the prerequisite before combining decisions.",
+            "ms": "Perwakilan lebih mudah atau kurang pilihan; latih prasyarat sebelum menggabungkan keputusan."
+          },
+          "misconceptionCodes": [
+            "excluded-boundary",
+            "all-constraints",
+            "feasibility-before-cost"
+          ]
+        },
+        {
+          "id": "design",
+          "station": "design",
+          "kind": "inequality",
+          "reward": 100,
+          "title": {
+            "en": "Combine two conditions",
+            "ms": "Gabungkan dua syarat"
+          },
+          "prompt": {
+            "en": "Choose non-negative whole coordinates with x ≥ 1 and x + y ≤ 6.",
+            "ms": "Pilih koordinat integer bukan negatif dengan x ≥ 1 dan x + y ≤ 6."
+          },
+          "model": {
+            "bound": 10,
+            "constraints": [
+              {
+                "a": 1,
+                "b": 0,
+                "op": ">=",
+                "c": 1
+              },
+              {
+                "a": 1,
+                "b": 1,
+                "op": "<=",
+                "c": 6
+              }
+            ]
+          },
+          "fields": [
+            {
+              "key": "x",
+              "label": {
+                "en": "Landing x",
+                "ms": "Pendaratan x"
+              },
+              "type": "number"
+            },
+            {
+              "key": "y",
+              "label": {
+                "en": "Landing y",
+                "ms": "Pendaratan y"
+              },
+              "type": "number"
+            }
+          ],
+          "answer": {
+            "x": 2,
+            "y": 2
+          },
+          "hints": {
+            "en": [
+              "Substitute a candidate point into every inequality.",
+              "A solid line includes its boundary; a dashed line excludes it. Use non-negative whole coordinates.",
+              "One valid landing is (2, 2). Check each restriction."
+            ],
+            "ms": [
+              "Gantikan titik calon ke dalam setiap ketaksamaan.",
+              "Garis penuh termasuk sempadannya; garis putus-putus tidak termasuk. Gunakan koordinat integer bukan negatif.",
+              "Satu pendaratan sah ialah (2, 2). Semak setiap syarat."
+            ]
+          },
+          "explanation": {
+            "en": "Your coordinates satisfy every restriction. Other feasible whole-number points also work.",
+            "ms": "Koordinat anda mematuhi setiap syarat. Titik integer lain dalam rantau tersaur juga diterima."
+          },
+          "skill": "inequalities-inequality",
+          "difficulty": "foundation",
+          "reviewStatus": "awaiting-mathematics-and-BM-review",
+          "difficultyRationale": {
+            "en": "Simpler representation or fewer choices; practise the prerequisite before combining decisions.",
+            "ms": "Perwakilan lebih mudah atau kurang pilihan; latih prasyarat sebelum menggabungkan keputusan."
+          },
+          "misconceptionCodes": [
+            "excluded-boundary",
+            "all-constraints",
+            "feasibility-before-cost"
+          ]
+        }
+      ],
+      "variants": [
+        {
+          "id": "foundation-b-v1",
+          "challenges": [
+            {
+              "id": "roots",
+              "station": "roots",
+              "kind": "inequality",
+              "reward": 75,
+              "title": {
+                "en": "One boundary",
+                "ms": "Satu sempadan"
+              },
+              "prompt": {
+                "en": "Choose non-negative whole coordinates from 0 to 10 with x ≥ 3. y is unrestricted within that grid.",
+                "ms": "Pilih koordinat integer bukan negatif dari 0 hingga 10 dengan x ≥ 3. y bebas dalam grid itu."
+              },
+              "model": {
+                "bound": 10,
+                "constraints": [
+                  {
+                    "a": 1,
+                    "b": 0,
+                    "op": ">=",
+                    "c": 3
+                  }
+                ]
+              },
+              "fields": [
+                {
+                  "key": "x",
+                  "label": {
+                    "en": "Landing x",
+                    "ms": "Pendaratan x"
+                  },
+                  "type": "number"
+                },
+                {
+                  "key": "y",
+                  "label": {
+                    "en": "Landing y",
+                    "ms": "Pendaratan y"
+                  },
+                  "type": "number"
+                }
+              ],
+              "answer": {
+                "x": 3,
+                "y": 0
+              },
+              "hints": {
+                "en": [
+                  "Substitute a candidate point into every inequality.",
+                  "A solid line includes its boundary; a dashed line excludes it. Use non-negative whole coordinates.",
+                  "One valid landing is (3, 0). Check each restriction."
+                ],
+                "ms": [
+                  "Gantikan titik calon ke dalam setiap ketaksamaan.",
+                  "Garis penuh termasuk sempadannya; garis putus-putus tidak termasuk. Gunakan koordinat integer bukan negatif.",
+                  "Satu pendaratan sah ialah (3, 0). Semak setiap syarat."
+                ]
+              },
+              "explanation": {
+                "en": "Your coordinates satisfy every restriction. Other feasible whole-number points also work.",
+                "ms": "Koordinat anda mematuhi setiap syarat. Titik integer lain dalam rantau tersaur juga diterima."
+              },
+              "skill": "inequalities-inequality",
+              "difficulty": "foundation",
+              "reviewStatus": "awaiting-mathematics-and-BM-review",
+              "difficultyRationale": {
+                "en": "Simpler representation or fewer choices; practise the prerequisite before combining decisions.",
+                "ms": "Perwakilan lebih mudah atau kurang pilihan; latih prasyarat sebelum menggabungkan keputusan."
+              },
+              "misconceptionCodes": [
+                "excluded-boundary",
+                "all-constraints",
+                "feasibility-before-cost"
+              ]
+            },
+            {
+              "id": "vertex",
+              "station": "vertex",
+              "kind": "inequality",
+              "reward": 75,
+              "title": {
+                "en": "Stay below the line",
+                "ms": "Kekal di bawah garis"
+              },
+              "prompt": {
+                "en": "Choose whole coordinates from 0 to 10 with y < 5. The horizontal line is excluded.",
+                "ms": "Pilih koordinat integer dari 0 hingga 10 dengan y < 5. Garis mengufuk tidak termasuk."
+              },
+              "model": {
+                "bound": 10,
+                "constraints": [
+                  {
+                    "a": 0,
+                    "b": 1,
+                    "op": "<",
+                    "c": 5
+                  }
+                ]
+              },
+              "fields": [
+                {
+                  "key": "x",
+                  "label": {
+                    "en": "Landing x",
+                    "ms": "Pendaratan x"
+                  },
+                  "type": "number"
+                },
+                {
+                  "key": "y",
+                  "label": {
+                    "en": "Landing y",
+                    "ms": "Pendaratan y"
+                  },
+                  "type": "number"
+                }
+              ],
+              "answer": {
+                "x": 1,
+                "y": 4
+              },
+              "hints": {
+                "en": [
+                  "Substitute a candidate point into every inequality.",
+                  "A solid line includes its boundary; a dashed line excludes it. Use non-negative whole coordinates.",
+                  "One valid landing is (1, 4). Check each restriction."
+                ],
+                "ms": [
+                  "Gantikan titik calon ke dalam setiap ketaksamaan.",
+                  "Garis penuh termasuk sempadannya; garis putus-putus tidak termasuk. Gunakan koordinat integer bukan negatif.",
+                  "Satu pendaratan sah ialah (1, 4). Semak setiap syarat."
+                ]
+              },
+              "explanation": {
+                "en": "Your coordinates satisfy every restriction. Other feasible whole-number points also work.",
+                "ms": "Koordinat anda mematuhi setiap syarat. Titik integer lain dalam rantau tersaur juga diterima."
+              },
+              "skill": "inequalities-inequality",
+              "difficulty": "foundation",
+              "reviewStatus": "awaiting-mathematics-and-BM-review",
+              "difficultyRationale": {
+                "en": "Simpler representation or fewer choices; practise the prerequisite before combining decisions.",
+                "ms": "Perwakilan lebih mudah atau kurang pilihan; latih prasyarat sebelum menggabungkan keputusan."
+              },
+              "misconceptionCodes": [
+                "excluded-boundary",
+                "all-constraints",
+                "feasibility-before-cost"
+              ]
+            },
+            {
+              "id": "design",
+              "station": "design",
+              "kind": "inequality",
+              "reward": 100,
+              "title": {
+                "en": "Combine two conditions",
+                "ms": "Gabungkan dua syarat"
+              },
+              "prompt": {
+                "en": "Choose non-negative whole coordinates with x ≥ 1 and x + y ≤ 7.",
+                "ms": "Pilih koordinat integer bukan negatif dengan x ≥ 1 dan x + y ≤ 7."
+              },
+              "model": {
+                "bound": 10,
+                "constraints": [
+                  {
+                    "a": 1,
+                    "b": 0,
+                    "op": ">=",
+                    "c": 1
+                  },
+                  {
+                    "a": 1,
+                    "b": 1,
+                    "op": "<=",
+                    "c": 7
+                  }
+                ]
+              },
+              "fields": [
+                {
+                  "key": "x",
+                  "label": {
+                    "en": "Landing x",
+                    "ms": "Pendaratan x"
+                  },
+                  "type": "number"
+                },
+                {
+                  "key": "y",
+                  "label": {
+                    "en": "Landing y",
+                    "ms": "Pendaratan y"
+                  },
+                  "type": "number"
+                }
+              ],
+              "answer": {
+                "x": 2,
+                "y": 2
+              },
+              "hints": {
+                "en": [
+                  "Substitute a candidate point into every inequality.",
+                  "A solid line includes its boundary; a dashed line excludes it. Use non-negative whole coordinates.",
+                  "One valid landing is (2, 2). Check each restriction."
+                ],
+                "ms": [
+                  "Gantikan titik calon ke dalam setiap ketaksamaan.",
+                  "Garis penuh termasuk sempadannya; garis putus-putus tidak termasuk. Gunakan koordinat integer bukan negatif.",
+                  "Satu pendaratan sah ialah (2, 2). Semak setiap syarat."
+                ]
+              },
+              "explanation": {
+                "en": "Your coordinates satisfy every restriction. Other feasible whole-number points also work.",
+                "ms": "Koordinat anda mematuhi setiap syarat. Titik integer lain dalam rantau tersaur juga diterima."
+              },
+              "skill": "inequalities-inequality",
+              "difficulty": "foundation",
+              "reviewStatus": "awaiting-mathematics-and-BM-review",
+              "difficultyRationale": {
+                "en": "Simpler representation or fewer choices; practise the prerequisite before combining decisions.",
+                "ms": "Perwakilan lebih mudah atau kurang pilihan; latih prasyarat sebelum menggabungkan keputusan."
+              },
+              "misconceptionCodes": [
+                "excluded-boundary",
+                "all-constraints",
+                "feasibility-before-cost"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    "challenge": {
+      "variantBaseId": "challenge-v1",
+      "challenges": [
+        {
+          "id": "roots",
+          "station": "roots",
+          "kind": "inequality",
+          "reward": 75,
+          "title": {
+            "en": "Compare surveyed routes",
+            "ms": "Bandingkan laluan ditinjau"
+          },
+          "prompt": {
+            "en": "Choose the cheapest permitted route from A (2,2), B (3,1), C (4,3). Conditions: x ≥ 2, y ≥ 1, x+y ≤ 7. Route cost is RM(2x + 1y). Enter its coordinates and cost.",
+            "ms": "Pilih laluan dibenarkan termurah daripada A (2,2), B (3,1), C (4,3). Syarat: x ≥ 2, y ≥ 1, x+y ≤ 7. Kos laluan ialah RM(2x + 1y). Masukkan koordinat dan kosnya."
+          },
+          "model": {
+            "bound": 10,
+            "constraints": [
+              {
+                "a": 1,
+                "b": 0,
+                "op": ">=",
+                "c": 2
+              },
+              {
+                "a": 0,
+                "b": 1,
+                "op": ">=",
+                "c": 1
+              },
+              {
+                "a": 1,
+                "b": 1,
+                "op": "<=",
+                "c": 7
+              }
+            ]
+          },
+          "fields": [
+            {
+              "key": "x",
+              "label": {
+                "en": "Landing x",
+                "ms": "Pendaratan x"
+              },
+              "type": "number"
+            },
+            {
+              "key": "y",
+              "label": {
+                "en": "Landing y",
+                "ms": "Pendaratan y"
+              },
+              "type": "number"
+            }
+          ],
+          "answer": {
+            "x": 2,
+            "y": 2,
+            "cost": 6
+          },
+          "hints": {
+            "en": [
+              "First test all three surveyed points against every restriction.",
+              "Compare costs: A=6, B=7, C=11; discard any excluded route.",
+              "Choose (2,2), RM6."
+            ],
+            "ms": [
+              "Uji ketiga-tiga titik ditinjau dengan setiap syarat dahulu.",
+              "Bandingkan kos: A=6, B=7, C=11; ketepikan laluan yang dikecualikan.",
+              "Pilih (2,2), RM6."
+            ]
+          },
+          "explanation": {
+            "en": "Your route is feasible and cheapest among the three surveyed options.",
+            "ms": "Laluan anda tersaur dan termurah antara tiga pilihan ditinjau."
+          },
+          "decisions": {
+            "routes": [
+              {
+                "x": 2,
+                "y": 2
+              },
+              {
+                "x": 3,
+                "y": 1
+              },
+              {
+                "x": 4,
+                "y": 3
+              }
+            ],
+            "weights": [
+              2,
+              1
+            ]
+          },
+          "evidence": [
+            {
+              "key": "cost",
+              "label": {
+                "en": "Chosen route cost (RM)",
+                "ms": "Kos laluan dipilih (RM)"
+              },
+              "rule": "routeCost"
+            }
+          ],
+          "skill": "inequalities-inequality",
+          "difficulty": "challenge",
+          "reviewStatus": "awaiting-mathematics-and-BM-review",
+          "difficultyRationale": {
+            "en": "Combine the main result with a comparison, additional condition or checking calculation.",
+            "ms": "Gabungkan hasil utama dengan perbandingan, syarat tambahan atau pengiraan semakan."
+          },
+          "misconceptionCodes": [
+            "excluded-boundary",
+            "all-constraints",
+            "feasibility-before-cost"
+          ]
+        },
+        {
+          "id": "vertex",
+          "station": "vertex",
+          "kind": "inequality",
+          "reward": 75,
+          "title": {
+            "en": "Compare surveyed routes",
+            "ms": "Bandingkan laluan ditinjau"
+          },
+          "prompt": {
+            "en": "Choose the cheapest permitted route from A (2,2), B (3,1), C (4,3). Conditions: x ≥ 2, y ≥ 1, x+y ≤ 7. Route cost is RM(1x + 3y). Enter its coordinates and cost.",
+            "ms": "Pilih laluan dibenarkan termurah daripada A (2,2), B (3,1), C (4,3). Syarat: x ≥ 2, y ≥ 1, x+y ≤ 7. Kos laluan ialah RM(1x + 3y). Masukkan koordinat dan kosnya."
+          },
+          "model": {
+            "bound": 10,
+            "constraints": [
+              {
+                "a": 1,
+                "b": 0,
+                "op": ">=",
+                "c": 2
+              },
+              {
+                "a": 0,
+                "b": 1,
+                "op": ">=",
+                "c": 1
+              },
+              {
+                "a": 1,
+                "b": 1,
+                "op": "<=",
+                "c": 7
+              }
+            ]
+          },
+          "fields": [
+            {
+              "key": "x",
+              "label": {
+                "en": "Landing x",
+                "ms": "Pendaratan x"
+              },
+              "type": "number"
+            },
+            {
+              "key": "y",
+              "label": {
+                "en": "Landing y",
+                "ms": "Pendaratan y"
+              },
+              "type": "number"
+            }
+          ],
+          "answer": {
+            "x": 3,
+            "y": 1,
+            "cost": 6
+          },
+          "hints": {
+            "en": [
+              "First test all three surveyed points against every restriction.",
+              "Compare costs: A=8, B=6, C=13; discard any excluded route.",
+              "Choose (3,1), RM6."
+            ],
+            "ms": [
+              "Uji ketiga-tiga titik ditinjau dengan setiap syarat dahulu.",
+              "Bandingkan kos: A=8, B=6, C=13; ketepikan laluan yang dikecualikan.",
+              "Pilih (3,1), RM6."
+            ]
+          },
+          "explanation": {
+            "en": "Your route is feasible and cheapest among the three surveyed options.",
+            "ms": "Laluan anda tersaur dan termurah antara tiga pilihan ditinjau."
+          },
+          "decisions": {
+            "routes": [
+              {
+                "x": 2,
+                "y": 2
+              },
+              {
+                "x": 3,
+                "y": 1
+              },
+              {
+                "x": 4,
+                "y": 3
+              }
+            ],
+            "weights": [
+              1,
+              3
+            ]
+          },
+          "evidence": [
+            {
+              "key": "cost",
+              "label": {
+                "en": "Chosen route cost (RM)",
+                "ms": "Kos laluan dipilih (RM)"
+              },
+              "rule": "routeCost"
+            }
+          ],
+          "skill": "inequalities-inequality",
+          "difficulty": "challenge",
+          "reviewStatus": "awaiting-mathematics-and-BM-review",
+          "difficultyRationale": {
+            "en": "Combine the main result with a comparison, additional condition or checking calculation.",
+            "ms": "Gabungkan hasil utama dengan perbandingan, syarat tambahan atau pengiraan semakan."
+          },
+          "misconceptionCodes": [
+            "excluded-boundary",
+            "all-constraints",
+            "feasibility-before-cost"
+          ]
+        },
+        {
+          "id": "design",
+          "station": "design",
+          "kind": "inequality",
+          "reward": 100,
+          "title": {
+            "en": "Compare surveyed routes",
+            "ms": "Bandingkan laluan ditinjau"
+          },
+          "prompt": {
+            "en": "Choose the cheapest permitted route from A (5,2), B (2,3), C (3,3). Conditions: x ≥ 2, y ≥ 1, x+y < 7. Route cost is RM(1x + 4y). Enter its coordinates and cost.",
+            "ms": "Pilih laluan dibenarkan termurah daripada A (5,2), B (2,3), C (3,3). Syarat: x ≥ 2, y ≥ 1, x+y < 7. Kos laluan ialah RM(1x + 4y). Masukkan koordinat dan kosnya."
+          },
+          "model": {
+            "bound": 10,
+            "constraints": [
+              {
+                "a": 1,
+                "b": 0,
+                "op": ">=",
+                "c": 2
+              },
+              {
+                "a": 0,
+                "b": 1,
+                "op": ">=",
+                "c": 1
+              },
+              {
+                "a": 1,
+                "b": 1,
+                "op": "<",
+                "c": 7
+              }
+            ]
+          },
+          "fields": [
+            {
+              "key": "x",
+              "label": {
+                "en": "Landing x",
+                "ms": "Pendaratan x"
+              },
+              "type": "number"
+            },
+            {
+              "key": "y",
+              "label": {
+                "en": "Landing y",
+                "ms": "Pendaratan y"
+              },
+              "type": "number"
+            }
+          ],
+          "answer": {
+            "x": 2,
+            "y": 3,
+            "cost": 14
+          },
+          "hints": {
+            "en": [
+              "First test all three surveyed points against every restriction.",
+              "Compare costs: A=13, B=14, C=15; discard any excluded route.",
+              "Choose (2,3), RM14."
+            ],
+            "ms": [
+              "Uji ketiga-tiga titik ditinjau dengan setiap syarat dahulu.",
+              "Bandingkan kos: A=13, B=14, C=15; ketepikan laluan yang dikecualikan.",
+              "Pilih (2,3), RM14."
+            ]
+          },
+          "explanation": {
+            "en": "Your route is feasible and cheapest among the three surveyed options.",
+            "ms": "Laluan anda tersaur dan termurah antara tiga pilihan ditinjau."
+          },
+          "decisions": {
+            "routes": [
+              {
+                "x": 5,
+                "y": 2
+              },
+              {
+                "x": 2,
+                "y": 3
+              },
+              {
+                "x": 3,
+                "y": 3
+              }
+            ],
+            "weights": [
+              1,
+              4
+            ]
+          },
+          "evidence": [
+            {
+              "key": "cost",
+              "label": {
+                "en": "Chosen route cost (RM)",
+                "ms": "Kos laluan dipilih (RM)"
+              },
+              "rule": "routeCost"
+            }
+          ],
+          "skill": "inequalities-inequality",
+          "difficulty": "challenge",
+          "reviewStatus": "awaiting-mathematics-and-BM-review",
+          "difficultyRationale": {
+            "en": "Combine the main result with a comparison, additional condition or checking calculation.",
+            "ms": "Gabungkan hasil utama dengan perbandingan, syarat tambahan atau pengiraan semakan."
+          },
+          "misconceptionCodes": [
+            "excluded-boundary",
+            "all-constraints",
+            "feasibility-before-cost"
+          ]
+        }
+      ],
+      "variants": [
+        {
+          "id": "challenge-b-v1",
+          "challenges": [
+            {
+              "id": "roots",
+              "station": "roots",
+              "kind": "inequality",
+              "reward": 75,
+              "title": {
+                "en": "Compare surveyed routes",
+                "ms": "Bandingkan laluan ditinjau"
+              },
+              "prompt": {
+                "en": "Choose the cheapest permitted route from A (3,2), B (4,1), C (5,3). Conditions: x ≥ 3, y ≥ 1, x+y ≤ 8. Route cost is RM(2x + 1y). Enter its coordinates and cost.",
+                "ms": "Pilih laluan dibenarkan termurah daripada A (3,2), B (4,1), C (5,3). Syarat: x ≥ 3, y ≥ 1, x+y ≤ 8. Kos laluan ialah RM(2x + 1y). Masukkan koordinat dan kosnya."
+              },
+              "model": {
+                "bound": 10,
+                "constraints": [
+                  {
+                    "a": 1,
+                    "b": 0,
+                    "op": ">=",
+                    "c": 3
+                  },
+                  {
+                    "a": 0,
+                    "b": 1,
+                    "op": ">=",
+                    "c": 1
+                  },
+                  {
+                    "a": 1,
+                    "b": 1,
+                    "op": "<=",
+                    "c": 8
+                  }
+                ]
+              },
+              "fields": [
+                {
+                  "key": "x",
+                  "label": {
+                    "en": "Landing x",
+                    "ms": "Pendaratan x"
+                  },
+                  "type": "number"
+                },
+                {
+                  "key": "y",
+                  "label": {
+                    "en": "Landing y",
+                    "ms": "Pendaratan y"
+                  },
+                  "type": "number"
+                }
+              ],
+              "answer": {
+                "x": 3,
+                "y": 2,
+                "cost": 8
+              },
+              "hints": {
+                "en": [
+                  "First test all three surveyed points against every restriction.",
+                  "Compare costs: A=8, B=9, C=13; discard any excluded route.",
+                  "Choose (3,2), RM8."
+                ],
+                "ms": [
+                  "Uji ketiga-tiga titik ditinjau dengan setiap syarat dahulu.",
+                  "Bandingkan kos: A=8, B=9, C=13; ketepikan laluan yang dikecualikan.",
+                  "Pilih (3,2), RM8."
+                ]
+              },
+              "explanation": {
+                "en": "Your route is feasible and cheapest among the three surveyed options.",
+                "ms": "Laluan anda tersaur dan termurah antara tiga pilihan ditinjau."
+              },
+              "decisions": {
+                "routes": [
+                  {
+                    "x": 3,
+                    "y": 2
+                  },
+                  {
+                    "x": 4,
+                    "y": 1
+                  },
+                  {
+                    "x": 5,
+                    "y": 3
+                  }
+                ],
+                "weights": [
+                  2,
+                  1
+                ]
+              },
+              "evidence": [
+                {
+                  "key": "cost",
+                  "label": {
+                    "en": "Chosen route cost (RM)",
+                    "ms": "Kos laluan dipilih (RM)"
+                  },
+                  "rule": "routeCost"
+                }
+              ],
+              "skill": "inequalities-inequality",
+              "difficulty": "challenge",
+              "reviewStatus": "awaiting-mathematics-and-BM-review",
+              "difficultyRationale": {
+                "en": "Combine the main result with a comparison, additional condition or checking calculation.",
+                "ms": "Gabungkan hasil utama dengan perbandingan, syarat tambahan atau pengiraan semakan."
+              },
+              "misconceptionCodes": [
+                "excluded-boundary",
+                "all-constraints",
+                "feasibility-before-cost"
+              ]
+            },
+            {
+              "id": "vertex",
+              "station": "vertex",
+              "kind": "inequality",
+              "reward": 75,
+              "title": {
+                "en": "Compare surveyed routes",
+                "ms": "Bandingkan laluan ditinjau"
+              },
+              "prompt": {
+                "en": "Choose the cheapest permitted route from A (3,2), B (4,1), C (5,3). Conditions: x ≥ 3, y ≥ 1, x+y ≤ 8. Route cost is RM(1x + 3y). Enter its coordinates and cost.",
+                "ms": "Pilih laluan dibenarkan termurah daripada A (3,2), B (4,1), C (5,3). Syarat: x ≥ 3, y ≥ 1, x+y ≤ 8. Kos laluan ialah RM(1x + 3y). Masukkan koordinat dan kosnya."
+              },
+              "model": {
+                "bound": 10,
+                "constraints": [
+                  {
+                    "a": 1,
+                    "b": 0,
+                    "op": ">=",
+                    "c": 3
+                  },
+                  {
+                    "a": 0,
+                    "b": 1,
+                    "op": ">=",
+                    "c": 1
+                  },
+                  {
+                    "a": 1,
+                    "b": 1,
+                    "op": "<=",
+                    "c": 8
+                  }
+                ]
+              },
+              "fields": [
+                {
+                  "key": "x",
+                  "label": {
+                    "en": "Landing x",
+                    "ms": "Pendaratan x"
+                  },
+                  "type": "number"
+                },
+                {
+                  "key": "y",
+                  "label": {
+                    "en": "Landing y",
+                    "ms": "Pendaratan y"
+                  },
+                  "type": "number"
+                }
+              ],
+              "answer": {
+                "x": 4,
+                "y": 1,
+                "cost": 7
+              },
+              "hints": {
+                "en": [
+                  "First test all three surveyed points against every restriction.",
+                  "Compare costs: A=9, B=7, C=14; discard any excluded route.",
+                  "Choose (4,1), RM7."
+                ],
+                "ms": [
+                  "Uji ketiga-tiga titik ditinjau dengan setiap syarat dahulu.",
+                  "Bandingkan kos: A=9, B=7, C=14; ketepikan laluan yang dikecualikan.",
+                  "Pilih (4,1), RM7."
+                ]
+              },
+              "explanation": {
+                "en": "Your route is feasible and cheapest among the three surveyed options.",
+                "ms": "Laluan anda tersaur dan termurah antara tiga pilihan ditinjau."
+              },
+              "decisions": {
+                "routes": [
+                  {
+                    "x": 3,
+                    "y": 2
+                  },
+                  {
+                    "x": 4,
+                    "y": 1
+                  },
+                  {
+                    "x": 5,
+                    "y": 3
+                  }
+                ],
+                "weights": [
+                  1,
+                  3
+                ]
+              },
+              "evidence": [
+                {
+                  "key": "cost",
+                  "label": {
+                    "en": "Chosen route cost (RM)",
+                    "ms": "Kos laluan dipilih (RM)"
+                  },
+                  "rule": "routeCost"
+                }
+              ],
+              "skill": "inequalities-inequality",
+              "difficulty": "challenge",
+              "reviewStatus": "awaiting-mathematics-and-BM-review",
+              "difficultyRationale": {
+                "en": "Combine the main result with a comparison, additional condition or checking calculation.",
+                "ms": "Gabungkan hasil utama dengan perbandingan, syarat tambahan atau pengiraan semakan."
+              },
+              "misconceptionCodes": [
+                "excluded-boundary",
+                "all-constraints",
+                "feasibility-before-cost"
+              ]
+            },
+            {
+              "id": "design",
+              "station": "design",
+              "kind": "inequality",
+              "reward": 100,
+              "title": {
+                "en": "Compare surveyed routes",
+                "ms": "Bandingkan laluan ditinjau"
+              },
+              "prompt": {
+                "en": "Choose the cheapest permitted route from A (6,2), B (3,3), C (4,3). Conditions: x ≥ 3, y ≥ 1, x+y < 8. Route cost is RM(1x + 4y). Enter its coordinates and cost.",
+                "ms": "Pilih laluan dibenarkan termurah daripada A (6,2), B (3,3), C (4,3). Syarat: x ≥ 3, y ≥ 1, x+y < 8. Kos laluan ialah RM(1x + 4y). Masukkan koordinat dan kosnya."
+              },
+              "model": {
+                "bound": 10,
+                "constraints": [
+                  {
+                    "a": 1,
+                    "b": 0,
+                    "op": ">=",
+                    "c": 3
+                  },
+                  {
+                    "a": 0,
+                    "b": 1,
+                    "op": ">=",
+                    "c": 1
+                  },
+                  {
+                    "a": 1,
+                    "b": 1,
+                    "op": "<",
+                    "c": 8
+                  }
+                ]
+              },
+              "fields": [
+                {
+                  "key": "x",
+                  "label": {
+                    "en": "Landing x",
+                    "ms": "Pendaratan x"
+                  },
+                  "type": "number"
+                },
+                {
+                  "key": "y",
+                  "label": {
+                    "en": "Landing y",
+                    "ms": "Pendaratan y"
+                  },
+                  "type": "number"
+                }
+              ],
+              "answer": {
+                "x": 3,
+                "y": 3,
+                "cost": 15
+              },
+              "hints": {
+                "en": [
+                  "First test all three surveyed points against every restriction.",
+                  "Compare costs: A=14, B=15, C=16; discard any excluded route.",
+                  "Choose (3,3), RM15."
+                ],
+                "ms": [
+                  "Uji ketiga-tiga titik ditinjau dengan setiap syarat dahulu.",
+                  "Bandingkan kos: A=14, B=15, C=16; ketepikan laluan yang dikecualikan.",
+                  "Pilih (3,3), RM15."
+                ]
+              },
+              "explanation": {
+                "en": "Your route is feasible and cheapest among the three surveyed options.",
+                "ms": "Laluan anda tersaur dan termurah antara tiga pilihan ditinjau."
+              },
+              "decisions": {
+                "routes": [
+                  {
+                    "x": 6,
+                    "y": 2
+                  },
+                  {
+                    "x": 3,
+                    "y": 3
+                  },
+                  {
+                    "x": 4,
+                    "y": 3
+                  }
+                ],
+                "weights": [
+                  1,
+                  4
+                ]
+              },
+              "evidence": [
+                {
+                  "key": "cost",
+                  "label": {
+                    "en": "Chosen route cost (RM)",
+                    "ms": "Kos laluan dipilih (RM)"
+                  },
+                  "rule": "routeCost"
+                }
+              ],
+              "skill": "inequalities-inequality",
+              "difficulty": "challenge",
+              "reviewStatus": "awaiting-mathematics-and-BM-review",
+              "difficultyRationale": {
+                "en": "Combine the main result with a comparison, additional condition or checking calculation.",
+                "ms": "Gabungkan hasil utama dengan perbandingan, syarat tambahan atau pengiraan semakan."
+              },
+              "misconceptionCodes": [
+                "excluded-boundary",
+                "all-constraints",
+                "feasibility-before-cost"
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  }
 }

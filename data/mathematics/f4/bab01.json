@@ -765,5 +765,735 @@
         }
       ]
     }
-  ]
+  ],
+  "levels": {
+    "foundation": {
+      "variantBaseId": "foundation-v1",
+      "challenges": [
+        {
+          "id": "roots",
+          "station": "roots",
+          "reward": 75,
+          "kind": "roots",
+          "model": {
+            "a": -1,
+            "b": 4,
+            "c": 0,
+            "domain": [
+              0,
+              4
+            ]
+          },
+          "title": {
+            "en": "Read the factors",
+            "ms": "Baca faktor"
+          },
+          "prompt": {
+            "en": "The arch is y = x(4 − x). At ground level, x(4 − x) = 0. Enter the two roots in metres.",
+            "ms": "Lengkung ialah y = x(4 − x). Pada aras tanah, x(4 − x) = 0. Masukkan dua punca dalam meter."
+          },
+          "answer": {
+            "first": 0,
+            "second": 4
+          },
+          "hints": {
+            "en": [
+              "A product is zero when either factor is zero.",
+              "Use x = 0 or 4 − x = 0.",
+              "Roots: 0 and 4."
+            ],
+            "ms": [
+              "Hasil darab ialah sifar apabila salah satu faktor sifar.",
+              "Gunakan x = 0 atau 4 − x = 0.",
+              "Punca: 0 dan 4."
+            ]
+          },
+          "explanation": {
+            "en": "The factors give anchors 0 m and 4 m.",
+            "ms": "Faktor memberikan tambatan 0 m dan 4 m."
+          },
+          "skill": "quadratics-roots",
+          "difficulty": "foundation",
+          "reviewStatus": "awaiting-mathematics-and-BM-review",
+          "difficultyRationale": {
+            "en": "Simpler representation or fewer choices; practise the prerequisite before combining decisions.",
+            "ms": "Perwakilan lebih mudah atau kurang pilihan; latih prasyarat sebelum menggabungkan keputusan."
+          },
+          "misconceptionCodes": [
+            "factor-or-vertex-form-reading"
+          ]
+        },
+        {
+          "id": "vertex",
+          "station": "vertex",
+          "reward": 75,
+          "kind": "vertex",
+          "model": {
+            "a": -1,
+            "b": 4,
+            "c": 0,
+            "domain": [
+              0,
+              4
+            ]
+          },
+          "title": {
+            "en": "Read the vertex form",
+            "ms": "Baca bentuk bucu"
+          },
+          "prompt": {
+            "en": "The same arch can be written y = −(x − 2)² + 4. Read the maximum point (x, y).",
+            "ms": "Lengkung yang sama boleh ditulis y = −(x − 2)² + 4. Baca titik maksimum (x, y)."
+          },
+          "answer": {
+            "x": 2,
+            "y": 4
+          },
+          "hints": {
+            "en": [
+              "A square is never negative.",
+              "The square becomes zero at x = 2.",
+              "Maximum: (2, 4)."
+            ],
+            "ms": [
+              "Kuasa dua tidak pernah negatif.",
+              "Kuasa dua menjadi sifar pada x = 2.",
+              "Maksimum: (2, 4)."
+            ]
+          },
+          "explanation": {
+            "en": "The vertex form gives (2, 4) directly.",
+            "ms": "Bentuk bucu memberikan (2, 4) secara langsung."
+          },
+          "skill": "quadratics-vertex",
+          "difficulty": "foundation",
+          "reviewStatus": "awaiting-mathematics-and-BM-review",
+          "difficultyRationale": {
+            "en": "Simpler representation or fewer choices; practise the prerequisite before combining decisions.",
+            "ms": "Perwakilan lebih mudah atau kurang pilihan; latih prasyarat sebelum menggabungkan keputusan."
+          },
+          "misconceptionCodes": [
+            "factor-or-vertex-form-reading"
+          ]
+        },
+        {
+          "id": "design",
+          "station": "design",
+          "reward": 100,
+          "kind": "design",
+          "model": {
+            "span": 4,
+            "k": 0.5
+          },
+          "title": {
+            "en": "Complete the arch rule",
+            "ms": "Lengkapkan petua lengkung"
+          },
+          "prompt": {
+            "en": "Use y = kx(L − x). Set L = 4 m. The height rule is h = 4k. Choose k so h = 4 m.",
+            "ms": "Gunakan y = kx(L − x). Tetapkan L = 4 m. Petua tinggi ialah h = 4k. Pilih k supaya h = 4 m."
+          },
+          "answer": {
+            "span": 4,
+            "k": 1
+          },
+          "hints": {
+            "en": [
+              "The span L is already given.",
+              "Solve 4k = 4.",
+              "Use L = 4 and k = 1."
+            ],
+            "ms": [
+              "Rentang L sudah diberi.",
+              "Selesaikan 4k = 4.",
+              "Gunakan L = 4 dan k = 1."
+            ]
+          },
+          "explanation": {
+            "en": "The bridge has span 4 m and height 4 m.",
+            "ms": "Jambatan mempunyai rentang 4 m dan tinggi 4 m."
+          },
+          "target": {
+            "span": 4,
+            "height": 4
+          },
+          "skill": "quadratics-design",
+          "difficulty": "foundation",
+          "reviewStatus": "awaiting-mathematics-and-BM-review",
+          "difficultyRationale": {
+            "en": "Simpler representation or fewer choices; practise the prerequisite before combining decisions.",
+            "ms": "Perwakilan lebih mudah atau kurang pilihan; latih prasyarat sebelum menggabungkan keputusan."
+          },
+          "misconceptionCodes": [
+            "factor-or-vertex-form-reading"
+          ]
+        }
+      ],
+      "variants": [
+        {
+          "id": "foundation-b-v1",
+          "challenges": [
+            {
+              "id": "roots",
+              "station": "roots",
+              "reward": 75,
+              "kind": "roots",
+              "model": {
+                "a": -1,
+                "b": 6,
+                "c": 0,
+                "domain": [
+                  0,
+                  6
+                ]
+              },
+              "title": {
+                "en": "Read the factors",
+                "ms": "Baca faktor"
+              },
+              "prompt": {
+                "en": "The arch is y = x(6 − x). At ground level, x(6 − x) = 0. Enter the two roots in metres.",
+                "ms": "Lengkung ialah y = x(6 − x). Pada aras tanah, x(6 − x) = 0. Masukkan dua punca dalam meter."
+              },
+              "answer": {
+                "first": 0,
+                "second": 6
+              },
+              "hints": {
+                "en": [
+                  "A product is zero when either factor is zero.",
+                  "Use x = 0 or 6 − x = 0.",
+                  "Roots: 0 and 6."
+                ],
+                "ms": [
+                  "Hasil darab ialah sifar apabila salah satu faktor sifar.",
+                  "Gunakan x = 0 atau 6 − x = 0.",
+                  "Punca: 0 dan 6."
+                ]
+              },
+              "explanation": {
+                "en": "The factors give anchors 0 m and 6 m.",
+                "ms": "Faktor memberikan tambatan 0 m dan 6 m."
+              },
+              "skill": "quadratics-roots",
+              "difficulty": "foundation",
+              "reviewStatus": "awaiting-mathematics-and-BM-review",
+              "difficultyRationale": {
+                "en": "Simpler representation or fewer choices; practise the prerequisite before combining decisions.",
+                "ms": "Perwakilan lebih mudah atau kurang pilihan; latih prasyarat sebelum menggabungkan keputusan."
+              },
+              "misconceptionCodes": [
+                "factor-or-vertex-form-reading"
+              ]
+            },
+            {
+              "id": "vertex",
+              "station": "vertex",
+              "reward": 75,
+              "kind": "vertex",
+              "model": {
+                "a": -1,
+                "b": 6,
+                "c": 0,
+                "domain": [
+                  0,
+                  6
+                ]
+              },
+              "title": {
+                "en": "Read the vertex form",
+                "ms": "Baca bentuk bucu"
+              },
+              "prompt": {
+                "en": "The same arch can be written y = −(x − 3)² + 9. Read the maximum point (x, y).",
+                "ms": "Lengkung yang sama boleh ditulis y = −(x − 3)² + 9. Baca titik maksimum (x, y)."
+              },
+              "answer": {
+                "x": 3,
+                "y": 9
+              },
+              "hints": {
+                "en": [
+                  "A square is never negative.",
+                  "The square becomes zero at x = 3.",
+                  "Maximum: (3, 9)."
+                ],
+                "ms": [
+                  "Kuasa dua tidak pernah negatif.",
+                  "Kuasa dua menjadi sifar pada x = 3.",
+                  "Maksimum: (3, 9)."
+                ]
+              },
+              "explanation": {
+                "en": "The vertex form gives (3, 9) directly.",
+                "ms": "Bentuk bucu memberikan (3, 9) secara langsung."
+              },
+              "skill": "quadratics-vertex",
+              "difficulty": "foundation",
+              "reviewStatus": "awaiting-mathematics-and-BM-review",
+              "difficultyRationale": {
+                "en": "Simpler representation or fewer choices; practise the prerequisite before combining decisions.",
+                "ms": "Perwakilan lebih mudah atau kurang pilihan; latih prasyarat sebelum menggabungkan keputusan."
+              },
+              "misconceptionCodes": [
+                "factor-or-vertex-form-reading"
+              ]
+            },
+            {
+              "id": "design",
+              "station": "design",
+              "reward": 100,
+              "kind": "design",
+              "model": {
+                "span": 6,
+                "k": 0.5
+              },
+              "title": {
+                "en": "Complete the arch rule",
+                "ms": "Lengkapkan petua lengkung"
+              },
+              "prompt": {
+                "en": "Use y = kx(L − x). Set L = 6 m. The height rule is h = 9k. Choose k so h = 9 m.",
+                "ms": "Gunakan y = kx(L − x). Tetapkan L = 6 m. Petua tinggi ialah h = 9k. Pilih k supaya h = 9 m."
+              },
+              "answer": {
+                "span": 6,
+                "k": 1
+              },
+              "hints": {
+                "en": [
+                  "The span L is already given.",
+                  "Solve 9k = 9.",
+                  "Use L = 6 and k = 1."
+                ],
+                "ms": [
+                  "Rentang L sudah diberi.",
+                  "Selesaikan 9k = 9.",
+                  "Gunakan L = 6 dan k = 1."
+                ]
+              },
+              "explanation": {
+                "en": "The bridge has span 6 m and height 9 m.",
+                "ms": "Jambatan mempunyai rentang 6 m dan tinggi 9 m."
+              },
+              "target": {
+                "span": 6,
+                "height": 9
+              },
+              "skill": "quadratics-design",
+              "difficulty": "foundation",
+              "reviewStatus": "awaiting-mathematics-and-BM-review",
+              "difficultyRationale": {
+                "en": "Simpler representation or fewer choices; practise the prerequisite before combining decisions.",
+                "ms": "Perwakilan lebih mudah atau kurang pilihan; latih prasyarat sebelum menggabungkan keputusan."
+              },
+              "misconceptionCodes": [
+                "factor-or-vertex-form-reading"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    "challenge": {
+      "variantBaseId": "challenge-v1",
+      "challenges": [
+        {
+          "id": "roots",
+          "station": "roots",
+          "reward": 75,
+          "kind": "roots",
+          "model": {
+            "a": -1,
+            "b": 8,
+            "c": -7,
+            "domain": [
+              1,
+              7
+            ]
+          },
+          "title": {
+            "en": "Anchors and crossing width",
+            "ms": "Tambatan dan lebar lintasan"
+          },
+          "prompt": {
+            "en": "For y = −x² + 8x − 7, find both ground anchors, then give the distance between them.",
+            "ms": "Bagi y = −x² + 8x − 7, cari kedua-dua tambatan tanah, kemudian beri jarak antaranya."
+          },
+          "answer": {
+            "first": 1,
+            "second": 7,
+            "width": 6
+          },
+          "hints": {
+            "en": [
+              "Set y = 0 and factorise.",
+              "The factors are −(x − 1)(x − 7). Width is the difference between anchors.",
+              "Anchors 1, 7; width 7 − 1 = 6 m."
+            ],
+            "ms": [
+              "Tetapkan y = 0 dan faktorkan.",
+              "Faktornya ialah −(x − 1)(x − 7). Lebar ialah beza antara tambatan.",
+              "Tambatan 1, 7; lebar 7 − 1 = 6 m."
+            ]
+          },
+          "explanation": {
+            "en": "The crossing is 6 m wide; its right anchor is not its width.",
+            "ms": "Lintasan selebar 6 m; tambatan kanan bukan lebarnya."
+          },
+          "evidence": [
+            {
+              "key": "width",
+              "label": {
+                "en": "Crossing width (m)",
+                "ms": "Lebar lintasan (m)"
+              },
+              "expected": 6
+            }
+          ],
+          "skill": "quadratics-roots",
+          "difficulty": "challenge",
+          "reviewStatus": "awaiting-mathematics-and-BM-review",
+          "difficultyRationale": {
+            "en": "Combine the main result with a comparison, additional condition or checking calculation.",
+            "ms": "Gabungkan hasil utama dengan perbandingan, syarat tambahan atau pengiraan semakan."
+          },
+          "misconceptionCodes": [
+            "root-versus-width",
+            "maximum-versus-point-height"
+          ]
+        },
+        {
+          "id": "vertex",
+          "station": "vertex",
+          "reward": 75,
+          "kind": "vertex",
+          "model": {
+            "a": -1,
+            "b": 8,
+            "c": -7,
+            "domain": [
+              1,
+              7
+            ]
+          },
+          "title": {
+            "en": "Peak and off-centre clearance",
+            "ms": "Puncak dan kelegaan luar pusat"
+          },
+          "prompt": {
+            "en": "For y = −(x − 4)² + 9, find the maximum point. A support stands at x = 2; calculate the arch height there too.",
+            "ms": "Bagi y = −(x − 4)² + 9, cari titik maksimum. Penyokong berada pada x = 2; kira juga tinggi lengkung di situ."
+          },
+          "answer": {
+            "x": 4,
+            "y": 9,
+            "clearance": 5
+          },
+          "hints": {
+            "en": [
+              "The peak and the support are at different x-coordinates.",
+              "At x = 2, the squared term is (−2)² = 4.",
+              "Peak (4, 9); support height 9 − 4 = 5 m."
+            ],
+            "ms": [
+              "Puncak dan penyokong berada pada koordinat x berbeza.",
+              "Pada x = 2, sebutan kuasa dua ialah (−2)² = 4.",
+              "Puncak (4, 9); tinggi penyokong 9 − 4 = 5 m."
+            ]
+          },
+          "explanation": {
+            "en": "The maximum is 9 m, but clearance at the support is only 5 m.",
+            "ms": "Tinggi maksimum ialah 9 m, tetapi kelegaan di penyokong hanya 5 m."
+          },
+          "evidence": [
+            {
+              "key": "clearance",
+              "label": {
+                "en": "Height at the support (m)",
+                "ms": "Tinggi pada penyokong (m)"
+              },
+              "expected": 5
+            }
+          ],
+          "skill": "quadratics-vertex",
+          "difficulty": "challenge",
+          "reviewStatus": "awaiting-mathematics-and-BM-review",
+          "difficultyRationale": {
+            "en": "Combine the main result with a comparison, additional condition or checking calculation.",
+            "ms": "Gabungkan hasil utama dengan perbandingan, syarat tambahan atau pengiraan semakan."
+          },
+          "misconceptionCodes": [
+            "root-versus-width",
+            "maximum-versus-point-height"
+          ]
+        },
+        {
+          "id": "design",
+          "station": "design",
+          "reward": 100,
+          "kind": "design",
+          "model": {
+            "span": 4,
+            "k": 0.5
+          },
+          "title": {
+            "en": "Design and inspect the arch",
+            "ms": "Reka dan periksa lengkung"
+          },
+          "prompt": {
+            "en": "Build y = kx(L − x) with span 6 m and maximum height 9 m. Then calculate its height at x = L/4.",
+            "ms": "Bina y = kx(L − x) dengan rentang 6 m dan tinggi maksimum 9 m. Kemudian kira tingginya pada x = L/4."
+          },
+          "answer": {
+            "span": 6,
+            "k": 1,
+            "quarter": 6.75
+          },
+          "hints": {
+            "en": [
+              "First satisfy the width and maximum height, then inspect another point.",
+              "h = kL²/4; at x = L/4, y = 3kL²/16.",
+              "L=6, k=1; quarter-span height=6.75 m."
+            ],
+            "ms": [
+              "Penuhi lebar dan tinggi maksimum dahulu, kemudian periksa titik lain.",
+              "h = kL²/4; pada x = L/4, y = 3kL²/16.",
+              "L=6, k=1; tinggi suku rentang=6.75 m."
+            ]
+          },
+          "explanation": {
+            "en": "The quarter-span clearance is three quarters of the maximum height.",
+            "ms": "Kelegaan suku rentang ialah tiga perempat tinggi maksimum."
+          },
+          "target": {
+            "span": 6,
+            "height": 9
+          },
+          "evidence": [
+            {
+              "key": "quarter",
+              "label": {
+                "en": "Quarter-span height (m)",
+                "ms": "Tinggi suku rentang (m)"
+              },
+              "expected": 6.75
+            }
+          ],
+          "skill": "quadratics-design",
+          "difficulty": "challenge",
+          "reviewStatus": "awaiting-mathematics-and-BM-review",
+          "difficultyRationale": {
+            "en": "Combine the main result with a comparison, additional condition or checking calculation.",
+            "ms": "Gabungkan hasil utama dengan perbandingan, syarat tambahan atau pengiraan semakan."
+          },
+          "misconceptionCodes": [
+            "root-versus-width",
+            "maximum-versus-point-height"
+          ]
+        }
+      ],
+      "variants": [
+        {
+          "id": "challenge-b-v1",
+          "challenges": [
+            {
+              "id": "roots",
+              "station": "roots",
+              "reward": 75,
+              "kind": "roots",
+              "model": {
+                "a": -1,
+                "b": 10,
+                "c": -16,
+                "domain": [
+                  2,
+                  8
+                ]
+              },
+              "title": {
+                "en": "Anchors and crossing width",
+                "ms": "Tambatan dan lebar lintasan"
+              },
+              "prompt": {
+                "en": "For y = −x² + 10x − 16, find both ground anchors, then give the distance between them.",
+                "ms": "Bagi y = −x² + 10x − 16, cari kedua-dua tambatan tanah, kemudian beri jarak antaranya."
+              },
+              "answer": {
+                "first": 2,
+                "second": 8,
+                "width": 6
+              },
+              "hints": {
+                "en": [
+                  "Set y = 0 and factorise.",
+                  "The factors are −(x − 2)(x − 8). Width is the difference between anchors.",
+                  "Anchors 2, 8; width 8 − 2 = 6 m."
+                ],
+                "ms": [
+                  "Tetapkan y = 0 dan faktorkan.",
+                  "Faktornya ialah −(x − 2)(x − 8). Lebar ialah beza antara tambatan.",
+                  "Tambatan 2, 8; lebar 8 − 2 = 6 m."
+                ]
+              },
+              "explanation": {
+                "en": "The crossing is 6 m wide; its right anchor is not its width.",
+                "ms": "Lintasan selebar 6 m; tambatan kanan bukan lebarnya."
+              },
+              "evidence": [
+                {
+                  "key": "width",
+                  "label": {
+                    "en": "Crossing width (m)",
+                    "ms": "Lebar lintasan (m)"
+                  },
+                  "expected": 6
+                }
+              ],
+              "skill": "quadratics-roots",
+              "difficulty": "challenge",
+              "reviewStatus": "awaiting-mathematics-and-BM-review",
+              "difficultyRationale": {
+                "en": "Combine the main result with a comparison, additional condition or checking calculation.",
+                "ms": "Gabungkan hasil utama dengan perbandingan, syarat tambahan atau pengiraan semakan."
+              },
+              "misconceptionCodes": [
+                "root-versus-width",
+                "maximum-versus-point-height"
+              ]
+            },
+            {
+              "id": "vertex",
+              "station": "vertex",
+              "reward": 75,
+              "kind": "vertex",
+              "model": {
+                "a": -1,
+                "b": 10,
+                "c": -16,
+                "domain": [
+                  2,
+                  8
+                ]
+              },
+              "title": {
+                "en": "Peak and off-centre clearance",
+                "ms": "Puncak dan kelegaan luar pusat"
+              },
+              "prompt": {
+                "en": "For y = −(x − 5)² + 9, find the maximum point. A support stands at x = 3; calculate the arch height there too.",
+                "ms": "Bagi y = −(x − 5)² + 9, cari titik maksimum. Penyokong berada pada x = 3; kira juga tinggi lengkung di situ."
+              },
+              "answer": {
+                "x": 5,
+                "y": 9,
+                "clearance": 5
+              },
+              "hints": {
+                "en": [
+                  "The peak and the support are at different x-coordinates.",
+                  "At x = 3, the squared term is (−2)² = 4.",
+                  "Peak (5, 9); support height 9 − 4 = 5 m."
+                ],
+                "ms": [
+                  "Puncak dan penyokong berada pada koordinat x berbeza.",
+                  "Pada x = 3, sebutan kuasa dua ialah (−2)² = 4.",
+                  "Puncak (5, 9); tinggi penyokong 9 − 4 = 5 m."
+                ]
+              },
+              "explanation": {
+                "en": "The maximum is 9 m, but clearance at the support is only 5 m.",
+                "ms": "Tinggi maksimum ialah 9 m, tetapi kelegaan di penyokong hanya 5 m."
+              },
+              "evidence": [
+                {
+                  "key": "clearance",
+                  "label": {
+                    "en": "Height at the support (m)",
+                    "ms": "Tinggi pada penyokong (m)"
+                  },
+                  "expected": 5
+                }
+              ],
+              "skill": "quadratics-vertex",
+              "difficulty": "challenge",
+              "reviewStatus": "awaiting-mathematics-and-BM-review",
+              "difficultyRationale": {
+                "en": "Combine the main result with a comparison, additional condition or checking calculation.",
+                "ms": "Gabungkan hasil utama dengan perbandingan, syarat tambahan atau pengiraan semakan."
+              },
+              "misconceptionCodes": [
+                "root-versus-width",
+                "maximum-versus-point-height"
+              ]
+            },
+            {
+              "id": "design",
+              "station": "design",
+              "reward": 100,
+              "kind": "design",
+              "model": {
+                "span": 4,
+                "k": 0.5
+              },
+              "title": {
+                "en": "Design and inspect the arch",
+                "ms": "Reka dan periksa lengkung"
+              },
+              "prompt": {
+                "en": "Build y = kx(L − x) with span 8 m and maximum height 16 m. Then calculate its height at x = L/4.",
+                "ms": "Bina y = kx(L − x) dengan rentang 8 m dan tinggi maksimum 16 m. Kemudian kira tingginya pada x = L/4."
+              },
+              "answer": {
+                "span": 8,
+                "k": 1,
+                "quarter": 12
+              },
+              "hints": {
+                "en": [
+                  "First satisfy the width and maximum height, then inspect another point.",
+                  "h = kL²/4; at x = L/4, y = 3kL²/16.",
+                  "L=8, k=1; quarter-span height=12 m."
+                ],
+                "ms": [
+                  "Penuhi lebar dan tinggi maksimum dahulu, kemudian periksa titik lain.",
+                  "h = kL²/4; pada x = L/4, y = 3kL²/16.",
+                  "L=8, k=1; tinggi suku rentang=12 m."
+                ]
+              },
+              "explanation": {
+                "en": "The quarter-span clearance is three quarters of the maximum height.",
+                "ms": "Kelegaan suku rentang ialah tiga perempat tinggi maksimum."
+              },
+              "target": {
+                "span": 8,
+                "height": 16
+              },
+              "evidence": [
+                {
+                  "key": "quarter",
+                  "label": {
+                    "en": "Quarter-span height (m)",
+                    "ms": "Tinggi suku rentang (m)"
+                  },
+                  "expected": 12
+                }
+              ],
+              "skill": "quadratics-design",
+              "difficulty": "challenge",
+              "reviewStatus": "awaiting-mathematics-and-BM-review",
+              "difficultyRationale": {
+                "en": "Combine the main result with a comparison, additional condition or checking calculation.",
+                "ms": "Gabungkan hasil utama dengan perbandingan, syarat tambahan atau pengiraan semakan."
+              },
+              "misconceptionCodes": [
+                "root-versus-width",
+                "maximum-versus-point-height"
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  }
 }

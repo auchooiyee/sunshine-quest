@@ -1149,5 +1149,985 @@
         }
       ]
     }
-  ]
+  ],
+  "levels": {
+    "foundation": {
+      "variantBaseId": "foundation-v1",
+      "challenges": [
+        {
+          "id": "roots",
+          "station": "roots",
+          "kind": "motion-reading",
+          "reward": 75,
+          "title": {
+            "en": "Read the track",
+            "ms": "Baca trek"
+          },
+          "prompt": {
+            "en": "Find the speed during the moving section of this distance–time graph. Give your answer in m/s.",
+            "ms": "Cari laju pada bahagian bergerak dalam graf jarak–masa ini. Beri jawapan dalam m/s."
+          },
+          "model": {
+            "graph": "distance",
+            "points": [
+              [
+                0,
+                0
+              ],
+              [
+                4,
+                12
+              ]
+            ]
+          },
+          "fields": [
+            {
+              "key": "value",
+              "label": {
+                "en": "Speed (m/s)",
+                "ms": "Laju (m/s)"
+              },
+              "type": "number"
+            }
+          ],
+          "answer": {
+            "value": 3
+          },
+          "hints": {
+            "en": [
+              "Speed is the gradient of a distance–time graph.",
+              "Divide the change in distance by the change in time in the moving section.",
+              "The moving section has gradient 3 m/s."
+            ],
+            "ms": [
+              "Laju ialah kecerunan graf jarak–masa.",
+              "Bahagikan perubahan jarak dengan perubahan masa pada bahagian bergerak.",
+              "Bahagian bergerak mempunyai kecerunan 3 m/s."
+            ]
+          },
+          "explanation": {
+            "en": "The moving section has speed 3 m/s. A horizontal distance–time segment means rest.",
+            "ms": "Laju pada bahagian bergerak ialah 3 m/s. Segmen mendatar graf jarak–masa bermaksud pegun."
+          },
+          "skill": "motion-motion-reading",
+          "difficulty": "foundation",
+          "reviewStatus": "awaiting-mathematics-and-BM-review",
+          "difficultyRationale": {
+            "en": "Simpler representation or fewer choices; practise the prerequisite before combining decisions.",
+            "ms": "Perwakilan lebih mudah atau kurang pilihan; latih prasyarat sebelum menggabungkan keputusan."
+          },
+          "misconceptionCodes": [
+            "gradient-versus-area",
+            "moving-versus-average-speed"
+          ]
+        },
+        {
+          "id": "vertex",
+          "station": "vertex",
+          "kind": "motion-reading",
+          "reward": 75,
+          "title": {
+            "en": "Distance from area",
+            "ms": "Jarak daripada luas"
+          },
+          "prompt": {
+            "en": "Find the total distance travelled from the area under the speed–time graph. Give metres.",
+            "ms": "Cari jumlah jarak dilalui daripada luas di bawah graf laju–masa. Beri jawapan dalam meter."
+          },
+          "model": {
+            "graph": "speed",
+            "segments": [
+              {
+                "duration": 4,
+                "speed": 3
+              }
+            ]
+          },
+          "fields": [
+            {
+              "key": "value",
+              "label": {
+                "en": "Distance (m)",
+                "ms": "Jarak (m)"
+              },
+              "type": "number"
+            }
+          ],
+          "answer": {
+            "value": 12
+          },
+          "hints": {
+            "en": [
+              "Distance is the area under a speed–time graph.",
+              "Each rectangle has area speed × duration. Add the rectangles.",
+              "The total area is 12 m."
+            ],
+            "ms": [
+              "Jarak ialah luas di bawah graf laju–masa.",
+              "Luas setiap segi empat tepat ialah laju × tempoh. Tambahkan luas-luasnya.",
+              "Jumlah luas ialah 12 m."
+            ]
+          },
+          "explanation": {
+            "en": "Adding speed × duration for every stage gives 12 m.",
+            "ms": "Menambahkan laju × tempoh bagi setiap peringkat memberikan 12 m."
+          },
+          "skill": "motion-motion-reading",
+          "difficulty": "foundation",
+          "reviewStatus": "awaiting-mathematics-and-BM-review",
+          "difficultyRationale": {
+            "en": "Simpler representation or fewer choices; practise the prerequisite before combining decisions.",
+            "ms": "Perwakilan lebih mudah atau kurang pilihan; latih prasyarat sebelum menggabungkan keputusan."
+          },
+          "misconceptionCodes": [
+            "gradient-versus-area",
+            "moving-versus-average-speed"
+          ]
+        },
+        {
+          "id": "design",
+          "station": "design",
+          "kind": "motion-plan",
+          "reward": 100,
+          "title": {
+            "en": "Program the delivery cart",
+            "ms": "Atur troli penghantaran"
+          },
+          "prompt": {
+            "en": "Travel exactly 20 m in 6 s. Set the first-stage duration and speed. The remaining time is at 2 m/s. The first duration is fixed at 2 s; solve only for its speed.",
+            "ms": "Bergerak tepat 20 m dalam 6 s. Tetapkan tempoh dan laju peringkat pertama. Masa selebihnya pada 2 m/s. Tempoh pertama ditetapkan pada 2 s; cari lajunya sahaja."
+          },
+          "model": {
+            "duration": 6,
+            "v2": 2,
+            "maxSpeed": 12
+          },
+          "fields": [
+            {
+              "key": "t1",
+              "label": {
+                "en": "First duration (s)",
+                "ms": "Tempoh pertama (s)"
+              },
+              "type": "range",
+              "min": 2,
+              "max": 2,
+              "step": 1,
+              "initial": 2
+            },
+            {
+              "key": "v1",
+              "label": {
+                "en": "First speed (m/s)",
+                "ms": "Laju pertama (m/s)"
+              },
+              "type": "range",
+              "min": 0,
+              "max": 12,
+              "step": 1,
+              "initial": 2
+            }
+          ],
+          "answer": {
+            "t1": 2,
+            "v1": 6
+          },
+          "hints": {
+            "en": [
+              "Total distance = first area + second area.",
+              "Use v₁t₁ + 2(6 − t₁) = 20.",
+              "One plan uses 2 s at 6 m/s. Other exact plans also work."
+            ],
+            "ms": [
+              "Jumlah jarak = luas pertama + luas kedua.",
+              "Gunakan v₁t₁ + 2(6 − t₁) = 20.",
+              "Satu pelan menggunakan 2 s pada 6 m/s. Pelan tepat yang lain juga diterima."
+            ]
+          },
+          "explanation": {
+            "en": "Your two areas add to the required distance. The cart now follows this speed plan in the forest.",
+            "ms": "Kedua-dua luas berjumlah jarak diperlukan. Troli kini mengikuti pelan laju ini di hutan."
+          },
+          "target": {
+            "distance": 20
+          },
+          "controlSteps": {
+            "t1": {
+              "min": 2,
+              "max": 2,
+              "step": 1
+            }
+          },
+          "skill": "motion-motion-plan",
+          "difficulty": "foundation",
+          "reviewStatus": "awaiting-mathematics-and-BM-review",
+          "difficultyRationale": {
+            "en": "Simpler representation or fewer choices; practise the prerequisite before combining decisions.",
+            "ms": "Perwakilan lebih mudah atau kurang pilihan; latih prasyarat sebelum menggabungkan keputusan."
+          },
+          "misconceptionCodes": [
+            "gradient-versus-area",
+            "moving-versus-average-speed"
+          ]
+        }
+      ],
+      "variants": [
+        {
+          "id": "foundation-b-v1",
+          "challenges": [
+            {
+              "id": "roots",
+              "station": "roots",
+              "kind": "motion-reading",
+              "reward": 75,
+              "title": {
+                "en": "Read the track",
+                "ms": "Baca trek"
+              },
+              "prompt": {
+                "en": "Find the speed during the moving section of this distance–time graph. Give your answer in m/s.",
+                "ms": "Cari laju pada bahagian bergerak dalam graf jarak–masa ini. Beri jawapan dalam m/s."
+              },
+              "model": {
+                "graph": "distance",
+                "points": [
+                  [
+                    0,
+                    0
+                  ],
+                  [
+                    5,
+                    20
+                  ]
+                ]
+              },
+              "fields": [
+                {
+                  "key": "value",
+                  "label": {
+                    "en": "Speed (m/s)",
+                    "ms": "Laju (m/s)"
+                  },
+                  "type": "number"
+                }
+              ],
+              "answer": {
+                "value": 4
+              },
+              "hints": {
+                "en": [
+                  "Speed is the gradient of a distance–time graph.",
+                  "Divide the change in distance by the change in time in the moving section.",
+                  "The moving section has gradient 4 m/s."
+                ],
+                "ms": [
+                  "Laju ialah kecerunan graf jarak–masa.",
+                  "Bahagikan perubahan jarak dengan perubahan masa pada bahagian bergerak.",
+                  "Bahagian bergerak mempunyai kecerunan 4 m/s."
+                ]
+              },
+              "explanation": {
+                "en": "The moving section has speed 4 m/s. A horizontal distance–time segment means rest.",
+                "ms": "Laju pada bahagian bergerak ialah 4 m/s. Segmen mendatar graf jarak–masa bermaksud pegun."
+              },
+              "skill": "motion-motion-reading",
+              "difficulty": "foundation",
+              "reviewStatus": "awaiting-mathematics-and-BM-review",
+              "difficultyRationale": {
+                "en": "Simpler representation or fewer choices; practise the prerequisite before combining decisions.",
+                "ms": "Perwakilan lebih mudah atau kurang pilihan; latih prasyarat sebelum menggabungkan keputusan."
+              },
+              "misconceptionCodes": [
+                "gradient-versus-area",
+                "moving-versus-average-speed"
+              ]
+            },
+            {
+              "id": "vertex",
+              "station": "vertex",
+              "kind": "motion-reading",
+              "reward": 75,
+              "title": {
+                "en": "Distance from area",
+                "ms": "Jarak daripada luas"
+              },
+              "prompt": {
+                "en": "Find the total distance travelled from the area under the speed–time graph. Give metres.",
+                "ms": "Cari jumlah jarak dilalui daripada luas di bawah graf laju–masa. Beri jawapan dalam meter."
+              },
+              "model": {
+                "graph": "speed",
+                "segments": [
+                  {
+                    "duration": 5,
+                    "speed": 4
+                  }
+                ]
+              },
+              "fields": [
+                {
+                  "key": "value",
+                  "label": {
+                    "en": "Distance (m)",
+                    "ms": "Jarak (m)"
+                  },
+                  "type": "number"
+                }
+              ],
+              "answer": {
+                "value": 20
+              },
+              "hints": {
+                "en": [
+                  "Distance is the area under a speed–time graph.",
+                  "Each rectangle has area speed × duration. Add the rectangles.",
+                  "The total area is 20 m."
+                ],
+                "ms": [
+                  "Jarak ialah luas di bawah graf laju–masa.",
+                  "Luas setiap segi empat tepat ialah laju × tempoh. Tambahkan luas-luasnya.",
+                  "Jumlah luas ialah 20 m."
+                ]
+              },
+              "explanation": {
+                "en": "Adding speed × duration for every stage gives 20 m.",
+                "ms": "Menambahkan laju × tempoh bagi setiap peringkat memberikan 20 m."
+              },
+              "skill": "motion-motion-reading",
+              "difficulty": "foundation",
+              "reviewStatus": "awaiting-mathematics-and-BM-review",
+              "difficultyRationale": {
+                "en": "Simpler representation or fewer choices; practise the prerequisite before combining decisions.",
+                "ms": "Perwakilan lebih mudah atau kurang pilihan; latih prasyarat sebelum menggabungkan keputusan."
+              },
+              "misconceptionCodes": [
+                "gradient-versus-area",
+                "moving-versus-average-speed"
+              ]
+            },
+            {
+              "id": "design",
+              "station": "design",
+              "kind": "motion-plan",
+              "reward": 100,
+              "title": {
+                "en": "Program the delivery cart",
+                "ms": "Atur troli penghantaran"
+              },
+              "prompt": {
+                "en": "Travel exactly 22 m in 6 s. Set the first-stage duration and speed. The remaining time is at 2 m/s. The first duration is fixed at 2 s; solve only for its speed.",
+                "ms": "Bergerak tepat 22 m dalam 6 s. Tetapkan tempoh dan laju peringkat pertama. Masa selebihnya pada 2 m/s. Tempoh pertama ditetapkan pada 2 s; cari lajunya sahaja."
+              },
+              "model": {
+                "duration": 6,
+                "v2": 2,
+                "maxSpeed": 12
+              },
+              "fields": [
+                {
+                  "key": "t1",
+                  "label": {
+                    "en": "First duration (s)",
+                    "ms": "Tempoh pertama (s)"
+                  },
+                  "type": "range",
+                  "min": 2,
+                  "max": 2,
+                  "step": 1,
+                  "initial": 2
+                },
+                {
+                  "key": "v1",
+                  "label": {
+                    "en": "First speed (m/s)",
+                    "ms": "Laju pertama (m/s)"
+                  },
+                  "type": "range",
+                  "min": 0,
+                  "max": 12,
+                  "step": 1,
+                  "initial": 2
+                }
+              ],
+              "answer": {
+                "t1": 2,
+                "v1": 7
+              },
+              "hints": {
+                "en": [
+                  "Total distance = first area + second area.",
+                  "Use v₁t₁ + 2(6 − t₁) = 22.",
+                  "One plan uses 2 s at 7 m/s. Other exact plans also work."
+                ],
+                "ms": [
+                  "Jumlah jarak = luas pertama + luas kedua.",
+                  "Gunakan v₁t₁ + 2(6 − t₁) = 22.",
+                  "Satu pelan menggunakan 2 s pada 7 m/s. Pelan tepat yang lain juga diterima."
+                ]
+              },
+              "explanation": {
+                "en": "Your two areas add to the required distance. The cart now follows this speed plan in the forest.",
+                "ms": "Kedua-dua luas berjumlah jarak diperlukan. Troli kini mengikuti pelan laju ini di hutan."
+              },
+              "target": {
+                "distance": 22
+              },
+              "controlSteps": {
+                "t1": {
+                  "min": 2,
+                  "max": 2,
+                  "step": 1
+                }
+              },
+              "skill": "motion-motion-plan",
+              "difficulty": "foundation",
+              "reviewStatus": "awaiting-mathematics-and-BM-review",
+              "difficultyRationale": {
+                "en": "Simpler representation or fewer choices; practise the prerequisite before combining decisions.",
+                "ms": "Perwakilan lebih mudah atau kurang pilihan; latih prasyarat sebelum menggabungkan keputusan."
+              },
+              "misconceptionCodes": [
+                "gradient-versus-area",
+                "moving-versus-average-speed"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    "challenge": {
+      "variantBaseId": "challenge-v1",
+      "challenges": [
+        {
+          "id": "roots",
+          "station": "roots",
+          "kind": "motion-reading",
+          "reward": 75,
+          "title": {
+            "en": "Moving speed versus average speed",
+            "ms": "Laju bergerak berbanding laju purata"
+          },
+          "prompt": {
+            "en": "Find the average speed over all 8 seconds, including rests. Also give the speed during the moving section.",
+            "ms": "Cari laju purata sepanjang 8 saat, termasuk masa pegun. Beri juga laju semasa bahagian bergerak."
+          },
+          "model": {
+            "graph": "distance",
+            "points": [
+              [
+                0,
+                0
+              ],
+              [
+                2,
+                0
+              ],
+              [
+                6,
+                32
+              ],
+              [
+                8,
+                32
+              ]
+            ]
+          },
+          "fields": [
+            {
+              "key": "value",
+              "label": {
+                "en": "Average speed (m/s)",
+                "ms": "Laju purata (m/s)"
+              },
+              "type": "number"
+            }
+          ],
+          "answer": {
+            "value": 4,
+            "moving": 8
+          },
+          "hints": {
+            "en": [
+              "Average speed includes all elapsed time, even rests.",
+              "Average = 32/8; moving speed = 32/(6−2).",
+              "Average 4 m/s; moving speed 8 m/s."
+            ],
+            "ms": [
+              "Laju purata merangkumi semua masa berlalu, termasuk masa pegun.",
+              "Purata = 32/8; laju bergerak = 32/(6−2).",
+              "Purata 4 m/s; laju bergerak 8 m/s."
+            ]
+          },
+          "explanation": {
+            "en": "Rest lowers the whole-journey average below the moving speed.",
+            "ms": "Masa pegun menjadikan laju purata perjalanan lebih rendah daripada laju bergerak."
+          },
+          "evidence": [
+            {
+              "key": "moving",
+              "label": {
+                "en": "Moving-section speed (m/s)",
+                "ms": "Laju bahagian bergerak (m/s)"
+              },
+              "expected": 8
+            }
+          ],
+          "skill": "motion-motion-reading",
+          "difficulty": "challenge",
+          "reviewStatus": "awaiting-mathematics-and-BM-review",
+          "difficultyRationale": {
+            "en": "Combine the main result with a comparison, additional condition or checking calculation.",
+            "ms": "Gabungkan hasil utama dengan perbandingan, syarat tambahan atau pengiraan semakan."
+          },
+          "misconceptionCodes": [
+            "gradient-versus-area",
+            "moving-versus-average-speed"
+          ]
+        },
+        {
+          "id": "vertex",
+          "station": "vertex",
+          "kind": "motion-reading",
+          "reward": 75,
+          "title": {
+            "en": "Distance from area",
+            "ms": "Jarak daripada luas"
+          },
+          "prompt": {
+            "en": "Find the total distance travelled from the area under the speed–time graph. Give metres. Also calculate the average speed for the whole 10 seconds.",
+            "ms": "Cari jumlah jarak dilalui daripada luas di bawah graf laju–masa. Beri jawapan dalam meter. Kira juga laju purata untuk seluruh 10 saat."
+          },
+          "model": {
+            "graph": "speed",
+            "segments": [
+              {
+                "duration": 4,
+                "speed": 3
+              },
+              {
+                "duration": 2,
+                "speed": 0
+              },
+              {
+                "duration": 4,
+                "speed": 2
+              }
+            ]
+          },
+          "fields": [
+            {
+              "key": "value",
+              "label": {
+                "en": "Distance (m)",
+                "ms": "Jarak (m)"
+              },
+              "type": "number"
+            }
+          ],
+          "answer": {
+            "value": 20,
+            "average": 2
+          },
+          "hints": {
+            "en": [
+              "Distance is the area under a speed–time graph.",
+              "Each rectangle has area speed × duration. Add the rectangles.",
+              "Distance = 20 m; average = 20/10 = 2 m/s."
+            ],
+            "ms": [
+              "Jarak ialah luas di bawah graf laju–masa.",
+              "Luas setiap segi empat tepat ialah laju × tempoh. Tambahkan luas-luasnya.",
+              "Jarak = 20 m; purata = 20/10 = 2 m/s."
+            ]
+          },
+          "explanation": {
+            "en": "Area gives 20 m; divide by all 10 seconds to get 2 m/s.",
+            "ms": "Luas memberikan 20 m; bahagi dengan semua 10 saat untuk mendapat 2 m/s."
+          },
+          "evidence": [
+            {
+              "key": "average",
+              "label": {
+                "en": "Whole-journey average (m/s)",
+                "ms": "Purata seluruh perjalanan (m/s)"
+              },
+              "expected": 2
+            }
+          ],
+          "skill": "motion-motion-reading",
+          "difficulty": "challenge",
+          "reviewStatus": "awaiting-mathematics-and-BM-review",
+          "difficultyRationale": {
+            "en": "Combine the main result with a comparison, additional condition or checking calculation.",
+            "ms": "Gabungkan hasil utama dengan perbandingan, syarat tambahan atau pengiraan semakan."
+          },
+          "misconceptionCodes": [
+            "gradient-versus-area",
+            "moving-versus-average-speed"
+          ]
+        },
+        {
+          "id": "design",
+          "station": "design",
+          "kind": "motion-plan",
+          "reward": 100,
+          "title": {
+            "en": "Program the delivery cart",
+            "ms": "Atur troli penghantaran"
+          },
+          "prompt": {
+            "en": "Travel exactly 50 m in 10 s. Set the first-stage duration and speed. The remaining time is at 2 m/s. Fee = RM(5v₁ + 2t₁) and must not exceed RM48. Enter the fee as well.",
+            "ms": "Bergerak tepat 50 m dalam 10 s. Tetapkan tempoh dan laju peringkat pertama. Masa selebihnya pada 2 m/s. Caj = RM(5v₁ + 2t₁) dan tidak boleh melebihi RM48. Masukkan caj juga."
+          },
+          "model": {
+            "duration": 10,
+            "v2": 2,
+            "maxSpeed": 12
+          },
+          "fields": [
+            {
+              "key": "t1",
+              "label": {
+                "en": "First duration (s)",
+                "ms": "Tempoh pertama (s)"
+              },
+              "type": "range",
+              "min": 1,
+              "max": 9,
+              "step": 1,
+              "initial": 1
+            },
+            {
+              "key": "v1",
+              "label": {
+                "en": "First speed (m/s)",
+                "ms": "Laju pertama (m/s)"
+              },
+              "type": "range",
+              "min": 0,
+              "max": 12,
+              "step": 1,
+              "initial": 2
+            }
+          ],
+          "answer": {
+            "t1": 6,
+            "v1": 7,
+            "fee": 47
+          },
+          "hints": {
+            "en": [
+              "Total distance = first area + second area.",
+              "Use v₁t₁ + 2(10 − t₁) = 50.",
+              "Use t₁=6, v₁=7; fee RM47."
+            ],
+            "ms": [
+              "Jumlah jarak = luas pertama + luas kedua.",
+              "Gunakan v₁t₁ + 2(10 − t₁) = 50.",
+              "Gunakan t₁=6, v₁=7; caj RM47."
+            ]
+          },
+          "explanation": {
+            "en": "Both the distance and the delivery budget are satisfied.",
+            "ms": "Kedua-dua jarak dan belanjawan penghantaran dipenuhi."
+          },
+          "target": {
+            "distance": 50
+          },
+          "decisions": {
+            "deliveryBudget": 48
+          },
+          "evidence": [
+            {
+              "key": "fee",
+              "label": {
+                "en": "Delivery fee (RM)",
+                "ms": "Caj penghantaran (RM)"
+              },
+              "rule": "deliveryFee"
+            }
+          ],
+          "skill": "motion-motion-plan",
+          "difficulty": "challenge",
+          "reviewStatus": "awaiting-mathematics-and-BM-review",
+          "difficultyRationale": {
+            "en": "Combine the main result with a comparison, additional condition or checking calculation.",
+            "ms": "Gabungkan hasil utama dengan perbandingan, syarat tambahan atau pengiraan semakan."
+          },
+          "misconceptionCodes": [
+            "gradient-versus-area",
+            "moving-versus-average-speed"
+          ]
+        }
+      ],
+      "variants": [
+        {
+          "id": "challenge-b-v1",
+          "challenges": [
+            {
+              "id": "roots",
+              "station": "roots",
+              "kind": "motion-reading",
+              "reward": 75,
+              "title": {
+                "en": "Moving speed versus average speed",
+                "ms": "Laju bergerak berbanding laju purata"
+              },
+              "prompt": {
+                "en": "Find the average speed over all 8 seconds, including rests. Also give the speed during the moving section.",
+                "ms": "Cari laju purata sepanjang 8 saat, termasuk masa pegun. Beri juga laju semasa bahagian bergerak."
+              },
+              "model": {
+                "graph": "distance",
+                "points": [
+                  [
+                    0,
+                    0
+                  ],
+                  [
+                    2,
+                    0
+                  ],
+                  [
+                    6,
+                    40
+                  ],
+                  [
+                    8,
+                    40
+                  ]
+                ]
+              },
+              "fields": [
+                {
+                  "key": "value",
+                  "label": {
+                    "en": "Average speed (m/s)",
+                    "ms": "Laju purata (m/s)"
+                  },
+                  "type": "number"
+                }
+              ],
+              "answer": {
+                "value": 5,
+                "moving": 10
+              },
+              "hints": {
+                "en": [
+                  "Average speed includes all elapsed time, even rests.",
+                  "Average = 40/8; moving speed = 40/(6−2).",
+                  "Average 5 m/s; moving speed 10 m/s."
+                ],
+                "ms": [
+                  "Laju purata merangkumi semua masa berlalu, termasuk masa pegun.",
+                  "Purata = 40/8; laju bergerak = 40/(6−2).",
+                  "Purata 5 m/s; laju bergerak 10 m/s."
+                ]
+              },
+              "explanation": {
+                "en": "Rest lowers the whole-journey average below the moving speed.",
+                "ms": "Masa pegun menjadikan laju purata perjalanan lebih rendah daripada laju bergerak."
+              },
+              "evidence": [
+                {
+                  "key": "moving",
+                  "label": {
+                    "en": "Moving-section speed (m/s)",
+                    "ms": "Laju bahagian bergerak (m/s)"
+                  },
+                  "expected": 10
+                }
+              ],
+              "skill": "motion-motion-reading",
+              "difficulty": "challenge",
+              "reviewStatus": "awaiting-mathematics-and-BM-review",
+              "difficultyRationale": {
+                "en": "Combine the main result with a comparison, additional condition or checking calculation.",
+                "ms": "Gabungkan hasil utama dengan perbandingan, syarat tambahan atau pengiraan semakan."
+              },
+              "misconceptionCodes": [
+                "gradient-versus-area",
+                "moving-versus-average-speed"
+              ]
+            },
+            {
+              "id": "vertex",
+              "station": "vertex",
+              "kind": "motion-reading",
+              "reward": 75,
+              "title": {
+                "en": "Distance from area",
+                "ms": "Jarak daripada luas"
+              },
+              "prompt": {
+                "en": "Find the total distance travelled from the area under the speed–time graph. Give metres. Also calculate the average speed for the whole 10 seconds.",
+                "ms": "Cari jumlah jarak dilalui daripada luas di bawah graf laju–masa. Beri jawapan dalam meter. Kira juga laju purata untuk seluruh 10 saat."
+              },
+              "model": {
+                "graph": "speed",
+                "segments": [
+                  {
+                    "duration": 4,
+                    "speed": 4
+                  },
+                  {
+                    "duration": 2,
+                    "speed": 0
+                  },
+                  {
+                    "duration": 4,
+                    "speed": 3
+                  }
+                ]
+              },
+              "fields": [
+                {
+                  "key": "value",
+                  "label": {
+                    "en": "Distance (m)",
+                    "ms": "Jarak (m)"
+                  },
+                  "type": "number"
+                }
+              ],
+              "answer": {
+                "value": 28,
+                "average": 2.8
+              },
+              "hints": {
+                "en": [
+                  "Distance is the area under a speed–time graph.",
+                  "Each rectangle has area speed × duration. Add the rectangles.",
+                  "Distance = 28 m; average = 28/10 = 2.8 m/s."
+                ],
+                "ms": [
+                  "Jarak ialah luas di bawah graf laju–masa.",
+                  "Luas setiap segi empat tepat ialah laju × tempoh. Tambahkan luas-luasnya.",
+                  "Jarak = 28 m; purata = 28/10 = 2.8 m/s."
+                ]
+              },
+              "explanation": {
+                "en": "Area gives 28 m; divide by all 10 seconds to get 2.8 m/s.",
+                "ms": "Luas memberikan 28 m; bahagi dengan semua 10 saat untuk mendapat 2.8 m/s."
+              },
+              "evidence": [
+                {
+                  "key": "average",
+                  "label": {
+                    "en": "Whole-journey average (m/s)",
+                    "ms": "Purata seluruh perjalanan (m/s)"
+                  },
+                  "expected": 2.8
+                }
+              ],
+              "skill": "motion-motion-reading",
+              "difficulty": "challenge",
+              "reviewStatus": "awaiting-mathematics-and-BM-review",
+              "difficultyRationale": {
+                "en": "Combine the main result with a comparison, additional condition or checking calculation.",
+                "ms": "Gabungkan hasil utama dengan perbandingan, syarat tambahan atau pengiraan semakan."
+              },
+              "misconceptionCodes": [
+                "gradient-versus-area",
+                "moving-versus-average-speed"
+              ]
+            },
+            {
+              "id": "design",
+              "station": "design",
+              "kind": "motion-plan",
+              "reward": 100,
+              "title": {
+                "en": "Program the delivery cart",
+                "ms": "Atur troli penghantaran"
+              },
+              "prompt": {
+                "en": "Travel exactly 60 m in 10 s. Set the first-stage duration and speed. The remaining time is at 2 m/s. Fee = RM(5v₁ + 2t₁) and must not exceed RM52. Enter the fee as well.",
+                "ms": "Bergerak tepat 60 m dalam 10 s. Tetapkan tempoh dan laju peringkat pertama. Masa selebihnya pada 2 m/s. Caj = RM(5v₁ + 2t₁) dan tidak boleh melebihi RM52. Masukkan caj juga."
+              },
+              "model": {
+                "duration": 10,
+                "v2": 2,
+                "maxSpeed": 12
+              },
+              "fields": [
+                {
+                  "key": "t1",
+                  "label": {
+                    "en": "First duration (s)",
+                    "ms": "Tempoh pertama (s)"
+                  },
+                  "type": "range",
+                  "min": 1,
+                  "max": 9,
+                  "step": 1,
+                  "initial": 1
+                },
+                {
+                  "key": "v1",
+                  "label": {
+                    "en": "First speed (m/s)",
+                    "ms": "Laju pertama (m/s)"
+                  },
+                  "type": "range",
+                  "min": 0,
+                  "max": 12,
+                  "step": 1,
+                  "initial": 2
+                }
+              ],
+              "answer": {
+                "t1": 8,
+                "v1": 7,
+                "fee": 51
+              },
+              "hints": {
+                "en": [
+                  "Total distance = first area + second area.",
+                  "Use v₁t₁ + 2(10 − t₁) = 60.",
+                  "Use t₁=8, v₁=7; fee RM51."
+                ],
+                "ms": [
+                  "Jumlah jarak = luas pertama + luas kedua.",
+                  "Gunakan v₁t₁ + 2(10 − t₁) = 60.",
+                  "Gunakan t₁=8, v₁=7; caj RM51."
+                ]
+              },
+              "explanation": {
+                "en": "Both the distance and the delivery budget are satisfied.",
+                "ms": "Kedua-dua jarak dan belanjawan penghantaran dipenuhi."
+              },
+              "target": {
+                "distance": 60
+              },
+              "decisions": {
+                "deliveryBudget": 52
+              },
+              "evidence": [
+                {
+                  "key": "fee",
+                  "label": {
+                    "en": "Delivery fee (RM)",
+                    "ms": "Caj penghantaran (RM)"
+                  },
+                  "rule": "deliveryFee"
+                }
+              ],
+              "skill": "motion-motion-plan",
+              "difficulty": "challenge",
+              "reviewStatus": "awaiting-mathematics-and-BM-review",
+              "difficultyRationale": {
+                "en": "Combine the main result with a comparison, additional condition or checking calculation.",
+                "ms": "Gabungkan hasil utama dengan perbandingan, syarat tambahan atau pengiraan semakan."
+              },
+              "misconceptionCodes": [
+                "gradient-versus-area",
+                "moving-versus-average-speed"
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  }
 }
