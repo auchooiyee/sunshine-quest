@@ -8,9 +8,9 @@ Pages project: `sunshine-quest`. Git integration is configured for `auchooiyee/s
 
 ## Deployment status
 
-The initial Git-sourced production build succeeded and the live URL passed all 40 browser regression groups, including all 60 additional question versions. All 49 unit tests passed locally.
+On 17 October 2026 (Malaysia), v0.10 from game commit `ce6a29d` was published to production with Wrangler after `npm test` passed all 92 tests and `npm run build` produced 71 public files. Deployment: https://ce1e1062.sunshine-quest.pages.dev. The production URL was checked for region-specific monsters, the sword-combo/dash controls, and the four-level sword/axe workshop with material costs; no browser errors or warnings were reported during that check.
 
-Automatic updates still need verification: the follow-up GitHub push did not trigger a Pages build. In https://github.com/settings/installations, configure **Cloudflare Workers & Pages** and check that `sunshine-quest` is included in its repository access. Then push another change and confirm a `github:push` deployment appears in Pages. If access is already enabled, check the Pages dashboard for Git integration warnings. Until verified, trigger a Git-sourced deployment manually in Pages or through its deployment API.
+The Pages dashboard reports that this project is disconnected from the Git account. Automatic deployments are enabled in its settings, but the v0.10 push did not trigger a build. In https://github.com/settings/installations, check the **Cloudflare Workers & Pages** installation and repository access before relying on automatic updates. This release used a direct upload to the existing Pages project; it did not change the Git integration. Until that connection is repaired and verified, build locally and publish with `wrangler pages deploy dist --project-name sunshine-quest --branch main --commit-hash <full-game-commit>`.
 
 Use a Git-integrated Cloudflare Pages project with these settings:
 
