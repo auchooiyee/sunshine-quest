@@ -1,4 +1,8 @@
 import { createGame } from './engine.js';
+import {renderWeaponWorkshop} from './src/ui/weapon-workshop.js';
+import {en as equipmentEN,ms as equipmentMS} from './locales/equipment.js';
+import {sceneName} from './src/ui/adventure-atmosphere.js';
+import { CREATURE_NAMES, ENCOUNTERS } from './config/encounters.js';
 import { createForestRenderer } from './src/forest-renderer.js';
 import { createQuest } from './src/missions/quest.js';
 import { designModel, valueAt, vertex, roots, parseNumber, formatQuadratic } from './src/math/quadratics.js';
@@ -38,7 +42,7 @@ const stored = loadSave(storage,saveKey);
 let currentWorld=getWorld(assignment?.world||stored.data?.currentRegion),regions=stored.data?.regions||{};
 let language=stored.data?.language || assignment?.language || 'en', assist=assignment?assignment.assist:stored.data?.assist !== false;
 let history=stored.data?.history||[];
-const messages={en:{...en,...expeditionEN,...finaleEN,...practiceEN,...pilotEN,...adventureEN,...learningEN,...levelsEN},ms:{...ms,...expeditionMS,...finaleMS,...practiceMS,...pilotMS,...adventureMS,...learningMS,...levelsMS}};
+const messages={en:{...en,...expeditionEN,...finaleEN,...practiceEN,...pilotEN,...adventureEN,...learningEN,...levelsEN,...equipmentEN},ms:{...ms,...expeditionMS,...finaleMS,...practiceMS,...pilotMS,...adventureMS,...learningMS,...levelsMS,...equipmentMS}};
 const t = key => assignment?.tasks===3&&['questLead','introText','finishedText'].includes(key)?messages[language].shortMissionText:key==='guardian'&&adventureFor(currentWorld.id)?adventureFor(currentWorld.id).guardian[language]:worldText(currentWorld,key,language) || messages[language][key] || messages.en[key] || key;
 const game=createGame(regions[currentWorld.id]?.world,{mathQuest:true,assist});
 const curricula=new Map();
@@ -82,7 +86,7 @@ function applyLanguage(){
   $('language').textContent=language==='en'?'EN / BM':'BM / EN';$('challenge-language').textContent=$('language').textContent;
   $('challenge-close').setAttribute('aria-label',t('close'));$('math-graph').setAttribute('aria-label',t('graphText'));
   for(const button of document.querySelectorAll('[data-close]'))button.setAttribute('aria-label',t('close'));
-  $('stage').setAttribute('aria-label',`${t('moveHelp')}: A / D. ${t('jumpHelp')}: Space. ${t('actionHelp')}: J. ${t('interactHelp')}: E.`);
+  $('stage').setAttribute('aria-label',`${t('moveHelp')}: A / D. ${t('jumpHelp')}: Space. ${t('actionHelp')}: J. ${t('interactHelp')}: E. ${t('dash')}: K / Shift.`);
   $('assist').checked=assist;
   $('assist').disabled=Boolean(assignment);
   $('question-set').textContent=`${assignment?.level?t(assignment.level==='foundation'?'foundation':'challengeLevel')+' · ':''}${t('questionSet')}: ${t(['setOriginal','setB','setC'][quest?.variantIndex||0])}`;
@@ -129,11 +133,17 @@ function updateUI(force=false){
   const s=game.state, next=quest.next, at=next?.station, p=s.player;
   const near=next && Math.abs(p.x-stationX(at))<160;
   const workshop=!near && Math.abs(p.x-benchX())<130;
-  const signature=[currentWorld.id,language,s.mode,p.hp,s.wood,s.stone,s.equipment,quest.completed.length,quest.independent,Math.floor(p.x/50),near,workshop,assist,anyModal()].join('|');
+  const signature=[currentWorld.id,language,s.mode,p.hp,s.wood,s.stone,s.equipment,game.getWeapon('sword').level,game.getWeapon('axe').level,quest.completed.length,quest.independent,Math.floor(p.x/50),near,workshop,assist,anyModal()].join('|');
   const fraction=Math.min(1,Math.max(0,(p.x-180)/(stationX('guardian')-180)));$('trail-progress').style.width=(fraction*100)+'%';$('trail-player').style.left=(fraction*100)+'%';
+  const combat=s.combat, ready=combat.dashCooldown===0;
+  $('dash-status').textContent=ready?t('dashReady'):`${t('dash')}: ${combat.dashCooldown.toFixed(1)} s`;
+  $('dash-meter').value=1-combat.dashCooldown/1.15;
+  $('combo-status').textContent=combat.chainTimer>0?`${t('combo')} ${combat.chain}/3${combat.chain===3?' · '+t('thrust'):''}`:t('comboReady');
+  $('scene-name').textContent=sceneName(currentWorld.id,p.x,language);
   if(!force&&signature===uiSignature)return;uiSignature=signature;
   $('intro').hidden=s.mode!=='ready';$('pause-overlay').hidden=s.mode!=='paused'||anyModal();
   $('hearts').textContent=Array.from({length:5},(_,i)=>p.hp>=i+1?'♥':p.hp>i?'◐':'♡').join(' ');$('hearts').setAttribute('aria-label',`${t('health')}: ${p.hp.toFixed(1)} / 5`);
+  $('sword-level').textContent=`Lv.${game.getWeapon('sword').level}`;$('axe-level').textContent=`Lv.${game.getWeapon('axe').level}`;
   $('wood-count').textContent=s.wood;$('stone-count').textContent=s.stone;
   $('equip-sword').setAttribute('aria-pressed',String(s.equipment==='sword'));$('equip-axe').setAttribute('aria-pressed',String(s.equipment==='axe'));
   const maxXP=curriculum.challenges.reduce((sum,d)=>sum+d.reward,0),checks=curriculum.challenges.length;
@@ -302,14 +312,15 @@ function renderJournal(){
 }
 function showCompletion(){clearInput();$('completion-stats').textContent=`${quest.xp} XP · ${quest.independent} / ${curriculum.challenges.length} ${t('independent')}`;$('next-region').hidden=Boolean(assignment);openDialog($('completion'));tone('win');persist();}
 function renderWorkshop(){
-  const names={stoneSword:'craftSword',stoneAxe:'craftAxe',woodArmor:'craftArmor',stoneArmor:'craftStoneArmor'};
-  $('recipe-list').replaceChildren();
-  for(const recipe of game.getRecipes()){
-    const row=document.createElement('div');row.className='recipe';row.innerHTML=`<div><strong>${escaped(t(names[recipe.id]))}</strong><small>${recipe.wood} ${escaped(t('wood'))} · ${recipe.stone} ${escaped(t('stone'))}</small></div>`;
-    const button=document.createElement('button');button.className='outline';button.disabled=recipe.owned||!recipe.available;button.textContent=t(recipe.owned?'owned':recipe.available?'craftButton':'needs');
-    button.onclick=()=>{if(game.craft(recipe.id)){renderWorkshop();tone('craft');persist();updateUI(true);}};row.append(button);$('recipe-list').append(row);
-  }
+  renderWeaponWorkshop({container:$('recipe-list'),game,t,escape:escaped,onCraft:(id,tool)=>{
+    if(!game.craft(id))return;
+    renderWorkshop();persist();updateUI(true);
+    $('workshop-status').textContent=tool?`${t('weaponSuccess')}: ${t(id+'Name')} · Lv.${game.getWeapon(tool).level}`:t('owned');
+    const card=tool?$('recipe-list').querySelector(`[data-tool="${tool}"]`):null;
+    if(card)(card.querySelector('button:not(:disabled)')||card.querySelector('h3')).focus({preventScroll:true});
+  }});
 }
+$('open-workshop').onclick=()=>{if(!loaded||anyModal())return;$('workshop-status').textContent='';renderWorkshop();openDialog($('workshop'));};
 $('start-button').onclick=begin;$('interaction').onclick=interact;
 for(const id of ['guide-button','intro-guide'])$(id).onclick=()=>{if(loaded)tutorial.open();};
 $('intro-regions').onclick=()=>$('region-button').click();
@@ -377,6 +388,9 @@ function renderRegionMap(){
     const progress=regionQuest(world);total+=progress.xp;if(progress.complete)complete++;
     const card=document.createElement('article');card.className='region-card';
     card.innerHTML=`<span class="eyebrow">${escaped(`${t('teacherChapter')} ${world.chapter}`)}</span><h3>${escaped(world.name[language])}</h3><p>${escaped(world.lesson[language])}</p><div class="region-evidence">${progress.completed.length}/6 ${escaped(t('checks'))} · ${progress.xp}/450 XP</div><progress max="6" value="${progress.completed.length}" aria-label="${escaped(world.name[language])}"></progress>`;
+    card.dataset.scene=world.id;
+    const scene=document.createElement('div');scene.className='scene-preview';scene.setAttribute('aria-hidden','true');scene.textContent=({quadratics:'❧',inequalities:'◭',motion:'⚙',probability:'☾',finance:'♧'})[world.id];card.prepend(scene);
+    const creatures=document.createElement('p');creatures.className='creature-preview';creatures.textContent=[...new Set(ENCOUNTERS[world.id])].map(id=>(CREATURE_NAMES[language]||CREATURE_NAMES.en)[id]).join(' · ');card.append(creatures);
     const button=document.createElement('button');button.className=world.id===currentWorld.id?'outline':'primary';button.textContent=t(world.id===currentWorld.id?'currentRegion':'regionEnter');button.disabled=Boolean(assignment);
     button.onclick=()=>changeRegion(world);card.append(button);$('region-cards').append(card);
   }
@@ -472,18 +486,18 @@ $('import-file').onchange=async()=>{
     if(!writeSave(storage,data,destinationKey)){alert(t('saveBad'));return;}replacingSave=true;const url=data.assignment?assignmentURL(data.assignment,location.href):new URL(location.pathname,location.origin);location.assign(url.href);
   }catch{alert(t('importInvalid'));}
 };
-const keys={ArrowLeft:'left',KeyA:'left',ArrowRight:'right',KeyD:'right',Space:'jump',ArrowUp:'jump',KeyW:'jump',KeyJ:'attack',KeyE:'interact'};
+const keys={ArrowLeft:'left',KeyA:'left',ArrowRight:'right',KeyD:'right',Space:'jump',ArrowUp:'jump',KeyW:'jump',KeyJ:'attack',KeyK:'dash',ShiftLeft:'dash',ShiftRight:'dash',KeyE:'interact'};
 window.addEventListener('keydown',event=>{
   if(!loaded||anyModal()||event.ctrlKey||event.metaKey||event.altKey||event.target instanceof HTMLInputElement)return;
   if(event.target instanceof HTMLButtonElement && (event.code==='Space'||event.code==='Enter'))return;
   if(event.code==='Escape'&&!event.repeat){$('pause-button').click();return;}
   if(event.code==='Digit1'||event.code==='Digit2'){event.preventDefault();game.equip(event.code==='Digit1'?'sword':'axe');return;}
   const action=keys[event.code];if(!action)return;event.preventDefault();
-  if(action==='interact'){if(!event.repeat)interact();}else if(action==='jump'){if(!event.repeat)game.jump();}else input[action]=true;
+  if(action==='interact'){if(!event.repeat)interact();}else if(action==='jump'){if(!event.repeat)game.jump();}else if(action==='dash'){if(!event.repeat)game.dash();}else {input[action]=true;if(action==='attack'&&!event.repeat)game.attack();}
 });
 window.addEventListener('keyup',event=>{if(keys[event.code])input[keys[event.code]]=false;});
 for(const button of document.querySelectorAll('[data-control]')){
-  button.addEventListener('pointerdown',event=>{event.preventDefault();if(!loaded||anyModal()||game.state.mode!=='playing')return;button.setPointerCapture(event.pointerId);const action=button.dataset.control;if(action==='interact')interact();else if(action==='jump')game.jump();else input[action]=true;button.classList.add('pressed');});
+  button.addEventListener('pointerdown',event=>{event.preventDefault();if(!loaded||anyModal()||game.state.mode!=='playing')return;button.setPointerCapture(event.pointerId);const action=button.dataset.control;if(action==='interact')interact();else if(action==='jump')game.jump();else if(action==='dash')game.dash();else {input[action]=true;if(action==='attack')game.attack();}button.classList.add('pressed');});
   for(const event of ['pointerup','pointercancel','lostpointercapture'])button.addEventListener(event,()=>{input[button.dataset.control]=false;button.classList.remove('pressed');});
 }
 $('world').addEventListener('pointerdown',event=>{

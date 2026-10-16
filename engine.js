@@ -1,4 +1,5 @@
-import { BALANCE } from './balance.js';
+import { BALANCE, WEAPON_TIERS } from './balance.js';
+import { ENCOUNTERS } from './config/encounters.js';
 /** Framework-free, deterministic simulation. Positions are world pixels, time is seconds. */
 export function createGame(saved, options = {}) {
   const WORLD = 4200, GROUND = 500;
@@ -11,10 +12,11 @@ export function createGame(saved, options = {}) {
     return {
       mode: 'ready', worldWidth: WORLD, groundY: GROUND,
       player: { x: 180, y: GROUND, vx: 0, vy: 0, facing: 1, hp: 5, maxHp: 5, invulnerable: 0, attackTimer: 0, onGround: true, action: 'idle', actionElapsed: 0, actionDuration: 0, actionFacing: 1, actionHit: false, actionWeapon: null },
-      wood: 0, stone: 0, equipment: 'sword', upgrades: { stoneSword: false, stoneAxe: false, woodArmor: false, stoneArmor: false },
+      wood: 0, stone: 0, equipment: 'sword', upgrades: Object.fromEntries(Object.keys(BALANCE.recipes).map(id=>[id,false])),
       defeated: 0, crafted: false, trophy: false, elapsed: 0,
+      combat: { chain: 0, chainTimer: 0, dashTimer: 0, dashCooldown: 0, dashFacing: 1, hits: [] },
       trees: [600, 950, 1300, 1900, 2350, 2800, 3300].map((x, i) => ({ id: `tree-${i}`, x, y: GROUND, hp: BALANCE.resources.hp, maxHp: BALANCE.resources.hp, felled: false, hitTimer: 0 })),
-      rocks: [1050, 3000].map((x, i) => ({ id: `rock-${i}`, x, y: GROUND, hp: BALANCE.resources.hp, maxHp: BALANCE.resources.hp, depleted: false, hitTimer: 0 })),
+      rocks: [1050, 3000, ...(options.mathQuest ? [1550, 2400, 3500] : [])].map((x, i) => ({ id: `rock-${i}`, x, y: GROUND, hp: BALANCE.resources.hp, maxHp: BALANCE.resources.hp, depleted: false, hitTimer: 0 })),
       enemies: [ ['red', 820], ['hopper', 1180], ['spore', 1730], ['red', 2200], ['hopper', 2510], ['spore', 3110], ['boss', 3700] ].map(([type, x], i) => ({ id: `enemy-${i}`, type, x, y: GROUND, homeX: x, hp: BALANCE.enemies[type].hp, maxHp: BALANCE.enemies[type].hp, alive: true, hitTimer: 0, phase: i * .7, facing: -1, vx: 0, vy: 0, action: 'idle', landTimer: 0, shotTimer: 1.8 + i * .1, skillPhase: 'idle', skillTimer: BALANCE.enemies.boss.stomp.cycle, skillOriginX: x, hopTimer: .4 + (i % 3) * .18 })),
       platforms: [{ x: 1800, y: 390, w: 180 }, { x: 2600, y: 390, w: 160 }],
       platformRewards: [1800, 2600].flatMap((x, i) => [
@@ -35,6 +37,9 @@ export function createGame(saved, options = {}) {
     state.stone = Math.floor(number(data.stone, 0, 0, 999));
     for (const id of Object.keys(state.upgrades)) state.upgrades[id] = data.upgrades?.[id] === true;
     if (legacy && data.crafted === true) state.upgrades.stoneSword = true;
+    for (const path of Object.values(WEAPON_TIERS)) for (let i=2;i<path.length;i++) {
+      if (!state.upgrades[path[i-1]]) state.upgrades[path[i]] = false;
+    }
     if (state.upgrades.stoneArmor) state.upgrades.woodArmor = true;
     state.crafted = state.upgrades.stoneSword || state.upgrades.stoneAxe;
     state.equipment = data.equipment === 'axe' ? 'axe' : 'sword';
@@ -74,14 +79,19 @@ export function createGame(saved, options = {}) {
   function puff(x, y, color, count = 7) {
     for (let i = 0; i < count; i++) state.particles.push({ x, y, vx: Math.cos(i * 2.4) * 75, vy: -70 - (i % 3) * 35, life: .65, maxLife: .65, color });
   }
-  function getWeapon() { return BALANCE.weapons[`${state.upgrades[state.equipment === 'sword' ? 'stoneSword' : 'stoneAxe'] ? 'stone' : 'wood'}${state.equipment === 'sword' ? 'Sword' : 'Axe'}`]; }
+  function getWeapon(tool=state.equipment) {
+    const path=WEAPON_TIERS[tool==='axe'?'axe':'sword'];
+    let id=path[0];
+    for(const next of path.slice(1)){if(!state.upgrades[next])break;id=next;}
+    return BALANCE.weapons[id];
+  }
   function equip(id) {
     if (!['sword', 'axe'].includes(id) || !['ready', 'playing'].includes(state.mode)) return false;
     // Tool changes take effect after the current swing; never change the weapon under an active animation.
     if (['sword', 'axe', 'hurt'].includes(state.player.action)) return false;
     state.equipment = id; return true;
   }
-  function atBench() { return Math.abs(state.player.x - (state.benchX??1450)) < 150 && Math.abs(state.player.y - GROUND) < 70; }
+  function atBench() { return (Math.abs(state.player.x - (state.benchX??1450)) < 150 || (options.mathQuest && state.player.x < 320)) && Math.abs(state.player.y - GROUND) < 70; }
   function getRecipes() {
     return Object.entries(BALANCE.recipes).map(([id, recipe]) => ({ id, ...recipe, owned: state.upgrades[id], available: !state.upgrades[id] && (!recipe.requires || state.upgrades[recipe.requires]) && state.wood >= recipe.wood && state.stone >= recipe.stone, atBench: atBench() }));
   }
@@ -92,8 +102,7 @@ export function createGame(saved, options = {}) {
     if (recipe.requires && !state.upgrades[recipe.requires]) { emit('先做好木护甲，才能升级石护甲。'); return false; }
     if (state.wood < recipe.wood || state.stone < recipe.stone) { emit(`还需要材料：木头 ${recipe.wood}、石头 ${recipe.stone}。`); return false; }
     state.wood -= recipe.wood; state.stone -= recipe.stone; state.upgrades[id] = true;
-    if (id === 'stoneSword') state.equipment = 'sword';
-    if (id === 'stoneAxe') state.equipment = 'axe';
+    if (BALANCE.weapons[id]) state.equipment = BALANCE.weapons[id].tool;
     state.crafted = state.upgrades.stoneSword || state.upgrades.stoneAxe;
     sound('craft'); emit(`${recipe.name}做好啦！${recipe.description}`); return true;
   }
@@ -121,24 +130,46 @@ export function createGame(saved, options = {}) {
   }
   function attack() {
     const p = state.player;
-    if (state.mode !== 'playing' || p.attackTimer > 0 || p.action === 'hurt') return false;
+    if (state.mode !== 'playing' || p.attackTimer > 0 || p.action === 'hurt' || state.combat.dashTimer > 0) return false;
     const weapon = getWeapon();
     p.attackTimer = weapon.cooldown; p.action = weapon.tool; p.actionElapsed = 0; p.actionDuration = weapon.duration;
     p.actionFacing = p.facing; p.actionHit = false; p.actionWeapon = weapon;
+    const c = state.combat;
+    if (weapon.tool === 'sword') {
+      c.chain = c.chainTimer > 0 ? c.chain % 3 + 1 : 1;
+      c.chainTimer = 1.1;
+      p.combo = c.chain;
+    } else { c.chain = 0; c.chainTimer = 0; p.combo = 0; }
     sound('swing'); return true;
+  }
+  function dash() {
+    const p = state.player, c = state.combat;
+    if (state.mode !== 'playing' || c.dashCooldown > 0 || ['sword','axe','hurt'].includes(p.action)) return false;
+    c.dashTimer = .18; c.dashCooldown = 1.15; c.dashFacing = p.facing;
+    p.invulnerable = Math.max(p.invulnerable, .22);
+    puff(p.x, p.y - 12, '#bce8df', 5); sound('swing'); return true;
   }
   function resolveHit() {
     const p = state.player, weapon = p.actionWeapon;
     if (!weapon) return;
     const inRange = (o, distance = 112) => Math.abs(o.x - p.x) < distance && (o.x - p.x) * p.actionFacing >= 0 && Math.abs(o.y - p.y) < 85;
     const nearest = list => list.sort((a, b) => Math.abs(a.x - p.x) - Math.abs(b.x - p.x))[0];
-    const enemy = nearest(state.enemies.filter(e => e.alive && inRange(e, e.type === 'boss' ? 140 : 112)));
+    const thrust = weapon.tool === 'sword' && p.combo === 3;
+    // Sword timing can also disperse a projectile before it reaches the explorer.
+    if (weapon.tool === 'sword') state.projectiles = state.projectiles.filter(shot => {
+      if (!inRange({x:shot.x,y:shot.y+30}, thrust ? 154 : 112)) return true;
+      puff(shot.x, shot.y, '#c8f5ed', 6); return false;
+    });
+    const enemy = nearest(state.enemies.filter(e => e.alive && inRange(e, e.type === 'boss' ? 140 : thrust ? 154 : 112)));
     if (enemy) {
       if (options.mathQuest && enemy.type === 'boss') {
         state.events.push({ type: 'guardian' }); return;
       }
-      enemy.hp = Math.max(0, enemy.hp - weapon.damage); enemy.hitTimer = .3;
-      enemy.x = clamp(enemy.x + p.actionFacing * 24, 360, WORLD - 70); puff(enemy.x, enemy.y - 35, '#f0cd6d'); sound('hit');
+      const damage = weapon.damage + (thrust ? 2 : 0);
+      enemy.hp = Math.max(0, enemy.hp - damage); enemy.hitTimer = .3;
+      if (enemy.type === 'beetle') { enemy.skillPhase = 'recovery'; enemy.skillTimer = .8; }
+      state.combat.hits.push({x:enemy.x,y:enemy.y-65,damage,life:.7,thrust});
+      enemy.x = clamp(enemy.x + p.actionFacing * (thrust ? 45 : 24), 360, WORLD - 70); puff(enemy.x, enemy.y - 35, '#f0cd6d'); sound('hit');
       if (enemy.hp === 0) {
         enemy.alive = false; state.defeated++; drop('wood', enemy.x); drop('heart', enemy.x + 25);
         if (enemy.type === 'boss') { state.shockwaves.length = 0; enemy.skillPhase = 'idle'; drop('trophy', enemy.x); emit('大蘑菇让开了小路！快拾起闪亮的森林徽章。'); sound('win'); }
@@ -199,15 +230,24 @@ export function createGame(saved, options = {}) {
     if (input.jump && !previous.jump) jump();
     if (input.interact && !previous.interact) interact();
     if (input.equipment && input.equipment !== previous.equipment) equip(input.equipment);
+    if (input.dash && !previous.dash) dash();
     if (state.mode !== 'playing') { previous = { ...input }; return; }
     const p = state.player;
     const steps = Math.max(1, Math.ceil(dt / (1 / 60))), step = dt / steps;
     for (let s = 0; s < steps; s++) {
       state.elapsed += step;
+      const c = state.combat;
+      c.chainTimer = Math.max(0, c.chainTimer - step);
+      if (!c.chainTimer) c.chain = 0;
+      c.dashCooldown = Math.max(0, c.dashCooldown - step);
+      c.dashTimer = Math.max(0, c.dashTimer - step);
+      for (const hit of c.hits) { hit.life -= step; hit.y -= 32 * step; }
+      c.hits = c.hits.filter(hit => hit.life > 0);
       if(options.mathQuest)updateCart(step);
       p.invulnerable = Math.max(0, p.invulnerable - step); p.attackTimer = Math.max(0, p.attackTimer - step);
       let swinging = ['sword', 'axe'].includes(p.action);
       p.vx = ((input.right ? 1 : 0) - (input.left ? 1 : 0)) * 245 * (swinging ? .42 : p.action === 'hurt' ? .3 : 1);
+      if (c.dashTimer > 0) p.vx = c.dashFacing * 780;
       if (p.vx && !swinging) p.facing = Math.sign(p.vx);
       p.x = clamp(p.x + p.vx * step, 35, questLimit);
       const oldY = p.y; p.vy += 1400 * step; p.y += p.vy * step; p.onGround = false;
@@ -227,7 +267,7 @@ export function createGame(saved, options = {}) {
         if (options.mathQuest && enemy.type === 'boss') { enemy.vx = 0; continue; }
         enemy.phase += step; enemy.hitTimer = Math.max(0, enemy.hitTimer - step); enemy.landTimer = Math.max(0, enemy.landTimer - step);
         const dx = p.x - enemy.x, distance = Math.abs(dx), active = distance < (enemy.type === 'boss' ? 540 : 420) && p.x > 380;
-        if (active) enemy.facing = dx < 0 ? -1 : 1;
+        if (active && !(enemy.type === 'beetle' && ['windup','charge'].includes(enemy.skillPhase))) enemy.facing = dx < 0 ? -1 : 1;
         enemy.vx = 0;
         if (enemy.type === 'boss') {
           const skill = BALANCE.enemies.boss.stomp;
@@ -249,6 +289,37 @@ export function createGame(saved, options = {}) {
             enemy.skillTimer -= step;
             if (enemy.skillTimer <= 0) { enemy.skillPhase = 'idle'; enemy.skillTimer = skill.cycle - skill.windup - 2 * skill.jumpSpeed / 1400 - skill.recovery; }
           }
+        } else if (enemy.type === 'beetle') {
+          enemy.skillTimer -= step;
+          if (enemy.skillPhase === 'idle' && active && enemy.hitTimer === 0) {
+            if (distance < 270) { enemy.skillPhase = 'windup'; enemy.skillTimer = .75; }
+            else enemy.vx = enemy.facing * 48;
+          } else if (enemy.skillPhase === 'windup' && enemy.skillTimer <= 0) {
+            enemy.skillPhase = 'charge'; enemy.skillTimer = .65;
+          } else if (enemy.skillPhase === 'charge') {
+            enemy.vx = enemy.facing * 290;
+            if (enemy.skillTimer <= 0) { enemy.skillPhase = 'recovery'; enemy.skillTimer = 1.1; }
+          } else if (enemy.skillPhase === 'recovery' && enemy.skillTimer <= 0) enemy.skillPhase = 'idle';
+        } else if (enemy.type === 'wisp') {
+          enemy.vy = 0; enemy.y = GROUND - 48 + Math.sin(enemy.phase * 2) * 18;
+          if (active && enemy.hitTimer === 0) {
+            enemy.vx = distance < 145 ? -enemy.facing * 38 : distance > 260 ? enemy.facing * 52 : 0;
+            enemy.shotTimer -= step;
+            if (enemy.shotTimer <= 0) {
+              const aimX = p.x - enemy.x, aimY = p.y - 30 - (enemy.y - 24), length = Math.hypot(aimX, aimY) || 1;
+              state.projectiles.push({x:enemy.x,y:enemy.y-24,vx:aimX/length*170,vy:aimY/length*170,life:3.5,damage:.6,kind:'wisp'});
+              enemy.shotTimer = 2.6;
+            }
+          }
+        } else if (enemy.type === 'slime') {
+          if (enemy.y >= GROUND) {
+            enemy.hopTimer -= step;
+            if (active && enemy.hopTimer <= 0 && enemy.hitTimer === 0) {
+              enemy.vy = -295; enemy.hopTimer = 1.05;
+              enemy.leapFacing = enemy.facing;
+            }
+          }
+          if (enemy.y < GROUND || enemy.vy < 0) enemy.vx = enemy.hitTimer > 0 ? 0 : (enemy.leapFacing || enemy.facing) * 155;
         } else if (enemy.type === 'hopper') {
           // Hoppers visibly leap even before aggro: crouch, airborne travel, squash on landing.
           if (enemy.y >= GROUND) {
@@ -273,7 +344,7 @@ export function createGame(saved, options = {}) {
         }
         enemy.x = clamp(enemy.x + enemy.vx * step, 380, WORLD - 65);
         const wasAirborne = enemy.y < GROUND;
-        enemy.vy += 1400 * step; enemy.y = Math.min(GROUND, enemy.y + enemy.vy * step);
+        if (enemy.type !== 'wisp') { enemy.vy += 1400 * step; enemy.y = Math.min(GROUND, enemy.y + enemy.vy * step); }
         if (enemy.y === GROUND) { enemy.vy = 0; if (wasAirborne) { enemy.landTimer = .16; enemy.vx = 0; } }
         if (enemy.type === 'boss' && enemy.skillPhase === 'air' && wasAirborne && enemy.y === GROUND) {
           const skill = BALANCE.enemies.boss.stomp;
@@ -342,7 +413,13 @@ export function createGame(saved, options = {}) {
       for(const [i,reward] of state.platformRewards.entries()){const platform=route.platforms[Math.floor(i/2)];reward.x=platform.x+(i%2?platform.w-40:40);reward.y=platform.y-20;}
       const guardian=state.enemies.find(e=>e.type==='boss');guardian.x=guardian.homeX=guardian.skillOriginX=route.stations.guardian;
       // Stable enemy/resource IDs preserve collected materials and defeated enemies.
-      for(const [i,e] of state.enemies.filter(e=>e.type!=='boss').entries()){e.x=e.homeX=route.stations.roots+220+i*(route.stations.guardian-route.stations.roots-520)/6;}
+      for(const [i,e] of state.enemies.filter(e=>e.type!=='boss').entries()){
+        e.type = ENCOUNTERS[route.id]?.[i] || e.type;
+        // New creatures use the same HP as the original occupant of their slot.
+        e.maxHp = BALANCE.enemies[e.type].hp;
+        e.x=e.homeX=route.stations.roots+220+i*(route.stations.guardian-route.stations.roots-520)/6;
+        e.skillPhase='idle';e.skillTimer=0;
+      }
       routeSignature=route.id;
     }
     state.platforms = state.platforms.filter(p => !p.questBridge&&!p.questApplication);
@@ -383,5 +460,5 @@ export function createGame(saved, options = {}) {
     }
   }
   state = fresh(); restore(saved);
-  return { get state() { return state; }, start, update, attack, interact, jump, restart, save, getPrompt, togglePause, returnHome, getWeapon, getRecipes, craft, equip, configureQuest, replayCarts, restoreSave(data){restart();restore(data);} };
+  return { get state() { return state; }, start, update, attack, dash, interact, jump, restart, save, getPrompt, togglePause, returnHome, getWeapon, getRecipes, craft, equip, configureQuest, replayCarts, restoreSave(data){restart();restore(data);} };
 }

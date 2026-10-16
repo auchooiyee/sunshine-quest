@@ -1,6 +1,6 @@
 # MathWithCYE · Sunshine Math Quest
 
-A playable Form 4 Mathematics adventure built on the original Sunshine Forest Canvas game. Version 0.8 adds Foundation and Challenge missions across all five regions, with 60 new bilingual task versions and extra reasoning checks. Run history, review checks, lesson links and class CSV summaries remain available. English/BM, six-digit classroom codes, three question sets per chapter, local saves and CSV reports are supported.
+A playable Form 4 Mathematics adventure built on the original Sunshine Forest Canvas game. Version 0.10 adds four-level sword and axe upgrades using collected wood and stone, alongside scenic trails, region-specific monsters, sword combos and a dodge dash. All 155 bilingual task versions, teacher missions, learning history and local CSV reports remain available. See [v0.10 equipment notes](docs/V10_RELEASE.md) and [v0.9 adventure notes](docs/V09_RELEASE.md).
 
 ## Run locally
 
@@ -27,9 +27,11 @@ If lessons or artwork fail to load, use **Try loading again** after checking the
 For classroom trials, use [PILOT_QUICK_START.md](docs/PILOT_QUICK_START.md), which includes a lesson flow, observation sheet and real-device checklist. [CONTENT_REVIEW_REGISTER.md](docs/CONTENT_REVIEW_REGISTER.md) lists all 155 authored task versions for review. The guide example also needs teacher review.
 
 - A/D or arrows: move. Space, W or up: jump.
-- J or left click: collect materials / defend against ordinary mushrooms.
-- 1/2: choose Solver / Collector. E: open the nearby math station.
+- Hold J or left click: sword combo (two cuts, then a longer power thrust); use the axe to collect materials.
+- K / Shift or the touch Dash button: dodge with a short recharge. Time a sword strike to disperse incoming orbs.
+- 1/2: choose Sword / Axe. E: open the nearby math station.
 - Touch controls are available on phones and tablets.
+- Open Workshop beside the equipment buttons to inspect four weapon levels. Upgrade at base camp or the chapter workbench using gathered wood and stone; each card shows costs, shortages and the next level’s stats.
 - Choose a region opens the five chapter routes and final mission; each keeps its own progress.
 - Adventure assistance reduces action damage and travels to the current unlocked checkpoint. It does not solve mathematics.
 
@@ -97,7 +99,7 @@ The Learning journal's **Export learning CSV** exports one row per task in each 
 npm test
 ```
 
-75 tests cover the 16 upstream engine regressions, M1/M2/finale progression, all 60 additional task versions, multiple valid answers, storage and set restoration, mission-code validation/isolation, report evidence, CSV quoting, and applied cart/platform behavior.
+92 tests cover weapon progression, exact material costs, resource economy, old-save compatibility, sword combos, dash boundaries and cooldowns, new monster behavior, projectile defense, save compatibility, and the 16 upstream engine regressions, M1/M2/finale progression, all 60 additional task versions, multiple valid answers, storage and set restoration, mission-code validation/isolation, report evidence, CSV quoting, and applied cart/platform behavior.
 
 For browser checks, keep the server running and provide Playwright plus installed Chrome. Set `PLAYWRIGHT_PACKAGE` to the installed package directory if it is not locally resolvable:
 

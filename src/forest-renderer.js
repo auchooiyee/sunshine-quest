@@ -3,6 +3,8 @@ import { parseNumber } from './math/quadratics.js';
 import { fetchJSON, settleLoads } from './loading.js';
 import {adventureFor} from '../config/adventures.js';
 import {regionBackdrop,regionGround,regionLandmarks,drawConstructions} from './ui/region-scenery.js';
+import {drawCreature,drawEncounterCue,drawSwordTrail} from './ui/creatures.js';
+import {adventureAtmosphere} from './ui/adventure-atmosphere.js';
 export const STATIONS = { roots:650, vertex:1470, design:2310, guardian:3700 };
 export function createForestRenderer(canvas, stage, game, quest, t, region=()=> 'quadratics', meta=()=>null) {
 const ctx = canvas.getContext('2d'), images = {};
@@ -36,7 +38,7 @@ function frameSprite(kind, sequence, frame, x, foot, facing=1, alpha=1) {
   let art=image;
   if(kind==='armed' && ((sequence==='sword'&&game.state.upgrades.stoneSword)||(sequence==='axe'&&!game.state.upgrades.stoneAxe)))art=images['armed-tier']||image;
   if(kind==='hero' && sequence==='axe' && game.state.player.actionWeapon?.name==='木斧')art=images['wood-axe-animation']||image;
-  if(kind==='hero' && sequence==='sword' && game.state.player.actionWeapon?.name==='石剑')art=images['stone-sword-animation']||image;
+  if(kind==='hero' && sequence==='sword' && game.state.player.actionWeapon?.tool==='sword' && game.state.player.actionWeapon?.level>=2)art=images['stone-sword-animation']||image;
   ctx.drawImage(art,sx,sy,w,h,-px*scale,-py*scale,w*scale,h*scale);ctx.restore();
 }
 function stone(x,y,size=25){
@@ -109,6 +111,7 @@ function render(dt) {
   ctx.clearRect(0,0,viewW,620);
   background(images.forest,camera*.23);background(images['forest-east'],camera*.23,blend);
   regionBackdrop(ctx,route,viewW,camera,clock,reducedMotion);
+  adventureAtmosphere(ctx,route,viewW,camera,clock,reducedMotion);
   // Ground, props, enemies and collision geometry all share world movement.
   terrain(images.forest,camera);terrain(images['forest-east'],camera,blend);
   regionGround(ctx,route,viewW);
@@ -149,7 +152,8 @@ function render(dt) {
     let pose=Math.abs(e.vx)>1?Math.floor(e.phase*9)%4:0;
     if(e.type==='hopper')pose=e.action==='land'?3:e.action==='crouch'?0:e.vy<-170?1:e.y<500?2:0;
     if(e.type==='spore' && Math.abs(e.vx)<1)pose=e.shotTimer<.25?2:e.shotTimer>2.15?3:0;
-    frameSprite(e.type,'frames',pose,e.x,e.y,-e.facing,e.hitTimer>0?.72:1);
+    if(!drawCreature(ctx,e,clock,reducedMotion))frameSprite(e.type,'frames',pose,e.x,e.y,-e.facing,e.hitTimer>0?.72:1);
+    drawEncounterCue(ctx,e,p,document.documentElement.lang);
     if(e.hp<e.maxHp || (e.type==='boss' && Math.abs(e.x-p.x)<530)) {
       const w=e.type==='boss'?125:52;ctx.fillStyle='#323a29dd';ctx.fillRect(e.x-w/2,e.y-h-15,w,7);ctx.fillStyle=e.type==='boss'?'#bd593b':'#d58b51';ctx.fillRect(e.x-w/2+1,e.y-h-14,(w-2)*e.hp/e.maxHp,5);
       if(e.type==='boss')label(t('guardian'),e.x,e.y-h-25,'#ffe9af',16);
@@ -163,19 +167,27 @@ function render(dt) {
     else {ctx.save();ctx.translate(d.x,yy);ctx.rotate(clock*.3);ctx.fillStyle='#ffe28b';ctx.strokeStyle='#866332';ctx.lineWidth=2;ctx.beginPath();for(let i=0;i<10;i++){const a=i*Math.PI/5,r=i%2?11:22;ctx.lineTo(Math.cos(a)*r,Math.sin(a)*r);}ctx.closePath();ctx.fill();ctx.stroke();ctx.restore();label(t('badge'),d.x,yy-35);}
   }
   for(const wave of s.shockwaves || []){ctx.save();ctx.translate(wave.x,wave.y);ctx.strokeStyle='#ffe19a';ctx.lineWidth=5;ctx.beginPath();ctx.moveTo(-17,0);ctx.lineTo(-10,-12);ctx.lineTo(-2,-4);ctx.lineTo(7,-23);ctx.lineTo(14,-5);ctx.lineTo(21,0);ctx.stroke();ctx.strokeStyle='#b76e38';ctx.lineWidth=2;ctx.beginPath();ctx.ellipse(0,0,28,7,0,0,Math.PI*2);ctx.stroke();ctx.restore();}
-  for(const q of s.projectiles){ctx.fillStyle='#b9d3a5';ctx.strokeStyle='#637b56';ctx.lineWidth=2;ctx.beginPath();ctx.arc(q.x,q.y,9,0,7);ctx.fill();ctx.stroke();ctx.fillStyle='#ecf4c5';ctx.beginPath();ctx.arc(q.x-3,q.y-3,2,0,7);ctx.fill();}
+  for(const q of s.projectiles){ctx.fillStyle=q.kind==='wisp'?'#bbe8f5':'#b9d3a5';ctx.strokeStyle=q.kind==='wisp'?'#6b9dbb':'#637b56';ctx.lineWidth=2;ctx.beginPath();ctx.arc(q.x,q.y,9,0,7);ctx.fill();ctx.stroke();ctx.fillStyle='#ecf4c5';ctx.beginPath();ctx.arc(q.x-3,q.y-3,2,0,7);ctx.fill();}
   shadow(p.x,501,Math.max(14,30-(500-p.y)*.06));
   const moving=Math.abs(p.vx)>0 && p.onGround && s.mode==='playing';
   const activeSwing=['sword','axe'].includes(p.action);
   const pose=activeSwing?Math.min(3,Math.floor(p.actionElapsed/Math.max(.01,p.actionDuration)*4)):moving?Math.floor(clock*10)%4:!p.onGround?1:1;
   const hurtAlpha=p.invulnerable>0 && Math.sin(clock*30)>0?.48:1;
-  if(activeSwing)frameSprite('hero',p.action,pose,p.x,p.y,p.actionFacing,hurtAlpha);else frameSprite('armed',s.equipment,moving?pose:!p.onGround?1:3,p.x,p.y,p.facing,hurtAlpha);
+  if(s.combat.dashTimer>0&&!reducedMotion)for(let i=3;i>0;i--)frameSprite('armed',s.equipment,1,p.x-s.combat.dashFacing*i*20,p.y,s.combat.dashFacing,.08*(4-i));
+  if(activeSwing)frameSprite('hero',p.action,p.action==='sword'&&p.combo===3?2:pose,p.x,p.y,p.actionFacing,hurtAlpha);else frameSprite('armed',s.equipment,moving?pose:!p.onGround?1:3,p.x,p.y,p.facing,hurtAlpha);
+  drawSwordTrail(ctx,p,reducedMotion);
+  const weaponLevel=game.getWeapon().level;
+  if(weaponLevel>=3){
+    ctx.save();ctx.translate(p.x+p.facing*32,p.y-43);ctx.fillStyle=weaponLevel===4?'#bdf9f3':'#ffe1a0';ctx.shadowColor=ctx.fillStyle;ctx.shadowBlur=reducedMotion?0:12;
+    ctx.beginPath();ctx.moveTo(0,-7);ctx.lineTo(4,0);ctx.lineTo(0,7);ctx.lineTo(-4,0);ctx.closePath();ctx.fill();ctx.restore();
+  }
 
   if(s.upgrades.woodArmor || s.upgrades.stoneArmor)sprite(s.upgrades.stoneArmor?'stone-shield':'wood-shield',p.x-p.facing*14,p.y-28,26,p.facing);
-  if(activeSwing && p.actionElapsed>p.actionDuration*.24 && p.actionElapsed<p.actionDuration*.65){
+  if(p.action==='axe' && p.actionElapsed>p.actionDuration*.24 && p.actionElapsed<p.actionDuration*.65){
     ctx.save();ctx.translate(p.x+p.actionFacing*30,p.y-48);ctx.scale(p.actionFacing,1);ctx.strokeStyle=p.action==='axe'?'#ffe0a1b0':'#fff7c6b0';ctx.lineWidth=3;ctx.beginPath();ctx.arc(0,0,56,-1.0,.7);ctx.stroke();ctx.restore();
   }
   for(const part of s.particles){ctx.globalAlpha=part.life/part.maxLife;ctx.fillStyle=part.color;ctx.fillRect(part.x,part.y,4,4);}ctx.globalAlpha=1;
+  for(const hit of s.combat.hits){ctx.globalAlpha=Math.min(1,hit.life*3);label(`${hit.thrust?'✦ ':''}${hit.damage}`,hit.x,hit.y,hit.thrust?'#fff3a8':'#fffce2',hit.thrust?25:19);}ctx.globalAlpha=1;
   ctx.restore();if(!route||route.id==='quadratics')foreground();
   if(s.trophy){ctx.fillStyle='#edaf5a12';ctx.fillRect(0,0,viewW,620);}
 }

@@ -94,7 +94,10 @@ test('workbench opens on input edge, crafting checks location, cost, prerequisit
   assert.equal(g.state.crafted, true); assert.equal(g.getWeapon().name, '石剑');
   assert.equal(g.craft('stoneSword'), false); assert.equal(g.state.wood, 44);
   for (const id of ['stoneAxe', 'woodArmor', 'stoneArmor']) assert.equal(g.craft(id), true);
-  assert.equal(g.state.stone, 0); assert.equal(g.state.wood, 26); assert.ok(g.getRecipes().every(r => r.owned && !r.available));
+  assert.equal(g.state.stone, 0); assert.equal(g.state.wood, 26);
+  const recipes = g.getRecipes();
+  assert.ok(recipes.filter(r => ['stoneSword', 'stoneAxe', 'woodArmor', 'stoneArmor'].includes(r.id)).every(r => r.owned && !r.available));
+  assert.ok(recipes.filter(r => /reinforced|crystal/.test(r.id)).every(r => !r.owned && !r.available));
   const poor = begun(); poor.state.player.x = 1450; assert.equal(poor.craft('stoneSword'), false); assert.equal(poor.state.wood, 0);
 });
 
@@ -125,7 +128,7 @@ test('hopper visibly leaps without aggro, moves in air, pauses on ground, and sp
   g.update(1 / 60); assert.equal(g.state.projectiles.length, 1); assert.ok(spore.vx !== 0);
 });
 
-test('complete resource economy affords all upgrades plus twelve home wood, boss and saved completion', () => {
+test('original forest economy affords stone tools and armor plus twelve home wood, boss and saved completion', () => {
   const g = begun(); quiet(g); g.equip('axe');
   for (const tree of g.state.trees) { g.state.player.x = tree.x - 40; g.state.player.facing = 1; for (let hit = 0; hit < 3; hit++) strike(g); }
   assert.equal(g.state.wood, 56);
