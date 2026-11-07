@@ -1,6 +1,7 @@
 import { REGIONS } from '../../config/worlds.js';
 import { checkAssignment } from '../missions/assignment.js';
 import {newRun,validRun,HISTORY_LIMIT} from '../learning/history.js';
+import {cleanPlayerName} from './player-profile.js';
 // Keep the original key so M1 saves migrate in place.
 export const STORAGE_KEY='mathwithcye-sunshine-quest-v1';
 export const CONTENT_VERSION=5;
@@ -28,7 +29,7 @@ export function decodeSave(text){
     const ids=[...Object.values(regions).map(r=>r.run.id),...history.map(r=>r.run.id)];
     if(new Set(ids).size!==ids.length)return null;
     const reportLabel=typeof value.reportLabel==='string'?value.reportLabel.slice(0,40).replace(/[\u0000-\u001f\u007f]/g,'').trim():'';
-    return {schemaVersion:2,contentVersion:CONTENT_VERSION,regions,history,currentRegion,assignment,reportLabel,language:value.language==='ms'?'ms':'en',assist:value.assist!==false};
+    return {schemaVersion:2,contentVersion:CONTENT_VERSION,regions,history,currentRegion,assignment,reportLabel,playerName:cleanPlayerName(value.playerName),language:value.language==='ms'?'ms':'en',assist:value.assist!==false};
   }catch{return null;}
 }
 export function loadSave(storage,key=STORAGE_KEY){

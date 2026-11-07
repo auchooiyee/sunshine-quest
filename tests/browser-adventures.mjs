@@ -1,3 +1,4 @@
+import {completePlayerSetup} from './player-setup-fixture.mjs';
 import assert from 'node:assert/strict';
 import {createRequire} from 'node:module';
 import {readFile,mkdir,writeFile} from 'node:fs/promises';
@@ -11,7 +12,7 @@ const browser=await chromium.launch({headless:true,channel:'chrome'}),url=proces
 const output=fileURLToPath(new URL('../artifacts/',import.meta.url));await mkdir(output,{recursive:true});
 const errors=[],checks=[],snap=p=>p.evaluate(()=>window.mathQuest.snapshot());
 const answer=d=>d.answer||(d.kind==='roots'?Object.fromEntries(roots(d.model).map((v,i)=>[i?'second':'first',v])):d.kind==='vertex'?vertex(d.model):{span:d.target.span,k:4*d.target.height/d.target.span**2});
-async function ready(p,target=url){p.on('pageerror',e=>errors.push(e.message));await p.goto(target);await p.waitForFunction(()=>window.mathQuest?.snapshot().loaded);}
+async function ready(p,target=url){p.on('pageerror',e=>errors.push(e.message));await p.goto(target);await p.waitForFunction(()=>window.mathQuest?.snapshot().loaded);await completePlayerSetup(p);}
 async function fill(p,values){for(const [key,value] of Object.entries(values)){const field=p.locator('#answer-'+key);if(await field.getAttribute('type')==='range'){const min=Number(await field.getAttribute('min')),step=Number(await field.getAttribute('step'));await field.focus();await field.press('Home');for(let n=0;n<Math.round((value-min)/step);n++)await field.press('ArrowRight');}else await field.fill(String(value));}}
 try{
   for(const world of WORLDS){

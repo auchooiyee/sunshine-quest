@@ -1,3 +1,4 @@
+import {completePlayerSetup} from './player-setup-fixture.mjs';
 /** Run with the dev server active and Playwright available (or PLAYWRIGHT_PACKAGE set). */
 import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
@@ -12,7 +13,7 @@ const browser=await chromium.launch({headless:true,channel:'chrome'});
 const errors=[], checks=[];
 function attach(page){page.on('pageerror',e=>errors.push(e.message));page.on('response',r=>{if(r.status()>=400)errors.push(`${r.status()} ${r.url()}`);});}
 const snapshot=page=>page.evaluate(()=>window.mathQuest.snapshot());
-async function ready(page){await page.goto(url);await page.waitForFunction(()=>window.mathQuest?.snapshot().loaded);}
+async function ready(page){await page.goto(url);await page.waitForFunction(()=>window.mathQuest?.snapshot().loaded);await completePlayerSetup(page);}
 async function checkpoint(page){await page.locator('#checkpoint').click();await page.locator('#interaction').click();}
 async function setSlider(page,key,value){const slider=page.locator('#answer-'+key);await slider.focus();await slider.press('Home');const step=key==='span'?1:.25,min=key==='span'?4:.25;for(let i=0;i<Math.round((value-min)/step);i++)await slider.press('ArrowRight');}
 try{

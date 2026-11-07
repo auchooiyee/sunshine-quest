@@ -1,3 +1,4 @@
+import {completePlayerSetup} from './player-setup-fixture.mjs';
 import assert from 'node:assert/strict';
 import {createRequire} from 'node:module';
 import {readFile,writeFile,mkdir} from 'node:fs/promises';
@@ -7,7 +8,7 @@ const {chromium}=createRequire(import.meta.url)(process.env.PLAYWRIGHT_PACKAGE||
 const browser=await chromium.launch({headless:true,channel:'chrome'}),url=process.env.QUEST_URL||'http://127.0.0.1:4173';
 const output=fileURLToPath(new URL('../artifacts/',import.meta.url));await mkdir(output,{recursive:true});
 const checks=[],errors=[],snap=p=>p.evaluate(()=>window.mathQuest.snapshot());
-async function ready(p,target=url){await p.goto(target);await p.waitForFunction(()=>window.mathQuest?.snapshot().loaded);}
+async function ready(p,target=url){await p.goto(target);await p.waitForFunction(()=>window.mathQuest?.snapshot().loaded);await completePlayerSetup(p);}
 async function download(p,id,name){const pending=p.waitForEvent('download');await p.locator(id).click();await(await pending).saveAs(output+'/'+name);return readFile(output+'/'+name,'utf8');}
 try{
   const p=await browser.newPage({viewport:{width:1440,height:1000}});p.on('pageerror',e=>errors.push(e.message));await ready(p);

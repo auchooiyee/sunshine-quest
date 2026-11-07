@@ -1,3 +1,4 @@
+import {completePlayerSetup} from './player-setup-fixture.mjs';
 import assert from 'node:assert/strict';
 import {createRequire} from 'node:module';
 import {readFile,writeFile,mkdir} from 'node:fs/promises';
@@ -11,7 +12,7 @@ const output=fileURLToPath(new URL('../artifacts/',import.meta.url));await mkdir
 const banks=new Map(await Promise.all(WORLDS.map(async w=>[w.id,JSON.parse(await readFile(new URL('../'+w.path,import.meta.url),'utf8'))]))),checks=[],errors=[];
 const snap=p=>p.evaluate(()=>window.mathQuest.snapshot());
 function watch(p){p.on('pageerror',e=>errors.push(e.message));p.on('response',r=>{if(r.status()>=400)errors.push(`${r.status()} ${r.url()}`);});}
-async function ready(p,url=base){await p.goto(url);await p.waitForFunction(()=>window.mathQuest?.snapshot().loaded);}
+async function ready(p,url=base){await p.goto(url);await p.waitForFunction(()=>window.mathQuest?.snapshot().loaded);await completePlayerSetup(p);}
 async function fill(p,values,prefix='#answer-'){
   for(const [key,value] of Object.entries(values)){const f=p.locator(prefix+key);if(await f.getAttribute('type')==='range'){const min=Number(await f.getAttribute('min')),step=Number(await f.getAttribute('step'));await f.focus();await f.press('Home');for(let i=0;i<Math.round((value-min)/step);i++)await f.press('ArrowRight');}else await f.fill(String(value));}
 }

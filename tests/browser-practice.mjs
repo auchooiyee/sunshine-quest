@@ -1,3 +1,4 @@
+import {completePlayerSetup} from './player-setup-fixture.mjs';
 import assert from 'node:assert/strict';
 import {createRequire} from 'node:module';
 import {readFile,mkdir,writeFile} from 'node:fs/promises';
@@ -11,7 +12,7 @@ const url=process.env.QUEST_URL||'http://127.0.0.1:4173',browser=await chromium.
 const banks=new Map(await Promise.all(WORLDS.map(async w=>[w.id,JSON.parse(await readFile(new URL('../'+w.path,import.meta.url),'utf8'))])));
 const snap=p=>p.evaluate(()=>window.mathQuest.snapshot());
 function watch(p){p.on('pageerror',e=>errors.push(e.message));p.on('response',r=>{if(r.status()>=400)errors.push(`${r.status()} ${r.url()}`);});}
-async function ready(p,target=url){await p.goto(target);await p.waitForFunction(()=>window.mathQuest?.snapshot().loaded);}
+async function ready(p,target=url){await p.goto(target);await p.waitForFunction(()=>window.mathQuest?.snapshot().loaded);await completePlayerSetup(p);}
 async function choose(p,id){await p.locator('#region-button').click();await p.locator('.region-card').filter({hasText:WORLDS.find(w=>w.id===id).name.en}).locator('button').click();}
 async function station(p){await p.locator('#checkpoint').click();await p.locator('#interaction').click();}
 async function fill(p,answer){for(const [key,value] of Object.entries(answer)){const el=p.locator('#answer-'+key);if(await el.getAttribute('type')==='range'){const min=Number(await el.getAttribute('min')),step=Number(await el.getAttribute('step'));await el.focus();await el.press('Home');for(let i=0;i<Math.round((value-min)/step);i++)await el.press('ArrowRight');}else await el.fill(String(value));}}

@@ -20,6 +20,8 @@ This repository is prepared for Cloudflare Pages. Run `npm run build` to create 
 
 ## Play
 
+Before starting, enter a name or nickname (up to 24 characters). The game shows it on the player badge and remembers it in this browser. Click the badge or use **Learning journal → Change name** to edit it. Progress JSON keeps the name; teacher CSV reports still use the separate learner code.
+
 **How to play** opens a skippable three-step practice guide: move an explorer, build an example bridge and learn how hints/saving work. Its practice answers never change expedition XP or learning evidence. Reopen it from the header whenever no other dialog is open. The region map has direct Continue/Begin and Join teacher mission actions.
 
 If lessons or artwork fail to load, use **Try loading again** after checking the connection. Requests have deadlines and successful resources are reused on retry. Existing saves are not written during incomplete loading. An unreadable save is protected until you explicitly confirm **Use this new save**; **Download original save** preserves the raw file first. While protection is active, new play remains in memory and can be exported from the journal.

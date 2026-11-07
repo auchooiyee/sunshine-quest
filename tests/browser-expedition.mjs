@@ -1,3 +1,4 @@
+import {completePlayerSetup} from './player-setup-fixture.mjs';
 /** Full M2 browser flow: normal controls, isolated profiles, no write hooks. */
 import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
@@ -11,7 +12,7 @@ const browser=await chromium.launch({headless:true,channel:'chrome'}),checks=[],
 const data=new Map(await Promise.all(WORLDS.map(async w=>[w.id,JSON.parse(await readFile(new URL('../'+w.path,import.meta.url),'utf8'))])));
 const snap=p=>p.evaluate(()=>window.mathQuest.snapshot());
 function watch(page){page.on('pageerror',e=>errors.push(e.message));page.on('response',r=>{if(r.status()>=400)errors.push(`${r.status()} ${r.url()}`);});}
-async function ready(page,target=url){await page.goto(target);await page.waitForFunction(()=>window.mathQuest?.snapshot().loaded);}
+async function ready(page,target=url){await page.goto(target);await page.waitForFunction(()=>window.mathQuest?.snapshot().loaded);await completePlayerSetup(page);}
 async function choose(page,id){await page.locator('#region-button').click();const w=WORLDS.find(w=>w.id===id);await page.locator('.region-card').filter({hasText:w.name.en}).locator('button').click();await page.waitForFunction(id=>window.mathQuest.snapshot().region===id,id);}
 async function station(page){await page.locator('#checkpoint').click();await page.locator('#interaction').click();}
 async function fill(page,def,answer=def.answer){

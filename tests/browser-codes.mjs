@@ -1,3 +1,4 @@
+import {completePlayerSetup} from './player-setup-fixture.mjs';
 import assert from 'node:assert/strict';
 import {createRequire} from 'node:module';
 import {readFile,mkdir,writeFile} from 'node:fs/promises';
@@ -10,7 +11,7 @@ const url=process.env.QUEST_URL||'http://127.0.0.1:4173';
 const output=fileURLToPath(new URL('../artifacts/',import.meta.url));
 await mkdir(output,{recursive:true});
 const errors=[],checks=[],snap=p=>p.evaluate(()=>window.mathQuest.snapshot());
-async function ready(p,target=url){await p.goto(target);await p.waitForFunction(()=>window.mathQuest?.snapshot().loaded);}
+async function ready(p,target=url){await p.goto(target);await p.waitForFunction(()=>window.mathQuest?.snapshot().loaded);await completePlayerSetup(p);}
 async function answer(p,values){await p.locator('#checkpoint').click();await p.locator('#interaction').click();for(const [key,value] of Object.entries(values))await p.locator('#answer-'+key).fill(String(value));await p.locator('#submit-answer').click();await p.locator('#continue-challenge').click();}
 try{
   const context=await browser.newContext({permissions:['clipboard-read','clipboard-write']});

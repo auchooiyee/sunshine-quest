@@ -1,3 +1,4 @@
+import {completePlayerSetup} from './player-setup-fixture.mjs';
 /** Pilot entry, isolated tutorial and load/save recovery through visible controls. */
 import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
@@ -12,7 +13,7 @@ await mkdir(output, { recursive: true });
 const key = 'mathwithcye-sunshine-quest-v1', checks = [], errors = [];
 const snap = page => page.evaluate(() => window.mathQuest.snapshot());
 async function page(options) { const p = await browser.newPage(options); p.on('pageerror', error => errors.push(error.message)); return p; }
-async function ready(p, target = url) { await p.goto(target); await p.waitForFunction(() => window.mathQuest?.snapshot().loaded); }
+async function ready(p, target = url) { await p.goto(target); await p.waitForFunction(() => window.mathQuest?.snapshot().loaded);await completePlayerSetup(p); }
 try {
   const p = await page({ viewport: { width: 1440, height: 1000 } });
   await ready(p);
@@ -68,7 +69,7 @@ try {
   assert.equal(await retry.evaluate(key => localStorage.getItem(key), key), null);
   await retry.locator('#language').click(); assert.match(await retry.locator('#retry-load').innerText(), /Cuba/);
   fail = false; await retry.locator('#retry-load').click();
-  await retry.waitForFunction(() => window.mathQuest.snapshot().loaded);
+  await retry.waitForFunction(() => window.mathQuest.snapshot().loaded);await completePlayerSetup(retry);
   assert.equal(lessonRequests, 2); assert.equal((await snap(retry)).language, 'ms');
   checks.push('Failed curriculum fetch can retry in BM without replacing a save or reloading the page');
 
@@ -80,7 +81,7 @@ try {
   await assetRetry.goto(url); await assetRetry.locator('#retry-load').waitFor({ state: 'visible' });
   assert.equal(await assetRetry.evaluate(key => localStorage.getItem(key), key), existingSave);
   failImage = false; await assetRetry.locator('#retry-load').click();
-  await assetRetry.waitForFunction(() => window.mathQuest.snapshot().loaded);
+  await assetRetry.waitForFunction(() => window.mathQuest.snapshot().loaded);await completePlayerSetup(assetRetry);
   assert.equal(goodImages, 1);
   assert.equal((await snap(assetRetry)).region, 'finance');
   await assetRetry.locator('#start-button').click();

@@ -32,6 +32,8 @@ import {diagnostic} from './src/learning/feedback.js';
 import {createLearningTools,download} from './src/ui/learning-tools.js';
 import {assignmentURL,assignmentFromURL} from './src/missions/assignment.js';
 import {en as levelsEN,ms as levelsMS} from './locales/levels.js';
+import {en as playerEN,ms as playerMS} from './locales/player.js';
+import {cleanPlayerName,loadPlayerName,savePlayerName} from './src/storage/player-profile.js';
 
 const $ = id => document.getElementById(id);
 const storage = { getItem:key=>localStorage.getItem(key), setItem:(key,value)=>localStorage.setItem(key,value) };
@@ -39,10 +41,11 @@ const assignmentParam=new URLSearchParams(location.search).get('assignment');
 const assignment=assignmentParam?assignmentFromURL(location.href):null;
 const saveKey=assignment?assignmentKey(assignment):STORAGE_KEY;
 const stored = loadSave(storage,saveKey);
+let playerName=loadPlayerName(storage)||stored.data?.playerName||'',afterPlayerName=null;
 let currentWorld=getWorld(assignment?.world||stored.data?.currentRegion),regions=stored.data?.regions||{};
 let language=stored.data?.language || assignment?.language || 'en', assist=assignment?assignment.assist:stored.data?.assist !== false;
 let history=stored.data?.history||[];
-const messages={en:{...en,...expeditionEN,...finaleEN,...practiceEN,...pilotEN,...adventureEN,...learningEN,...levelsEN,...equipmentEN},ms:{...ms,...expeditionMS,...finaleMS,...practiceMS,...pilotMS,...adventureMS,...learningMS,...levelsMS,...equipmentMS}};
+const messages={en:{...en,...expeditionEN,...finaleEN,...practiceEN,...pilotEN,...adventureEN,...learningEN,...levelsEN,...equipmentEN,...playerEN},ms:{...ms,...expeditionMS,...finaleMS,...practiceMS,...pilotMS,...adventureMS,...learningMS,...levelsMS,...equipmentMS,...playerMS}};
 const t = key => assignment?.tasks===3&&['questLead','introText','finishedText'].includes(key)?messages[language].shortMissionText:key==='guardian'&&adventureFor(currentWorld.id)?adventureFor(currentWorld.id).guardian[language]:worldText(currentWorld,key,language) || messages[language][key] || messages.en[key] || key;
 const game=createGame(regions[currentWorld.id]?.world,{mathQuest:true,assist});
 const curricula=new Map();
@@ -60,7 +63,7 @@ const dialogs=[...document.querySelectorAll('dialog')];
 const anyModal=()=>dialogs.some(d=>d.open);
 const escaped = value => String(value).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 function clearInput(){for(const key of Object.keys(input))input[key]=false;document.querySelectorAll('[data-control]').forEach(b=>b.classList.remove('pressed'));}
-function snapshotSave(){const previous=regions[currentWorld.id]||{};regions[currentWorld.id]={...previous,run:previous.run||newRun(),reviews:previous.reviews||{},world:game.save(),quest:quest.save()};return {regions,history,currentRegion:currentWorld.id,assignment,language,assist,reportLabel};}
+function snapshotSave(){const previous=regions[currentWorld.id]||{};regions[currentWorld.id]={...previous,run:previous.run||newRun(),reviews:previous.reviews||{},world:game.save(),quest:quest.save()};return {regions,history,currentRegion:currentWorld.id,assignment,language,assist,reportLabel,playerName};}
 const learningTools=createLearningTools({context:()=>{snapshotSave();return {region:regions[currentWorld.id],history,bank:selectDifficulty(curricula.get(currentWorld.id),assignment?.level),bankFor:id=>assignmentCurriculum(curricula.get(id),assignment),quest,language};},persist,t,openDialog,openJournal:()=>{renderJournal();openDialog($('journal'));}});
 function persist(){if(!loaded||!quest||replacingSave)return;if(!recoveryPending)stored.available=writeSave(storage,snapshotSave(),saveKey);$('save-status').textContent=t(recoveryPending?'recoveryStatus':stored.available?'saveOK':'saveBad');}
 function toast(key){$('toast').textContent=t(key);$('toast').hidden=false;toastUntil=performance.now()+3500;}
@@ -81,6 +84,9 @@ function configureWorld(){
   game.configureQuest({limit,route,checkpoint:lastDef?stationX(lastDef.station)-75:180,constructions:built.items,...(!final?{blueprints:built.bridges}:{}),blueprint:blueprint?{span:parseNumber(blueprint.span),k:parseNumber(blueprint.k),...(final?{origin:820}:{})}:null,application,shields:quest.complete?0:final?Math.ceil((5-completed.length)*3/5):3-completed.filter(id=>id.startsWith('guardian-')).length,complete:quest.complete,assist});
 }
 function applyLanguage(){
+  $('player-name').textContent=playerName||t('playerFallback');$('player-name').title=t('playerEdit');$('player-name').setAttribute('aria-label',`${playerName||t('playerFallback')} · ${t('playerEdit')}`);
+  $('player-language').textContent=language==='en'?'EN / BM':'BM / EN';
+  if($('player-error').textContent)$('player-error').textContent=t('playerRequired');
   document.documentElement.lang=language;
   for(const el of document.querySelectorAll('[data-i18n]'))el.textContent=t(el.dataset.i18n);
   $('language').textContent=language==='en'?'EN / BM':'BM / EN';$('challenge-language').textContent=$('language').textContent;
@@ -166,7 +172,19 @@ function updateUI(force=false){
   renderManifest();
   renderAdventure();
 }
-function begin(){if(!loaded||anyModal())return;game.start();clearInput();stage.focus({preventScroll:true});persist();updateUI(true);}
+function begin(){if(!loaded||anyModal())return;if(!playerName){askPlayerName(begin);return;}game.start();clearInput();stage.focus({preventScroll:true});persist();updateUI(true);}
+function askPlayerName(next=null){
+  if(anyModal())return;afterPlayerName=next;$('player-input').value=playerName;$('player-error').textContent='';openDialog($('player-setup'));$('player-input').focus();
+}
+$('player-setup').addEventListener('cancel',event=>{if(!playerName)event.preventDefault();});
+$('player-input').oninput=()=>{$('player-error').textContent='';};
+$('player-form').onsubmit=event=>{
+  event.preventDefault();const name=cleanPlayerName($('player-input').value);
+  if(!name){$('player-error').textContent=t('playerRequired');$('player-input').focus();return;}
+  playerName=name;savePlayerName(storage,name);persist();const next=afterPlayerName;afterPlayerName=null;$('player-setup').close();applyLanguage();if(next)setTimeout(next,0);
+};
+$('player-name').onclick=()=>{if(loaded&&!anyModal())askPlayerName();};
+$('edit-player-name').onclick=()=>{$('journal').close();setTimeout(()=>askPlayerName(()=>{renderJournal();openDialog($('journal'));}),0);};
 function interact(){
   if(!loaded||anyModal())return;
   if(game.state.mode==='ready'){begin();return;}
@@ -444,7 +462,7 @@ $('join-form').onsubmit=event=>{
 };
 $('leave-class').onclick=()=>{persist();const url=new URL(location.href);url.search='';url.hash='';replacingSave=true;location.assign(url.href);};
 $('preview-action').onclick=()=>{previewTime=0;previewRunning=true;renderGraph();};
-$('language').onclick=$('challenge-language').onclick=switchLanguage;
+$('language').onclick=$('challenge-language').onclick=$('player-language').onclick=switchLanguage;
 $('journal-button').onclick=()=>{if(!loaded)return;renderJournal();openDialog($('journal'));};
 $('pause-button').onclick=$('resume-button').onclick=()=>{if(!loaded||anyModal()||game.state.mode==='ready'||game.state.mode==='complete')return;game.togglePause();clearInput();stage.focus({preventScroll:true});updateUI(true);};
 $('sound-button').onclick=()=>{soundOn=!soundOn;$('sound-button').setAttribute('aria-pressed',String(soundOn));tone('pickup');};
@@ -483,7 +501,9 @@ $('import-file').onchange=async()=>{
   if(file.size>1000000){alert(t('importInvalid'));return;}
   try{const data=decodeSave(await file.text());if(!data){alert(t('importInvalid'));return;}if(!confirm(t('importConfirm')))return;
     const destinationKey=data.assignment?assignmentKey(data.assignment):STORAGE_KEY;
-    if(!writeSave(storage,data,destinationKey)){alert(t('saveBad'));return;}replacingSave=true;const url=data.assignment?assignmentURL(data.assignment,location.href):new URL(location.pathname,location.origin);location.assign(url.href);
+    if(!writeSave(storage,data,destinationKey)){alert(t('saveBad'));return;}
+    if(data.playerName)savePlayerName(storage,data.playerName);
+    replacingSave=true;const url=data.assignment?assignmentURL(data.assignment,location.href):new URL(location.pathname,location.origin);location.assign(url.href);
   }catch{alert(t('importInvalid'));}
 };
 const keys={ArrowLeft:'left',KeyA:'left',ArrowRight:'right',KeyD:'right',Space:'jump',ArrowUp:'jump',KeyW:'jump',KeyJ:'attack',KeyK:'dash',ShiftLeft:'dash',ShiftRight:'dash',KeyE:'interact'};
@@ -512,7 +532,7 @@ function pauseForFocus(){clearInput();if(!openingModal&&game.state.mode==='playi
 window.addEventListener('blur',pauseForFocus);document.addEventListener('visibilitychange',()=>{if(document.hidden)pauseForFocus();});window.addEventListener('pagehide',persist);
 function frame(now){
   const dt=Math.min((now-last)/1000||1/60,.05);last=now;
-  if(!anyModal())game.update(dt,input);
+  if(playerName&&!anyModal())game.update(dt,input);
   for(const event of game.state.events.splice(0)){
     if(event.type==='sound')tone(event.name);
     if(event.type==='guardian'&&!anyModal())interact();
@@ -539,7 +559,9 @@ async function init(){
     curriculum=assignmentCurriculum(curricula.get(currentWorld.id),assignment);quest=createQuest(curriculum,regions[currentWorld.id]?.quest);configureWorld();
     loadingPhase='loadingForest';$('load-message').textContent=t(loadingPhase);
     await renderer.load();loaded=true;$('loading').hidden=true;$('start-button').disabled=false;applyLanguage();updateUI(true);requestAnimationFrame(frame);
-    if(stored.damaged)toast('saveDamaged');if(assignmentParam&&!assignment)toast('invalidCode');if(relocked)toast('finaleLocked');if(quest.complete)showCompletion();else if(new URLSearchParams(location.search).get('view')==='regions')$('region-button').click();
+    if(stored.damaged)toast('saveDamaged');if(assignmentParam&&!assignment)toast('invalidCode');if(relocked)toast('finaleLocked');
+    const enter=()=>{if(quest.complete)showCompletion();else if(new URLSearchParams(location.search).get('view')==='regions')$('region-button').click();};
+    if(!playerName)askPlayerName(enter);else enter();
   }catch(error){loadFailed=true;$('load-message').textContent=t('loadError');$('load-note').hidden=false;$('retry-load').hidden=false;$('retry-load').disabled=false;}
   finally{loadingNow=false;}
 }
