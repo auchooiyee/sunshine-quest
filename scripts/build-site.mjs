@@ -8,7 +8,7 @@ if (path.dirname(output) !== path.resolve(root) || path.basename(output) !== 'di
   throw new Error('Build output must be the game/dist directory');
 }
 const publicEntries = [
-  'index.html', 'app.js', 'engine.js', 'balance.js', 'style.css', 'quest.css',
+  'index.html', 'app.js', 'engine.js', 'balance.js', 'style.css', 'quest.css', 'rescue.css',
   '_headers', 'assets', 'config', 'data', 'locales', 'src',
 ];
 // Publish only runtime files; development scripts, reports and credentials stay out.

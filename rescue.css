@@ -1,0 +1,44 @@
+.rescue-entry{display:grid;gap:8px;margin:12px 0;padding:11px;border:1px solid #b9c9a7;border-radius:9px;background:#eef2de;color:#304d39}
+.rescue-entry small{font-size:.79rem;line-height:1.35}
+.rescue-entry button{justify-self:start;min-height:42px}
+#bridge-rescue{width:min(860px,calc(100vw - 20px));max-height:calc(100dvh - 18px);padding:clamp(13px,2.3vw,27px);border:1px solid #bfcaae;border-radius:16px;color:#284834;background:#fbf8eb;overscroll-behavior:contain}
+#bridge-rescue::backdrop{background:#142d25b5}
+#bridge-rescue .rescue-head{display:flex;justify-content:space-between;align-items:start;gap:8px}
+#bridge-rescue .rescue-head h2{font-size:clamp(23px,3.6vw,40px);line-height:1.05;margin:4px 0 0}
+.rescue-head-actions{display:flex;gap:5px;flex-shrink:0}
+#bridge-rescue .rescue-head-actions button{font-size:11px;padding:6px 9px;min-height:36px}
+.rescue-steps{display:grid;grid-template-columns:repeat(4,1fr);gap:5px;list-style:none;margin:12px 0 9px;padding:0}
+.rescue-steps li{display:flex;gap:5px;align-items:center;min-width:0;font-size:clamp(9px,1.8vw,13px);color:#526754}
+.rescue-steps span{display:grid;place-items:center;flex:0 0 23px;height:23px;border-radius:50%;background:#e5ead9;color:#34513d}
+.rescue-steps [aria-current=step] span,.rescue-steps .done span{background:#326248;color:#fff}
+.rescue-stage{position:relative;overflow:hidden;border:2px solid #abc093;border-radius:11px;background:linear-gradient(0deg,#14382b90,transparent),url('./assets/forest.webp') center 58%/cover #234d3a;box-shadow:0 2px 12px #21453433}
+#rescue-player{position:absolute;top:7px;left:8px;max-width:42%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;padding:4px 8px;border-radius:6px;background:#14392eea;color:#fff3cd;font-size:clamp(10px,1.6vw,14px);pointer-events:none}
+#rescue-scene{display:block;width:100%;height:auto;max-height:36dvh;min-height:116px}
+#bridge-rescue[data-phase=anchors] #rescue-scene{cursor:crosshair}
+#rescue-beacon-glow{display:none}
+#bridge-rescue[data-phase=complete] #rescue-beacon-glow{display:block;animation:rescue-beacon .65s ease-out both}
+#bridge-rescue[data-phase=complete] #rescue-beacon-light{fill:#ffdb7a;filter:drop-shadow(0 0 5px #ffe095)}
+#bridge-rescue[data-phase=cross] #rescue-bridge{animation:rescue-build .65s ease-out both}
+@keyframes rescue-build{from{clip-path:inset(0 100% 0 0);opacity:.35}to{clip-path:inset(0);opacity:1}}
+@keyframes rescue-beacon{from{opacity:0}to{opacity:1}}
+#rescue-objective{margin:9px 0;font-size:clamp(13px,2vw,17px);font-weight:650;line-height:1.35;color:#244334}
+#rescue-objective:focus{outline:none}
+.rescue-controls{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.rescue-controls>div{display:flex;gap:6px}.rescue-controls small{color:#426149}
+#bridge-rescue .rescue-controls button,#rescue-check,#rescue-build,#rescue-light{min-height:44px;padding:8px 14px}
+#rescue-left,#rescue-right{min-width:52px;touch-action:none;font-size:20px}
+#rescue-pick-label{margin:4px 0;font-size:12px}
+#rescue-points{display:grid;grid-template-columns:repeat(11,minmax(42px,1fr));gap:4px;margin-bottom:8px}
+#rescue-points button{min-height:44px;padding:3px;font-weight:bold}
+#rescue-points [aria-pressed=true]{background:#38634b;color:white;border-color:#38634b}
+#rescue-points .off-target{background:#943f36;color:white;border-color:#943f36}
+.rescue-tuning{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:7px}
+.rescue-tuning label,.rescue-height{display:grid;gap:4px;align-content:start;padding:7px 8px;border-radius:8px;background:#ecf0df;font-size:12px}
+.rescue-tuning select{width:100%;min-height:38px;background:#fffdf4;color:#264734;border:1px solid #9eb298;border-radius:6px;padding:4px;font:inherit;font-size:16px}
+.rescue-height output{font-weight:bold;font-size:17px;line-height:38px}
+.rescue-equation{margin:5px 0;font-size:13px;color:#385a43}
+#rescue-feedback{margin:8px 0;color:#853b2d;font-weight:650;font-size:13px}
+#rescue-hint{margin-top:6px;font-size:13px}#rescue-hint summary{cursor:pointer;padding:8px 0}#rescue-hint p{margin:4px 0 0}
+.rescue-badge{display:flex;align-items:center;gap:8px;margin:8px 0;padding:8px 11px;border-radius:9px;background:#f5e5b8;color:#60471d}.rescue-badge span{font-size:22px}
+#bridge-rescue [hidden],.rescue-entry[hidden]{display:none!important}
+@media(max-width:630px){#rescue-points{grid-template-columns:repeat(6,minmax(0,1fr))}.rescue-steps span{flex-basis:18px;height:18px}.rescue-steps li{line-height:1}.rescue-head-actions{flex-direction:column;align-items:end}#bridge-rescue .rescue-head-actions button{min-height:28px;max-width:96px;line-height:1.15}.rescue-stage{background-position:center}.rescue-tuning label,.rescue-height{font-size:11px}}

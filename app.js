@@ -23,6 +23,8 @@ import {en as practiceEN,ms as practiceMS} from './locales/practice.js';
 import {en as pilotEN,ms as pilotMS} from './locales/pilot.js';
 import {fetchJSON,settleLoads} from './src/loading.js';
 import {createTutorial} from './src/ui/tutorial.js';
+import {createRescueUI} from './src/ui/bridge-rescue.js';
+import {en as rescueEN,ms as rescueMS} from './locales/rescue.js';
 import {adventureFor} from './config/adventures.js';
 import {constructionsFor,constructionSummary} from './src/missions/constructions.js';
 import {en as adventureEN,ms as adventureMS} from './locales/adventure.js';
@@ -45,7 +47,7 @@ let playerName=loadPlayerName(storage)||stored.data?.playerName||'',afterPlayerN
 let currentWorld=getWorld(assignment?.world||stored.data?.currentRegion),regions=stored.data?.regions||{};
 let language=stored.data?.language || assignment?.language || 'en', assist=assignment?assignment.assist:stored.data?.assist !== false;
 let history=stored.data?.history||[];
-const messages={en:{...en,...expeditionEN,...finaleEN,...practiceEN,...pilotEN,...adventureEN,...learningEN,...levelsEN,...equipmentEN,...playerEN},ms:{...ms,...expeditionMS,...finaleMS,...practiceMS,...pilotMS,...adventureMS,...learningMS,...levelsMS,...equipmentMS,...playerMS}};
+const messages={en:{...en,...expeditionEN,...finaleEN,...practiceEN,...pilotEN,...adventureEN,...learningEN,...levelsEN,...equipmentEN,...playerEN,...rescueEN},ms:{...ms,...expeditionMS,...finaleMS,...practiceMS,...pilotMS,...adventureMS,...learningMS,...levelsMS,...equipmentMS,...playerMS,...rescueMS}};
 const t = key => assignment?.tasks===3&&['questLead','introText','finishedText'].includes(key)?messages[language].shortMissionText:key==='guardian'&&adventureFor(currentWorld.id)?adventureFor(currentWorld.id).guardian[language]:worldText(currentWorld,key,language) || messages[language][key] || messages.en[key] || key;
 const game=createGame(regions[currentWorld.id]?.world,{mathQuest:true,assist});
 const curricula=new Map();
@@ -57,6 +59,7 @@ let reportLabel=stored.data?.reportLabel||'',restartWithVariant=false;
 const input={}, stage=$('stage');
 const renderer=createForestRenderer($('world'),stage,game,()=>quest,t,()=>currentWorld.id,()=>currentWorld);
 const tutorial=createTutorial({t,openDialog,switchLanguage});
+const bridgeRescue=createRescueUI({t,openDialog,switchLanguage,storage,tone,getPlayerName:()=>playerName});
 const stationX=id=>currentWorld.id==='finale'?FINAL_WORLD.stations[id]:adventureFor(currentWorld.id).stations[id];
 const benchX=()=>adventureFor(currentWorld.id)?.bench??1450;
 const dialogs=[...document.querySelectorAll('dialog')];
@@ -108,6 +111,7 @@ function applyLanguage(){
   if($('journal').open)renderJournal();
   if($('workshop').open)renderWorkshop();
   tutorial.render();
+  bridgeRescue.render();renderRescueEntry();
   renderAdventure();
   $('load-message').textContent=t(loadFailed?'loadError':loadingPhase);
   $('save-recovery').hidden=!recoveryPending;
@@ -173,8 +177,21 @@ function updateUI(force=false){
   renderAdventure();
 }
 function begin(){if(!loaded||anyModal())return;if(!playerName){askPlayerName(begin);return;}game.start();clearInput();stage.focus({preventScroll:true});persist();updateUI(true);}
-function askPlayerName(next=null){
-  if(anyModal())return;afterPlayerName=next;$('player-input').value=playerName;$('player-error').textContent='';openDialog($('player-setup'));$('player-input').focus();
+function renderRescueEntry(){
+  for(const entry of document.querySelectorAll('.rescue-entry')){
+    entry.hidden=Boolean(assignment);entry.querySelector('button').disabled=!loaded;
+    entry.querySelector('button').textContent=t(bridgeRescue.earned?'rescueReplayEntry':'rescueEntry');
+    entry.querySelector('small').textContent=t(bridgeRescue.earned?'rescueEarned':'rescueEntryNote');
+  }
+}
+function openRescue(onBack=()=>{}){
+  if(!loaded||!playerName||assignment)return;
+  bridgeRescue.open(next=>{renderRescueEntry();if(next)$('region-button').click();else onBack();});
+}
+$('intro-rescue').onclick=()=>openRescue();
+$('map-rescue').onclick=()=>{$('region-map').close();setTimeout(()=>openRescue(()=>$('region-button').click()),0);};
+function askPlayerName(next=null,starter=false){
+  if(anyModal())return;afterPlayerName=next;$('player-setup').dataset.next=starter?'rescue':'';$('player-input').value=playerName;$('player-error').textContent='';openDialog($('player-setup'));$('player-input').focus();
 }
 $('player-setup').addEventListener('cancel',event=>{if(!playerName)event.preventDefault();});
 $('player-input').oninput=()=>{$('player-error').textContent='';};
@@ -532,6 +549,7 @@ function pauseForFocus(){clearInput();if(!openingModal&&game.state.mode==='playi
 window.addEventListener('blur',pauseForFocus);document.addEventListener('visibilitychange',()=>{if(document.hidden)pauseForFocus();});window.addEventListener('pagehide',persist);
 function frame(now){
   const dt=Math.min((now-last)/1000||1/60,.05);last=now;
+  bridgeRescue.tick(dt);
   if(playerName&&!anyModal())game.update(dt,input);
   for(const event of game.state.events.splice(0)){
     if(event.type==='sound')tone(event.name);
@@ -561,7 +579,10 @@ async function init(){
     await renderer.load();loaded=true;$('loading').hidden=true;$('start-button').disabled=false;applyLanguage();updateUI(true);requestAnimationFrame(frame);
     if(stored.damaged)toast('saveDamaged');if(assignmentParam&&!assignment)toast('invalidCode');if(relocked)toast('finaleLocked');
     const enter=()=>{if(quest.complete)showCompletion();else if(new URLSearchParams(location.search).get('view')==='regions')$('region-button').click();};
-    if(!playerName)askPlayerName(enter);else enter();
+    if(!playerName){
+      const starter=!assignmentParam&&!stored.data&&!stored.damaged;
+      askPlayerName(starter?()=>openRescue(enter):enter,starter);
+    }else enter();
   }catch(error){loadFailed=true;$('load-message').textContent=t('loadError');$('load-note').hidden=false;$('retry-load').hidden=false;$('retry-load').disabled=false;}
   finally{loadingNow=false;}
 }

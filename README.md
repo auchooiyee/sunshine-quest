@@ -20,6 +20,8 @@ This repository is prepared for Cloudflare Pages. Run `npm run build` to create 
 
 ## Play
 
+**Broken Bridge Rescue (v0.11)** is an optional starter mission in Quadratic Forest. New guest players see it after choosing a nickname. Returning players can open it from the region map. Find the two anchors on the graph, tune the arch, walk over your bridge and light the beacon to earn a local badge. Classroom links still open their assigned missions directly. See [v0.11 release notes](docs/V11_RELEASE.md).
+
 Before starting, enter a name or nickname (up to 24 characters). The game shows it on the player badge and remembers it in this browser. Click the badge or use **Learning journal → Change name** to edit it. Progress JSON keeps the name; teacher CSV reports still use the separate learner code.
 
 **How to play** opens a skippable three-step practice guide: move an explorer, build an example bridge and learn how hints/saving work. Its practice answers never change expedition XP or learning evidence. Reopen it from the header whenever no other dialog is open. The region map has direct Continue/Begin and Join teacher mission actions.

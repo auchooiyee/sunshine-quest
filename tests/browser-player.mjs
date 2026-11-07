@@ -7,7 +7,7 @@ const browser=await chromium.launch({channel:'chrome',headless:true}),url=proces
 const output=fileURLToPath(new URL('../artifacts/',import.meta.url));await mkdir(output,{recursive:true});
 const checks=[],errors=[];
 async function ready(p,target=url){p.on('pageerror',e=>errors.push(e.message));await p.goto(target);await p.waitForFunction(()=>window.mathQuest?.snapshot().loaded);}
-async function name(p,value){await p.locator('#player-input').fill(value);await p.locator('#player-confirm').click();await p.locator('#player-setup').waitFor({state:'hidden'});}
+async function name(p,value){const starter=await p.locator('#player-setup').getAttribute('data-next')==='rescue';await p.locator('#player-input').fill(value);await p.locator('#player-confirm').click();await p.locator('#player-setup').waitFor({state:'hidden'});if(starter){await p.locator('#rescue-exit').click();await p.locator('#bridge-rescue').waitFor({state:'hidden'});}}
 try{
   const p=await browser.newPage({viewport:{width:1440,height:1000}});await ready(p,url+'/?view=regions');await p.locator('#player-setup').waitFor({state:'visible'});assert.equal(await p.locator('#player-input').evaluate(e=>e===document.activeElement),true);
   await p.locator('#player-confirm').click();assert.ok(await p.locator('#player-error').innerText());await p.keyboard.press('Escape');assert.equal(await p.locator('#player-setup').isVisible(),true);assert.equal(await p.evaluate(()=>window.mathQuest.snapshot().world.mode),'ready');
