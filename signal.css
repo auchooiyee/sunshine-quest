@@ -1,0 +1,25 @@
+#crystal-signal .signal-steps{grid-template-columns:repeat(3,1fr)}
+#signal-objective{margin:8px 0;color:#244334;font-size:clamp(13px,1.9vw,16px);line-height:1.35;font-weight:650}
+#signal-objective:focus{outline:none}
+.signal-visuals{display:grid;grid-template-columns:1.6fr 1fr;gap:8px;margin-bottom:7px}
+.signal-stage,.signal-chart{min-width:0;border:1px solid #a8b9aa;border-radius:10px;overflow:hidden;display:grid;align-items:center}
+.signal-stage{position:relative;background:linear-gradient(#243d6e95,#1a304de8),url('./assets/forest-east.webp') center 45%/cover #24445e}
+.signal-stage svg,.signal-chart svg{display:block;width:100%;height:auto}
+.signal-stage svg{align-self:end}
+.signal-chart{background:#f0f5ef;padding:2px 5px}
+#signal-sum{margin:0 0 3px;text-align:center;font-size:clamp(11px,1.4vw,13px);font-weight:650;color:#275e57}
+#signal-player,.signal-target{position:absolute;top:6px;padding:3px 7px;border-radius:5px;background:#193b4af0;color:#fff3d0;font-size:clamp(10px,1.6vw,13px);line-height:1.25}
+#signal-player{left:7px;max-width:46%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.signal-target{right:7px}
+.signal-tree-conditional{font-size:13px;fill:#375359}.signal-tree-outcome{font-size:14px;fill:#315252;font-weight:bold}
+.signal-tree-path.is-mixed rect{fill:#dceee4}.signal-tree-path.is-lit rect{fill:#f3da91;stroke:#986b2f}
+#signal-scene .is-lit{fill:#ffde8f;filter:drop-shadow(0 0 6px #ffd679)}
+.signal-bag{display:flex;align-items:center;gap:10px;min-height:25px;margin:4px 0 8px;color:#365246;font-size:12px;font-weight:bold}
+#signal-gems{display:flex;align-items:center;gap:6px}.signal-gem{display:inline-block;flex:none;width:12px;height:12px;border:1px solid #23414b;vertical-align:middle;box-shadow:inset 2px 2px #ffffff54}
+.signal-gem.red{background:#bd5d6d;transform:rotate(45deg);border-radius:2px}.signal-gem.blue{background:#4d91af;border-radius:50%}
+.signal-tuning{grid-template-columns:.77fr 1.2fr 1fr}.signal-tuning label,.signal-tuning .rescue-height{min-width:0}.signal-tuning select{padding-inline:3px}
+#crystal-signal button:not(.rescue-head-actions button){min-height:44px}
+#signal-check{margin-top:7px}#signal-draw-status{margin:3px 0 6px;font-size:13px}
+#signal-pick-red,#signal-pick-blue{display:inline-flex;align-items:center;gap:7px}
+#signal-feedback{margin:7px 0;color:#873c2e;font-size:13px;font-weight:650}#signal-feedback.signal-good{color:#315e46}
+#signal-hint{margin:5px 0 0;font-size:13px}#signal-hint summary{padding:6px 0;cursor:pointer}#signal-hint p{margin:4px 0}
+@media(max-width:630px){.signal-visuals{grid-template-columns:1fr;gap:5px}.signal-chart svg{max-height:122px}.signal-tuning{grid-template-columns:.7fr 1.38fr .9fr;gap:5px}.signal-tuning label,.signal-tuning .rescue-height{padding:5px 6px}.signal-tuning select{font-size:12px}.signal-bag{gap:8px}}

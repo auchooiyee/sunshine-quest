@@ -27,6 +27,8 @@ import {createRescueUI} from './src/ui/bridge-rescue.js';
 import {en as rescueEN,ms as rescueMS} from './locales/rescue.js';
 import {createDeliveryUI} from './src/ui/supply-delivery.js';
 import {en as deliveryEN,ms as deliveryMS} from './locales/delivery.js';
+import {createSignalUI} from './src/ui/crystal-signal.js';
+import {en as signalEN,ms as signalMS} from './locales/signal.js';
 import {adventureFor} from './config/adventures.js';
 import {constructionsFor,constructionSummary} from './src/missions/constructions.js';
 import {en as adventureEN,ms as adventureMS} from './locales/adventure.js';
@@ -49,7 +51,7 @@ let playerName=loadPlayerName(storage)||stored.data?.playerName||'',afterPlayerN
 let currentWorld=getWorld(assignment?.world||stored.data?.currentRegion),regions=stored.data?.regions||{};
 let language=stored.data?.language || assignment?.language || 'en', assist=assignment?assignment.assist:stored.data?.assist !== false;
 let history=stored.data?.history||[];
-const messages={en:{...en,...expeditionEN,...finaleEN,...practiceEN,...pilotEN,...adventureEN,...learningEN,...levelsEN,...equipmentEN,...playerEN,...rescueEN,...deliveryEN},ms:{...ms,...expeditionMS,...finaleMS,...practiceMS,...pilotMS,...adventureMS,...learningMS,...levelsMS,...equipmentMS,...playerMS,...rescueMS,...deliveryMS}};
+const messages={en:{...en,...expeditionEN,...finaleEN,...practiceEN,...pilotEN,...adventureEN,...learningEN,...levelsEN,...equipmentEN,...playerEN,...rescueEN,...deliveryEN,...signalEN},ms:{...ms,...expeditionMS,...finaleMS,...practiceMS,...pilotMS,...adventureMS,...learningMS,...levelsMS,...equipmentMS,...playerMS,...rescueMS,...deliveryMS,...signalMS}};
 const t = key => assignment?.tasks===3&&['questLead','introText','finishedText'].includes(key)?messages[language].shortMissionText:key==='guardian'&&adventureFor(currentWorld.id)?adventureFor(currentWorld.id).guardian[language]:worldText(currentWorld,key,language) || messages[language][key] || messages.en[key] || key;
 const game=createGame(regions[currentWorld.id]?.world,{mathQuest:true,assist});
 const curricula=new Map();
@@ -63,6 +65,7 @@ const renderer=createForestRenderer($('world'),stage,game,()=>quest,t,()=>curren
 const tutorial=createTutorial({t,openDialog,switchLanguage});
 const bridgeRescue=createRescueUI({t,openDialog,switchLanguage,storage,tone,getPlayerName:()=>playerName});
 const supplyDelivery=createDeliveryUI({t,openDialog,switchLanguage,storage,tone,getPlayerName:()=>playerName});
+const crystalSignal=createSignalUI({t,openDialog,switchLanguage,storage,tone,getPlayerName:()=>playerName});
 const stationX=id=>currentWorld.id==='finale'?FINAL_WORLD.stations[id]:adventureFor(currentWorld.id).stations[id];
 const benchX=()=>adventureFor(currentWorld.id)?.bench??1450;
 const dialogs=[...document.querySelectorAll('dialog')];
@@ -114,7 +117,7 @@ function applyLanguage(){
   if($('journal').open)renderJournal();
   if($('workshop').open)renderWorkshop();
   tutorial.render();
-  bridgeRescue.render();supplyDelivery.render();renderRescueEntry();
+  bridgeRescue.render();supplyDelivery.render();crystalSignal.render();renderRescueEntry();
   renderAdventure();
   $('load-message').textContent=t(loadFailed?'loadError':loadingPhase);
   $('save-recovery').hidden=!recoveryPending;
@@ -181,17 +184,21 @@ function updateUI(force=false){
 }
 function begin(){if(!loaded||anyModal())return;if(!playerName){askPlayerName(begin);return;}game.start();clearInput();stage.focus({preventScroll:true});persist();updateUI(true);}
 function renderRescueEntry(){
+  const starters={rescue:bridgeRescue,delivery:supplyDelivery,signal:crystalSignal};
   for(const entry of document.querySelectorAll('.rescue-entry')){
-    const delivery=entry.dataset.mission==='delivery',earned=delivery?supplyDelivery.earned:bridgeRescue.earned;
-    const prefix=delivery?'delivery':'rescue';
+    const prefix=entry.dataset.mission||'rescue',earned=starters[prefix].earned;
     entry.hidden=Boolean(assignment);entry.querySelector('button').disabled=!loaded;
     entry.querySelector('button').textContent=t(prefix+(earned?'ReplayEntry':'Entry'));
     entry.querySelector('small').textContent=t(prefix+(earned?'Earned':'EntryNote'));
   }
 }
+function openSignal(){
+  if(!loaded||!playerName||assignment)return;
+  crystalSignal.open(()=>{renderRescueEntry();$('region-button').click();});
+}
 function openDelivery(){
   if(!loaded||!playerName||assignment)return;
-  supplyDelivery.open(()=>{renderRescueEntry();$('region-button').click();});
+  supplyDelivery.open(destination=>{renderRescueEntry();if(destination==='signal')openSignal();else $('region-button').click();});
 }
 function openRescue(onBack=()=>{}){
   if(!loaded||!playerName||assignment)return;
@@ -200,6 +207,7 @@ function openRescue(onBack=()=>{}){
 $('intro-rescue').onclick=()=>openRescue();
 $('map-rescue').onclick=()=>{$('region-map').close();setTimeout(()=>openRescue(()=>$('region-button').click()),0);};
 $('map-delivery').onclick=()=>{$('region-map').close();setTimeout(openDelivery,0);};
+$('map-signal').onclick=()=>{$('region-map').close();setTimeout(openSignal,0);};
 function askPlayerName(next=null,starter=false){
   if(anyModal())return;afterPlayerName=next;$('player-setup').dataset.next=starter?'rescue':'';$('player-input').value=playerName;$('player-error').textContent='';openDialog($('player-setup'));$('player-input').focus();
 }
@@ -559,7 +567,7 @@ function pauseForFocus(){clearInput();if(!openingModal&&game.state.mode==='playi
 window.addEventListener('blur',pauseForFocus);document.addEventListener('visibilitychange',()=>{if(document.hidden)pauseForFocus();});window.addEventListener('pagehide',persist);
 function frame(now){
   const dt=Math.min((now-last)/1000||1/60,.05);last=now;
-  bridgeRescue.tick(dt);supplyDelivery.tick(dt);
+  bridgeRescue.tick(dt);supplyDelivery.tick(dt);crystalSignal.tick(dt);
   if(playerName&&!anyModal())game.update(dt,input);
   for(const event of game.state.events.splice(0)){
     if(event.type==='sound')tone(event.name);

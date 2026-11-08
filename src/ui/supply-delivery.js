@@ -52,7 +52,7 @@ export function createDeliveryUI({t,openDialog,switchLanguage,storage,tone,getPl
       <p class="delivery-math" id="delivery-math"></p><div class="rescue-controls"><button id="delivery-check" type="submit" class="primary" data-i18n="deliveryCheck"></button><button id="delivery-board" type="button" class="primary" hidden data-i18n="deliveryBoard"></button></div></form>
     <p id="delivery-feedback" role="alert" hidden></p><details id="delivery-hint"><summary data-i18n="rescueHint"></summary><p data-i18n="deliveryHintText"></p><p data-i18n="deliveryHintWork"></p></details>
     <div id="delivery-ride" hidden><p id="delivery-live"></p><button id="delivery-skip" class="outline" data-i18n="deliverySkipRide"></button></div><button id="delivery-unload" class="primary" hidden data-i18n="deliveryUnload"></button>
-    <div id="delivery-finish" hidden><div class="rescue-badge"><span aria-hidden="true">✦</span><strong data-i18n="deliveryBadge"></strong></div><div class="rescue-controls"><button id="delivery-map" class="primary" data-i18n="deliveryFinishMap"></button><button id="delivery-replay" class="outline" data-i18n="rescueReplay"></button></div></div>`;
+    <div id="delivery-finish" hidden><div class="rescue-badge"><span aria-hidden="true">✦</span><strong data-i18n="deliveryBadge"></strong></div><div class="rescue-controls"><button id="delivery-signal" class="primary" data-i18n="signalNext"></button><button id="delivery-map" class="outline" data-i18n="deliveryFinishMap"></button><button id="delivery-replay" class="outline" data-i18n="rescueReplay"></button></div></div>`;
   document.body.append(dialog);
   const $=id=>dialog.querySelector('#'+id);
   const step={plan:0,ready:0,riding:1,arrived:2,complete:3};
@@ -94,7 +94,7 @@ export function createDeliveryUI({t,openDialog,switchLanguage,storage,tone,getPl
     $('delivery-stop').querySelector('path').setAttribute('fill',feedback?'#eb8d72':'#f2cf76');
     show('delivery-stop',planning);$('delivery-stop-key').hidden=!planning;show('delivery-progress-line',!planning);show('delivery-rider',!planning);show('delivery-cargo',!done);show('delivery-depot-crates',done);
     paintRide(true);
-    if(focus&&changed)$(phase==='ready'?'delivery-board':phase==='arrived'?'delivery-unload':phase==='complete'?'delivery-map':'delivery-objective').focus({preventScroll:true});
+    if(focus&&changed)$(phase==='ready'?'delivery-board':phase==='arrived'?'delivery-unload':phase==='complete'?'delivery-signal':'delivery-objective').focus({preventScroll:true});
   }
   $('delivery-time').onchange=$('delivery-speed').onchange=()=>{game.tune(Number($('delivery-time').value),Number($('delivery-speed').value));render();};
   $('delivery-plan').onsubmit=event=>{event.preventDefault();if(game.check())tone('pickup');render(true);};
@@ -105,11 +105,12 @@ export function createDeliveryUI({t,openDialog,switchLanguage,storage,tone,getPl
   $('delivery-language').onclick=switchLanguage;
   $('delivery-exit').onclick=()=>dialog.close();
   $('delivery-map').onclick=()=>dialog.close('map');
+  $('delivery-signal').onclick=()=>dialog.close('signal');
   dialog.addEventListener('keydown',event=>{
     if(event.code!=='KeyE'||event.altKey||event.ctrlKey||event.metaKey||event.target instanceof HTMLSelectElement)return;
     if(game.phase==='ready')$('delivery-board').click();else if(game.phase==='arrived')$('delivery-unload').click();
   });
-  dialog.addEventListener('close',()=>{const callback=returnTo;returnTo=null;const map=dialog.returnValue==='map';if(callback)setTimeout(()=>callback(map),0);});
+  dialog.addEventListener('close',()=>{const callback=returnTo;returnTo=null;const destination=dialog.returnValue;if(callback)setTimeout(()=>callback(destination),0);});
   return {get earned(){return earned;},render,
     tick(dt){if(!dialog.open||game.phase!=='riding')return;if(game.advance(dt)){tone('pickup');render(true);}else paintRide();},
     open(onClose){if(!openDialog(dialog))return;returnTo=onClose;dialog.returnValue='';game=createSupplyDelivery();previousPhase=null;render();$('delivery-title').focus({preventScroll:true});}
