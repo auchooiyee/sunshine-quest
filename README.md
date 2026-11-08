@@ -20,6 +20,8 @@ This repository is prepared for Cloudflare Pages. Run `npm run build` to create 
 
 ## Play
 
+**Storm Supply Relay (v0.16)** unlocks after collecting all five Field mission badges. Compare the ridge and valley routes, plan an 8-second journey, and deliver supplies while protecting the emergency reserve. See [v0.16 release notes](docs/V16_RELEASE.md).
+
 **Canyon Landing (v0.15)** follows the camp market and is available in Field missions. Pick an integer point on the map, check every inequality and launch the supply glider. The map shows how many of the five local field badges you have earned. See [v0.15 release notes](docs/V15_RELEASE.md).
 
 **Camp Supply Market (v0.14)** follows the ferry and is also on the map under Field missions. Buy the camp essentials, keep at least RM20 for tomorrow, then unpack your purchases and light the lanterns. See [v0.14 release notes](docs/V14_RELEASE.md).

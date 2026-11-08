@@ -1,0 +1,22 @@
+.storm-entry{display:flex;align-items:center;gap:8px 12px;flex-wrap:wrap;margin-top:8px;padding:9px 11px;border:1px solid #c1a86b;border-radius:8px;background:#f3e7c1;color:#614c29}.storm-entry button{min-height:44px}.storm-entry small{font-size:12px}
+#storm-relay .storm-steps{grid-template-columns:repeat(3,1fr)}
+#storm-objective{margin:8px 0;color:#244334;font-size:clamp(13px,1.9vw,16px);line-height:1.36;font-weight:650}
+#storm-objective:focus{outline:none}
+.storm-visuals{display:grid;grid-template-columns:1.85fr 1fr;gap:8px;margin-bottom:7px}
+.storm-stage,.storm-targets{min-width:0;border:1px solid #aebca4;border-radius:10px;overflow:hidden}
+.storm-stage{position:relative;display:grid;align-items:end;background:linear-gradient(#334b6dc9,#244854be),url('./assets/forest-east.webp') center 51%/cover #46586c}
+.storm-stage svg{display:block;width:100%;height:auto}.storm-track.is-chosen path:last-child{stroke:#f0cb80;stroke-width:6}
+#storm-player{position:absolute;top:6px;left:7px;max-width:55%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;padding:3px 7px;border-radius:5px;background:#253b4bea;color:#fff2d1;font-size:clamp(10px,1.6vw,13px)}
+.storm-targets{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));align-items:stretch;background:#edf1e3;color:#355348}
+.storm-targets>div{display:grid;align-content:center;gap:3px;padding:7px 9px;font-size:12px;line-height:1.2}.storm-targets>div+div{border-left:1px solid #cad4bb}
+.storm-targets strong{font-size:clamp(18px,3vw,26px);font-variant-numeric:tabular-nums}.storm-targets .storm-pass{background:#e1efdb}.storm-targets .storm-fail{background:#f8e8df;color:#883f31}
+.storm-routes{border:0;padding:0;margin:5px 0 7px}.storm-routes legend{font-size:12px;font-weight:bold;margin-bottom:4px}.storm-routes>div{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:6px}
+.storm-routes label{display:flex;align-items:center;gap:6px;min-height:44px;padding:6px 8px;border:1px solid #a8b8a0;border-radius:8px;background:#f4f4e8;color:#355348;font-size:13px;cursor:pointer}.storm-routes label:has(input:checked){background:#e4edda;border-color:#658669}.storm-routes span{display:grid;gap:1px}.storm-routes small{font-size:11px}
+.storm-inputs{display:grid;grid-template-columns:repeat(2,minmax(0,1fr)) auto;gap:6px;align-items:end}.storm-inputs label{display:grid;gap:3px;font-size:12px}.storm-inputs select{min-height:42px;min-width:0;border:1px solid #a8b8a0;border-radius:6px;background:#fffdf4;color:#264734;font:inherit;font-size:16px;padding:4px}
+.storm-fixed{margin:4px 0 0;font-size:12px;color:#45614f}
+#storm-relay button:not(.rescue-head-actions button){min-height:44px}#storm-feedback{margin:6px 0;color:#315e46;font-size:13px;font-weight:650}#storm-feedback p{margin:3px 0}#storm-feedback .storm-fail{color:#873c2e}
+#storm-details,#storm-hint{margin:4px 0;font-size:13px}#storm-details summary,#storm-hint summary{padding:5px 0;cursor:pointer}#storm-details p,#storm-hint p{margin:3px 0 6px}
+#storm-ride{display:flex;flex-wrap:wrap;align-items:center;gap:10px}#storm-live{font-variant-numeric:tabular-nums}
+#storm-relay:is([data-phase=arrived],[data-phase=complete]) #storm-shelter-lamp{fill:#ffdfa5;filter:drop-shadow(0 0 7px #ffdb84)}
+#storm-relay[data-phase=complete] #storm-crates{animation:storm-unload .45s ease-out both}@keyframes storm-unload{from{opacity:.35;translate:0 -4px}to{opacity:1;translate:0 0}}
+@media(max-width:630px){.storm-visuals{grid-template-columns:1fr;gap:5px}.storm-targets>div{font-size:11px;padding:5px 8px}.storm-inputs label{font-size:11px;line-height:1.15}.storm-inputs button{font-size:11px;padding:6px 8px;max-width:128px}.storm-entry small{font-size:11px}}

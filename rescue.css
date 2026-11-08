@@ -1,12 +1,12 @@
 .rescue-entry{display:grid;gap:8px;margin:12px 0;padding:11px;border:1px solid #b9c9a7;border-radius:9px;background:#eef2de;color:#304d39}
 .rescue-entry small{font-size:.79rem;line-height:1.35}
 .rescue-entry button{justify-self:start;min-height:42px}
-:is(#bridge-rescue,#supply-delivery,#crystal-signal,#camp-market,#canyon-landing){width:min(860px,calc(100vw - 20px));max-height:calc(100dvh - 18px);padding:clamp(13px,2.3vw,27px);border:1px solid #bfcaae;border-radius:16px;color:#284834;background:#fbf8eb;overscroll-behavior:contain}
-:is(#bridge-rescue,#supply-delivery,#crystal-signal,#camp-market,#canyon-landing)::backdrop{background:#142d25b5}
-:is(#bridge-rescue,#supply-delivery,#crystal-signal,#camp-market,#canyon-landing) .rescue-head{display:flex;justify-content:space-between;align-items:start;gap:8px}
-:is(#bridge-rescue,#supply-delivery,#crystal-signal,#camp-market,#canyon-landing) .rescue-head h2{font-size:clamp(23px,3.6vw,40px);line-height:1.05;margin:4px 0 0}
+:is(#bridge-rescue,#supply-delivery,#crystal-signal,#camp-market,#canyon-landing,#storm-relay){width:min(860px,calc(100vw - 20px));max-height:calc(100dvh - 18px);padding:clamp(13px,2.3vw,27px);border:1px solid #bfcaae;border-radius:16px;color:#284834;background:#fbf8eb;overscroll-behavior:contain}
+:is(#bridge-rescue,#supply-delivery,#crystal-signal,#camp-market,#canyon-landing,#storm-relay)::backdrop{background:#142d25b5}
+:is(#bridge-rescue,#supply-delivery,#crystal-signal,#camp-market,#canyon-landing,#storm-relay) .rescue-head{display:flex;justify-content:space-between;align-items:start;gap:8px}
+:is(#bridge-rescue,#supply-delivery,#crystal-signal,#camp-market,#canyon-landing,#storm-relay) .rescue-head h2{font-size:clamp(23px,3.6vw,40px);line-height:1.05;margin:4px 0 0}
 .rescue-head-actions{display:flex;gap:5px;flex-shrink:0}
-:is(#bridge-rescue,#supply-delivery,#crystal-signal,#camp-market,#canyon-landing) .rescue-head-actions button{font-size:11px;padding:6px 9px;min-height:36px}
+:is(#bridge-rescue,#supply-delivery,#crystal-signal,#camp-market,#canyon-landing,#storm-relay) .rescue-head-actions button{font-size:11px;padding:6px 9px;min-height:36px}
 .rescue-steps{display:grid;grid-template-columns:repeat(4,1fr);gap:5px;list-style:none;margin:12px 0 9px;padding:0}
 .rescue-steps li{display:flex;gap:5px;align-items:center;min-width:0;font-size:clamp(9px,1.8vw,13px);color:#526754}
 .rescue-steps span{display:grid;place-items:center;flex:0 0 23px;height:23px;border-radius:50%;background:#e5ead9;color:#34513d}
@@ -25,7 +25,7 @@
 #rescue-objective:focus{outline:none}
 .rescue-controls{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
 .rescue-controls>div{display:flex;gap:6px}.rescue-controls small{color:#426149}
-:is(#bridge-rescue,#supply-delivery,#crystal-signal,#camp-market,#canyon-landing) .rescue-controls button,#rescue-check,#rescue-build,#rescue-light{min-height:44px;padding:8px 14px}
+:is(#bridge-rescue,#supply-delivery,#crystal-signal,#camp-market,#canyon-landing,#storm-relay) .rescue-controls button,#rescue-check,#rescue-build,#rescue-light{min-height:44px;padding:8px 14px}
 #rescue-left,#rescue-right{min-width:52px;touch-action:none;font-size:20px}
 #rescue-pick-label{margin:4px 0;font-size:12px}
 #rescue-points{display:grid;grid-template-columns:repeat(11,minmax(42px,1fr));gap:4px;margin-bottom:8px}
@@ -40,5 +40,5 @@
 #rescue-feedback{margin:8px 0;color:#853b2d;font-weight:650;font-size:13px}
 #rescue-hint{margin-top:6px;font-size:13px}#rescue-hint summary{cursor:pointer;padding:8px 0}#rescue-hint p{margin:4px 0 0}
 .rescue-badge{display:flex;align-items:center;gap:8px;margin:8px 0;padding:8px 11px;border-radius:9px;background:#f5e5b8;color:#60471d}.rescue-badge span{font-size:22px}
-:is(#bridge-rescue,#supply-delivery,#crystal-signal,#camp-market,#canyon-landing) [hidden],.rescue-entry[hidden]{display:none!important}
-@media(max-width:630px){#rescue-points{grid-template-columns:repeat(6,minmax(0,1fr))}.rescue-steps span{flex-basis:18px;height:18px}.rescue-steps li{line-height:1}.rescue-head-actions{flex-direction:column;align-items:end}:is(#bridge-rescue,#supply-delivery,#crystal-signal,#camp-market,#canyon-landing) .rescue-head-actions button{min-height:28px;max-width:96px;line-height:1.15}.rescue-stage{background-position:center}.rescue-tuning label,.rescue-height{font-size:11px}}
+:is(#bridge-rescue,#supply-delivery,#crystal-signal,#camp-market,#canyon-landing,#storm-relay) [hidden],.rescue-entry[hidden]{display:none!important}
+@media(max-width:630px){#rescue-points{grid-template-columns:repeat(6,minmax(0,1fr))}.rescue-steps span{flex-basis:18px;height:18px}.rescue-steps li{line-height:1}.rescue-head-actions{flex-direction:column;align-items:end}:is(#bridge-rescue,#supply-delivery,#crystal-signal,#camp-market,#canyon-landing,#storm-relay) .rescue-head-actions button{min-height:28px;max-width:96px;line-height:1.15}.rescue-stage{background-position:center}.rescue-tuning label,.rescue-height{font-size:11px}}

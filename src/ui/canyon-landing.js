@@ -19,7 +19,7 @@ const landing=point=>({x:246+point.x*68,y:184-point.y*19});
 const flightPoint=(end,p)=>({x:start.x+(end.x-start.x)*p,y:start.y+(end.y-22-start.y)*p-Math.sin(p*Math.PI)*31});
 const coords=`<option value="">—</option>${Array.from({length:CANYON.bound+1},(_,n)=>`<option>${n}</option>`).join('')}`;
 
-export function createCanyonUI({t,openDialog,switchLanguage,storage,tone,getPlayerName,getLanguage}){
+export function createCanyonUI({t,openDialog,switchLanguage,storage,tone,getPlayerName,getLanguage,getFieldBadges}){
   let game=createCanyonLanding(),earned=false,returnTo=null,previousPhase,geometry;
   try{earned=storage.getItem(CANYON_KEY)==='earned';}catch{}
   const dialog=document.createElement('dialog');dialog.id='canyon-landing';dialog.setAttribute('aria-labelledby','canyon-title');
@@ -31,7 +31,7 @@ export function createCanyonUI({t,openDialog,switchLanguage,storage,tone,getPlay
     <ul id="canyon-rules">${CANYON.constraints.map((rule,i)=>`<li data-rule="${i}"><strong>${rule.label}</strong><span></span></li>`).join('')}</ul>
     <form id="canyon-plan"><div class="canyon-plan-controls"><label>x <select id="canyon-x">${coords}</select></label><label>y <select id="canyon-y">${coords}</select></label><button id="canyon-check" class="primary" type="submit" data-i18n="canyonCheck"></button><button id="canyon-launch" class="primary" type="button" hidden data-i18n="canyonLaunch"></button></div></form>
     <p id="canyon-feedback" role="alert" hidden></p><details id="canyon-hint"><summary data-i18n="rescueHint"></summary><p data-i18n="canyonHint"></p></details><button id="canyon-skip" class="outline" hidden data-i18n="canyonSkip"></button>
-    <div id="canyon-finish" hidden><div class="rescue-badge"><span aria-hidden="true">✦</span><strong data-i18n="canyonBadge"></strong></div><div class="rescue-controls"><button id="canyon-map" class="primary" data-i18n="canyonMap"></button><button id="canyon-replay" class="outline" data-i18n="rescueReplay"></button></div></div>`;
+    <div id="canyon-finish" hidden><div class="rescue-badge"><span aria-hidden="true">✦</span><strong data-i18n="canyonBadge"></strong></div><p id="canyon-storm-note"></p><div class="rescue-controls"><button id="canyon-storm" class="primary" hidden data-i18n="stormNext"></button><button id="canyon-map" class="primary" data-i18n="canyonMap"></button><button id="canyon-replay" class="outline" data-i18n="rescueReplay"></button></div></div>`;
   document.body.append(dialog);
   const $=id=>dialog.querySelector('#'+id);
   const step={plan:0,ready:1,flying:2,complete:3};
@@ -52,6 +52,9 @@ export function createCanyonUI({t,openDialog,switchLanguage,storage,tone,getPlay
     [...dialog.querySelectorAll('.canyon-steps li')].forEach((el,i)=>{el.classList.toggle('done',i<step[phase]);if(i===step[phase])el.setAttribute('aria-current','step');else el.removeAttribute('aria-current');});
     $('canyon-player').textContent=getPlayerName();$('canyon-objective').textContent=fill(phaseText[phase],{point:pointLabel});
     $('canyon-plan').hidden=!planning;$('canyon-check').hidden=phase!=='plan';$('canyon-launch').hidden=phase!=='ready';$('canyon-skip').hidden=phase!=='flying';$('canyon-finish').hidden=!done;
+    const badges=done?getFieldBadges():0,stormReady=badges===5;
+    $('canyon-storm').hidden=!stormReady;$('canyon-storm-note').hidden=stormReady;$('canyon-storm-note').textContent=fill('stormLocked',{earned:badges});
+    $('canyon-map').className=stormReady?'outline':'primary';
     $('canyon-hint').hidden=phase!=='plan';if(changed)$('canyon-hint').open=false;
     $('canyon-x').value=point.x??'';$('canyon-y').value=point.y??'';
     const failed=phase==='plan'&&review!==null;
@@ -70,7 +73,7 @@ export function createCanyonUI({t,openDialog,switchLanguage,storage,tone,getPlay
     show('canyon-pad',safe);show('canyon-flight-path',phase==='flying');show('canyon-crate',done);show('canyon-glider',!done);
     if(safe){const end=landing(point);$('canyon-pad').setAttribute('transform',`translate(${end.x} ${end.y})`);$('canyon-crate').setAttribute('transform',`translate(${end.x} ${end.y})`);$('canyon-flight-path').setAttribute('d','M'+Array.from({length:17},(_,i)=>{const {x,y}=flightPoint(end,i/16);return `${x.toFixed(2)} ${y.toFixed(2)}`;}).join(' L'));}
     paintGlider();
-    if(focus&&changed)$(phase==='ready'?'canyon-launch':done?'canyon-map':'canyon-objective').focus({preventScroll:true});
+    if(focus&&changed)$(phase==='ready'?'canyon-launch':done?(stormReady?'canyon-storm':'canyon-map'):'canyon-objective').focus({preventScroll:true});
   }
   $('canyon-x').onchange=$('canyon-y').onchange=()=>{
     const parse=value=>value===''?null:Number(value);
@@ -89,9 +92,10 @@ export function createCanyonUI({t,openDialog,switchLanguage,storage,tone,getPlay
   $('canyon-skip').onclick=()=>{if(game.advance(CANYON.duration))finish();};
   $('canyon-replay').onclick=()=>{game=createCanyonLanding();previousPhase=null;render(true);};
   $('canyon-language').onclick=switchLanguage;$('canyon-exit').onclick=$('canyon-map').onclick=()=>dialog.close();
-  dialog.addEventListener('close',()=>{const callback=returnTo;returnTo=null;if(callback)setTimeout(callback,0);});
+  $('canyon-storm').onclick=()=>dialog.close('storm');
+  dialog.addEventListener('close',()=>{const callback=returnTo;returnTo=null;const destination=dialog.returnValue;if(callback)setTimeout(()=>callback(destination),0);});
   return {get earned(){return earned;},render,
     tick(dt){if(!dialog.open||game.phase!=='flying')return;if(game.advance(dt))finish();else paintGlider();},
-    open(onClose){if(!openDialog(dialog))return;returnTo=onClose;game=createCanyonLanding();previousPhase=null;render();$('canyon-title').focus({preventScroll:true});}
+    open(onClose){if(!openDialog(dialog))return;returnTo=onClose;dialog.returnValue='';game=createCanyonLanding();previousPhase=null;render();$('canyon-title').focus({preventScroll:true});}
   };
 }
