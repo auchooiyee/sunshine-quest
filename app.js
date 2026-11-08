@@ -35,6 +35,9 @@ import {createCanyonUI} from './src/ui/canyon-landing.js';
 import {en as canyonEN,ms as canyonMS} from './locales/canyon.js';
 import {createStormUI} from './src/ui/storm-relay.js';
 import {en as stormEN,ms as stormMS} from './locales/storm.js';
+import {createFieldPlaytest} from './src/learning/field-playtest.js';
+import {createFieldPlaytestUI} from './src/ui/field-playtest.js';
+import {en as fieldPilotEN,ms as fieldPilotMS} from './locales/field-playtest.js';
 import {adventureFor} from './config/adventures.js';
 import {constructionsFor,constructionSummary} from './src/missions/constructions.js';
 import {en as adventureEN,ms as adventureMS} from './locales/adventure.js';
@@ -50,6 +53,7 @@ import {cleanPlayerName,loadPlayerName,savePlayerName} from './src/storage/playe
 const $ = id => document.getElementById(id);
 const storage = { getItem:key=>localStorage.getItem(key), setItem:(key,value)=>localStorage.setItem(key,value) };
 const assignmentParam=new URLSearchParams(location.search).get('assignment');
+const playtestRequested=!assignmentParam&&new URLSearchParams(location.search).get('playtest')==='1';
 const assignment=assignmentParam?assignmentFromURL(location.href):null;
 const saveKey=assignment?assignmentKey(assignment):STORAGE_KEY;
 const stored = loadSave(storage,saveKey);
@@ -57,7 +61,7 @@ let playerName=loadPlayerName(storage)||stored.data?.playerName||'',afterPlayerN
 let currentWorld=getWorld(assignment?.world||stored.data?.currentRegion),regions=stored.data?.regions||{};
 let language=stored.data?.language || assignment?.language || 'en', assist=assignment?assignment.assist:stored.data?.assist !== false;
 let history=stored.data?.history||[];
-const messages={en:{...en,...expeditionEN,...finaleEN,...practiceEN,...pilotEN,...adventureEN,...learningEN,...levelsEN,...equipmentEN,...playerEN,...rescueEN,...deliveryEN,...signalEN,...marketEN,...canyonEN,...stormEN},ms:{...ms,...expeditionMS,...finaleMS,...practiceMS,...pilotMS,...adventureMS,...learningMS,...levelsMS,...equipmentMS,...playerMS,...rescueMS,...deliveryMS,...signalMS,...marketMS,...canyonMS,...stormMS}};
+const messages={en:{...en,...expeditionEN,...finaleEN,...practiceEN,...pilotEN,...adventureEN,...learningEN,...levelsEN,...equipmentEN,...playerEN,...rescueEN,...deliveryEN,...signalEN,...marketEN,...canyonEN,...stormEN,...fieldPilotEN},ms:{...ms,...expeditionMS,...finaleMS,...practiceMS,...pilotMS,...adventureMS,...learningMS,...levelsMS,...equipmentMS,...playerMS,...rescueMS,...deliveryMS,...signalMS,...marketMS,...canyonMS,...stormMS,...fieldPilotMS}};
 const t = key => assignment?.tasks===3&&['questLead','introText','finishedText'].includes(key)?messages[language].shortMissionText:key==='guardian'&&adventureFor(currentWorld.id)?adventureFor(currentWorld.id).guardian[language]:worldText(currentWorld,key,language) || messages[language][key] || messages.en[key] || key;
 const game=createGame(regions[currentWorld.id]?.world,{mathQuest:true,assist});
 const curricula=new Map();
@@ -69,12 +73,21 @@ let reportLabel=stored.data?.reportLabel||'',restartWithVariant=false;
 const input={}, stage=$('stage');
 const renderer=createForestRenderer($('world'),stage,game,()=>quest,t,()=>currentWorld.id,()=>currentWorld);
 const tutorial=createTutorial({t,openDialog,switchLanguage});
-const bridgeRescue=createRescueUI({t,openDialog,switchLanguage,storage,tone,getPlayerName:()=>playerName});
-const supplyDelivery=createDeliveryUI({t,openDialog,switchLanguage,storage,tone,getPlayerName:()=>playerName});
-const crystalSignal=createSignalUI({t,openDialog,switchLanguage,storage,tone,getPlayerName:()=>playerName});
-const campMarket=createMarketUI({t,openDialog,switchLanguage,storage,tone,getPlayerName:()=>playerName});
-const canyonLanding=createCanyonUI({t,openDialog,switchLanguage,storage,tone,getPlayerName:()=>playerName,getLanguage:()=>language,getFieldBadges});
-const stormRelay=createStormUI({t,openDialog,switchLanguage,storage,tone,getPlayerName:()=>playerName});
+const fieldPlaytest=createFieldPlaytest({enabled:playtestRequested,version:document.querySelector('meta[name="application-version"]').content,
+  storage:{getItem:key=>sessionStorage.getItem(key),setItem:(key,value)=>sessionStorage.setItem(key,value)}});
+fieldPlaytest.visibility(!document.hidden);
+const pilotFor=id=>(type,result)=>type==='restart'?fieldPlaytest.open(id):fieldPlaytest.event(id,type,result);
+const fieldDialogs={'bridge-rescue':'rescue','supply-delivery':'delivery','crystal-signal':'signal','camp-market':'market','canyon-landing':'canyon','storm-relay':'storm'};
+const fieldPlaytestUI=createFieldPlaytestUI({t,openDialog,switchLanguage,playtest:fieldPlaytest,requested:playtestRequested,onContinue:continueFieldPlaytest,onMap:()=> $('region-button').click()});
+const bridgeRescue=createRescueUI({t,openDialog,switchLanguage,storage,tone,getPlayerName:()=>playerName,onPilot:pilotFor('rescue')});
+const supplyDelivery=createDeliveryUI({t,openDialog,switchLanguage,storage,tone,getPlayerName:()=>playerName,onPilot:pilotFor('delivery')});
+const crystalSignal=createSignalUI({t,openDialog,switchLanguage,storage,tone,getPlayerName:()=>playerName,onPilot:pilotFor('signal')});
+const campMarket=createMarketUI({t,openDialog,switchLanguage,storage,tone,getPlayerName:()=>playerName,onPilot:pilotFor('market')});
+const canyonLanding=createCanyonUI({t,openDialog,switchLanguage,storage,tone,getPlayerName:()=>playerName,getLanguage:()=>language,getFieldBadges,onPilot:pilotFor('canyon')});
+const stormRelay=createStormUI({t,openDialog,switchLanguage,storage,tone,getPlayerName:()=>playerName,onPilot:pilotFor('storm'),hasPlaytest:()=>fieldPlaytest.available,onReport:()=>fieldPlaytestUI.open()});
+for(const [id,hint] of Object.entries({rescue:'rescue-hint',delivery:'delivery-hint',signal:'signal-hint',market:'market-hint',canyon:'canyon-hint',storm:'storm-hint'})){
+  $(hint).addEventListener('toggle',()=>{if($(hint).open)fieldPlaytest.event(id,'hint');});
+}
 const fieldMissions={rescue:bridgeRescue,delivery:supplyDelivery,signal:crystalSignal,market:campMarket,canyon:canyonLanding};
 function getFieldBadges(){return Object.values(fieldMissions).filter(mission=>mission.earned).length;}
 const stationX=id=>currentWorld.id==='finale'?FINAL_WORLD.stations[id]:adventureFor(currentWorld.id).stations[id];
@@ -129,6 +142,7 @@ function applyLanguage(){
   if($('workshop').open)renderWorkshop();
   tutorial.render();
   bridgeRescue.render();supplyDelivery.render();crystalSignal.render();campMarket.render();canyonLanding.render();stormRelay.render();renderRescueEntry();
+  if($('field-playtest').open)fieldPlaytestUI.render();
   renderAdventure();
   $('load-message').textContent=t(loadFailed?'loadError':loadingPhase);
   $('save-recovery').hidden=!recoveryPending;
@@ -138,9 +152,12 @@ function switchLanguage(){language=language==='en'?'ms':'en';applyLanguage();}
 function openDialog(dialog){
   if(anyModal())return false;
   clearInput();modalOpener=document.activeElement;modalWasPlaying=game.state.mode==='playing';
-  if(modalWasPlaying)game.togglePause();openingModal=true;dialog.showModal();openingModal=false;updateUI(true);return true;
+  if(modalWasPlaying)game.togglePause();openingModal=true;dialog.showModal();openingModal=false;
+  if(fieldDialogs[dialog.id])fieldPlaytest.open(fieldDialogs[dialog.id]);
+  updateUI(true);return true;
 }
 function handleDialogClose(dialog){
+  if(fieldDialogs[dialog.id])fieldPlaytest.close(fieldDialogs[dialog.id]);
   clearInput();
   if(dialog.id==='completion' && quest.complete)game.start();
   if(dialog.id==='challenge'){
@@ -201,12 +218,19 @@ function renderRescueEntry(){
   $('map-storm').disabled=!loaded||!stormReady||Boolean(assignment);
   $('map-storm').textContent=t(stormRelay.earned?'stormReplayEntry':'stormEntry');
   $('map-storm-note').textContent=t(stormReady?(stormRelay.earned?'stormEarned':'stormEntryNote'):'stormLocked').replace('{earned}',badges);
+  $('map-field-playtest').textContent=t(fieldPlaytest.available?'fieldPilotReport':'fieldPilotEntry');
   for(const entry of document.querySelectorAll('.rescue-entry')){
     const prefix=entry.dataset.mission||'rescue',earned=fieldMissions[prefix].earned;
     entry.hidden=Boolean(assignment);entry.querySelector('button').disabled=!loaded;
     entry.querySelector('button').textContent=t(prefix+(earned?'ReplayEntry':'Entry'));
     entry.querySelector('small').textContent=t(prefix+(earned?'Earned':'EntryNote'));
   }
+}
+function continueFieldPlaytest(id){
+  const toMap=()=>$('region-button').click();
+  const go={rescue:()=>openRescue(toMap),delivery:openDelivery,signal:openSignal,market:openMarket,canyon:openCanyon,storm:openStorm};
+  if(id==='storm'&&getFieldBadges()!==Object.keys(fieldMissions).length){toMap();return;}
+  go[id]?.();
 }
 function openStorm(){
   if(!loaded||!playerName||assignment||getFieldBadges()!==Object.keys(fieldMissions).length)return;
@@ -239,6 +263,7 @@ $('map-signal').onclick=()=>{$('region-map').close();setTimeout(openSignal,0);};
 $('map-market').onclick=()=>{$('region-map').close();setTimeout(openMarket,0);};
 $('map-canyon').onclick=()=>{$('region-map').close();setTimeout(openCanyon,0);};
 $('map-storm').onclick=()=>{$('region-map').close();setTimeout(openStorm,0);};
+$('map-field-playtest').onclick=()=>{$('region-map').close();setTimeout(()=>fieldPlaytestUI.open(),0);};
 function askPlayerName(next=null,starter=false){
   if(anyModal())return;afterPlayerName=next;$('player-setup').dataset.next=starter?'rescue':'';$('player-input').value=playerName;$('player-error').textContent='';openDialog($('player-setup'));$('player-input').focus();
 }
@@ -595,7 +620,8 @@ $('world').addEventListener('pointerdown',event=>{
 });
 for(const event of ['pointerup','pointercancel','lostpointercapture'])$('world').addEventListener(event,()=>{input.attack=false;});
 function pauseForFocus(){clearInput();if(!openingModal&&game.state.mode==='playing')game.togglePause();persist();updateUI(true);}
-window.addEventListener('blur',pauseForFocus);document.addEventListener('visibilitychange',()=>{if(document.hidden)pauseForFocus();});window.addEventListener('pagehide',persist);
+window.addEventListener('blur',pauseForFocus);document.addEventListener('visibilitychange',()=>{fieldPlaytest.visibility(!document.hidden);if(document.hidden)pauseForFocus();});
+window.addEventListener('pagehide',()=>{persist();fieldPlaytest.checkpoint();});
 function frame(now){
   const dt=Math.min((now-last)/1000||1/60,.05);last=now;
   bridgeRescue.tick(dt);supplyDelivery.tick(dt);crystalSignal.tick(dt);canyonLanding.tick(dt);stormRelay.tick(dt);
@@ -627,9 +653,9 @@ async function init(){
     loadingPhase='loadingForest';$('load-message').textContent=t(loadingPhase);
     await renderer.load();loaded=true;$('loading').hidden=true;$('start-button').disabled=false;applyLanguage();updateUI(true);requestAnimationFrame(frame);
     if(stored.damaged)toast('saveDamaged');if(assignmentParam&&!assignment)toast('invalidCode');if(relocked)toast('finaleLocked');
-    const enter=()=>{if(quest.complete)showCompletion();else if(new URLSearchParams(location.search).get('view')==='regions')$('region-button').click();};
+    const enter=()=>{if(playtestRequested)fieldPlaytestUI.open();else if(quest.complete)showCompletion();else if(new URLSearchParams(location.search).get('view')==='regions')$('region-button').click();};
     if(!playerName){
-      const starter=!assignmentParam&&!stored.data&&!stored.damaged;
+      const starter=!playtestRequested&&!assignmentParam&&!stored.data&&!stored.damaged;
       askPlayerName(starter?()=>openRescue(enter):enter,starter);
     }else enter();
   }catch(error){loadFailed=true;$('load-message').textContent=t('loadError');$('load-note').hidden=false;$('retry-load').hidden=false;$('retry-load').disabled=false;}

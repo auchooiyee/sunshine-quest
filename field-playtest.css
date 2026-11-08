@@ -1,0 +1,123 @@
+#field-playtest {
+  width: min(900px,calc(100vw - 20px));
+  max-height: calc(100dvh - 18px);
+  padding: clamp(14px,2.4vw,26px);
+  border: 1px solid #bfcaae;
+  border-radius: 15px;
+  background: #fbf8eb;
+  color: #284834;
+  overscroll-behavior: contain;
+}
+
+#field-playtest [hidden] {
+  display: none!important;
+}
+
+#field-playtest .rescue-head {
+  display: flex;
+  align-items: start;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+#field-playtest h2 {
+  margin: 0 0 8px;
+  font-size: clamp(23px,3.3vw,36px);
+  line-height: 1.1;
+}
+
+#field-playtest p {
+  font-size: 13px;
+  line-height: 1.45;
+  margin: 8px 0;
+}
+
+#field-playtest button {
+  min-height: 44px;
+}
+
+#field-playtest-language {
+  min-height: 34px!important;
+  font-size: 11px;
+  padding: 5px 9px;
+}
+
+#field-playtest-progress {
+  font-weight: bold;
+}
+
+.field-playtest-link {
+  display: grid;
+  gap: 4px;
+  margin: 8px 0;
+  font-size: 13px;
+}
+
+.field-playtest-link input {
+  width: 100%;
+  min-height: 38px;
+  padding: 5px 8px;
+  border: 1px solid #9eb298;
+  border-radius: 6px;
+  background: #fffdf4;
+  color: #294838;
+  font: inherit;
+}
+
+#field-playtest-teacher {
+  margin: 12px 0;
+  padding: 8px 10px;
+  border: 1px solid #bbc7ac;
+  border-radius: 8px;
+  background: #f0f3e5;
+}
+
+#field-playtest-teacher summary {
+  cursor: pointer;
+  font-weight: bold;
+  padding: 5px 0;
+}
+
+#field-playtest-open-link {
+  font-size: 13px;
+  color: #325b46;
+  text-decoration: underline;
+}
+
+.field-playtest-table {
+  overflow: auto;
+  margin: 8px 0;
+  border-radius: 7px;
+}
+
+.field-playtest-table table {
+  width: 100%;
+  min-width: 440px;
+  border-collapse: collapse;
+  background: #fffdf5;
+  font-size: 12px;
+}
+
+.field-playtest-table th,.field-playtest-table td {
+  padding: 7px 8px;
+  border-bottom: 1px solid #d3ddc5;
+  text-align: left;
+  line-height: 1.25;
+}
+
+.field-playtest-table thead {
+  background: #e2ebd7;
+}
+
+.field-playtest-table tbody th {
+  min-width: 135px;
+}
+
+.field-playtest-table td {
+  font-variant-numeric: tabular-nums;
+}
+
+#map-field-playtest {
+  margin-top: 8px;
+  min-height: 44px;
+}

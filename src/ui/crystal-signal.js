@@ -23,7 +23,7 @@ const tree=`<svg id="signal-tree" viewBox="0 0 355 177" role="img"><title></titl
   ${paths.map(([order,y])=>`<g class="signal-tree-path" data-order="${order}"><rect x="228" y="${y-12}" width="116" height="24" rx="6" fill="#ecf2ec"/><text x="184" y="${y+(order==='RB'||order==='BB'?12:-7)}" text-anchor="middle" class="signal-tree-conditional"/><text x="286" y="${y+5}" text-anchor="middle" class="signal-tree-outcome"/></g>`).join('')}
 </svg>`;
 
-export function createSignalUI({t,openDialog,switchLanguage,storage,tone,getPlayerName}){
+export function createSignalUI({t,openDialog,switchLanguage,storage,tone,getPlayerName,onPilot=()=>{}}){
   let game=createCrystalSignal(),earned=false,returnTo=null,previousPhase;
   try{earned=storage.getItem(SIGNAL_KEY)==='earned';}catch{}
   const dialog=document.createElement('dialog');dialog.id='crystal-signal';dialog.setAttribute('aria-labelledby','signal-title');
@@ -80,14 +80,14 @@ export function createSignalUI({t,openDialog,switchLanguage,storage,tone,getPlay
     paintBoat();
     if(focus&&changed)$(phase==='ready'?'signal-send':phase==='complete'?'signal-market':'signal-objective').focus({preventScroll:true});
   }
-  function finish(){earned=true;try{storage.setItem(SIGNAL_KEY,'earned');}catch{}tone('win');render(true);}
+  function finish(){earned=true;try{storage.setItem(SIGNAL_KEY,'earned');}catch{}onPilot('complete');tone('win');render(true);}
   $('signal-red').onchange=$('signal-rule').onchange=()=>{game.tune(Number($('signal-red').value),$('signal-rule').value==='return');render();};
-  $('signal-plan').onsubmit=event=>{event.preventDefault();if(game.check())tone('pickup');render(true);};
-  for(const [id,colour] of [['signal-pick-red','R'],['signal-pick-blue','B']])$(id).onclick=()=>{const before=game.demonstrated.length;if(game.pick(colour)){if(game.demonstrated.length>before)tone('pickup');render(true);}};
+  $('signal-plan').onsubmit=event=>{event.preventDefault();const correct=game.check();onPilot('check',{step:'bag',correct});if(correct)tone('pickup');render(true);};
+  for(const [id,colour] of [['signal-pick-red','R'],['signal-pick-blue','B']])$(id).onclick=()=>{const before=game.demonstrated.length,second=Boolean(game.first);if(game.pick(colour)){const correct=game.demonstrated.length>before;if(second)onPilot('check',{step:'order',correct});if(correct)tone('pickup');render(true);}};
   $('signal-clear').onclick=()=>{if(game.clearFirst())render();};
   $('signal-send').onclick=()=>{if(game.send()){tone('craft');render(true);}};
   $('signal-skip').onclick=()=>{if(game.advance(SIGNAL.duration))finish();};
-  $('signal-replay').onclick=()=>{game=createCrystalSignal();previousPhase=null;render(true);};
+  $('signal-replay').onclick=()=>{onPilot('restart');game=createCrystalSignal();previousPhase=null;render(true);};
   $('signal-language').onclick=switchLanguage;$('signal-exit').onclick=$('signal-map').onclick=()=>dialog.close();
   $('signal-market').onclick=()=>dialog.close('market');
   dialog.addEventListener('close',()=>{const callback=returnTo;returnTo=null;const destination=dialog.returnValue;if(callback)setTimeout(()=>callback(destination),0);});

@@ -40,7 +40,7 @@ const graph=`<svg id="delivery-graph" viewBox="0 0 350 146" role="img"><title></
   <g id="delivery-progress-line" style="display:none"><path d="M0 24V118" stroke="#a75822" stroke-width="2"/><circle id="delivery-graph-dot" r="5" fill="#a75822" stroke="#fffaf0" stroke-width="1.5"/></g>
 </svg>`;
 
-export function createDeliveryUI({t,openDialog,switchLanguage,storage,tone,getPlayerName}){
+export function createDeliveryUI({t,openDialog,switchLanguage,storage,tone,getPlayerName,onPilot=()=>{}}){
   let game=createSupplyDelivery(),previousPhase,returnTo=null,earned=false,liveSecond=-1;
   try{earned=storage.getItem(DELIVERY_KEY)==='earned';}catch{}
   const dialog=document.createElement('dialog');dialog.id='supply-delivery';dialog.setAttribute('aria-labelledby','delivery-title');
@@ -97,11 +97,11 @@ export function createDeliveryUI({t,openDialog,switchLanguage,storage,tone,getPl
     if(focus&&changed)$(phase==='ready'?'delivery-board':phase==='arrived'?'delivery-unload':phase==='complete'?'delivery-signal':'delivery-objective').focus({preventScroll:true});
   }
   $('delivery-time').onchange=$('delivery-speed').onchange=()=>{game.tune(Number($('delivery-time').value),Number($('delivery-speed').value));render();};
-  $('delivery-plan').onsubmit=event=>{event.preventDefault();if(game.check())tone('pickup');render(true);};
+  $('delivery-plan').onsubmit=event=>{event.preventDefault();const correct=game.check();onPilot('check',{step:'route',correct});if(correct)tone('pickup');render(true);};
   $('delivery-board').onclick=()=>{if(game.board()){tone('craft');render(true);}};
   $('delivery-skip').onclick=()=>{if(game.advance(model.duration)){tone('pickup');render(true);}};
-  $('delivery-unload').onclick=()=>{if(!game.unload())return;earned=true;try{storage.setItem(DELIVERY_KEY,'earned');}catch{}tone('win');render(true);};
-  $('delivery-replay').onclick=()=>{game=createSupplyDelivery();previousPhase=null;render(true);};
+  $('delivery-unload').onclick=()=>{if(!game.unload())return;earned=true;try{storage.setItem(DELIVERY_KEY,'earned');}catch{}onPilot('complete');tone('win');render(true);};
+  $('delivery-replay').onclick=()=>{onPilot('restart');game=createSupplyDelivery();previousPhase=null;render(true);};
   $('delivery-language').onclick=switchLanguage;
   $('delivery-exit').onclick=()=>dialog.close();
   $('delivery-map').onclick=()=>dialog.close('map');

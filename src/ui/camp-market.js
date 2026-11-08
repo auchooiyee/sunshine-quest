@@ -15,7 +15,7 @@ const camp=`<svg id="market-scene" viewBox="0 0 720 202" role="img"><title></tit
   <path d="M0 202v-31q14 9 18 20 -1 -20 9 -31 9 16 13 34 10 -10 18 -7l5 15z M720 202h-59q8 -14 20 -19l2 11q2 -16 11 -29 8 10 9 22 10 -16 17 -18z" fill="#365445"/>
 </svg>`;
 
-export function createMarketUI({t,openDialog,switchLanguage,storage,tone,getPlayerName}){
+export function createMarketUI({t,openDialog,switchLanguage,storage,tone,getPlayerName,onPilot=()=>{}}){
   let game=createCampMarket(),earned=false,returnTo=null,previousPhase;
   try{earned=storage.getItem(MARKET_KEY)==='earned';}catch{}
   const dialog=document.createElement('dialog');dialog.id='camp-market';dialog.setAttribute('aria-labelledby','market-title');
@@ -69,10 +69,10 @@ export function createMarketUI({t,openDialog,switchLanguage,storage,tone,getPlay
     if(focus&&changed)$(phase==='ready'?'market-unpack':phase==='stocked'?'market-light':phase==='complete'?'market-canyon':'market-objective').focus({preventScroll:true});
   }
   for(const {key} of model.items)$('market-quantity-'+key).onchange=()=>{game.choose(key,Number($('market-quantity-'+key).value));render();};
-  $('market-plan').onsubmit=event=>{event.preventDefault();if(game.check())tone('pickup');render(true);};
+  $('market-plan').onsubmit=event=>{event.preventDefault();const correct=game.check();onPilot('check',{step:'budget',correct});if(correct)tone('pickup');render(true);};
   $('market-unpack').onclick=()=>{if(game.unpack()){tone('craft');render(true);}};
-  $('market-light').onclick=()=>{if(!game.light())return;earned=true;try{storage.setItem(MARKET_KEY,'earned');}catch{}tone('win');render(true);};
-  $('market-replay').onclick=()=>{game=createCampMarket();previousPhase=null;render(true);};
+  $('market-light').onclick=()=>{if(!game.light())return;earned=true;try{storage.setItem(MARKET_KEY,'earned');}catch{}onPilot('complete');tone('win');render(true);};
+  $('market-replay').onclick=()=>{onPilot('restart');game=createCampMarket();previousPhase=null;render(true);};
   $('market-language').onclick=switchLanguage;$('market-exit').onclick=$('market-map').onclick=()=>dialog.close();
   $('market-canyon').onclick=()=>dialog.close('canyon');
   dialog.addEventListener('close',()=>{const callback=returnTo;returnTo=null;const destination=dialog.returnValue;if(callback)setTimeout(()=>callback(destination),0);});

@@ -43,7 +43,7 @@ const scene=`<svg id="rescue-scene" viewBox="0 0 ${W} ${H}" role="img">
   <g fill="#1a382e" opacity=".9"><path d="M0 0h78Q60 16 35 18q20 8 22 25 -23 2 -34 -12 4 17 -9 33Q6 56 0 49Z M720 0h-89q16 14 38 18 -17 7 -25 20 25 8 44 -9 -10 22 4 37 18 -7 28 -24Z"/><path d="M0 288v-37q12 8 18 25 -5 -26 6 -41 12 19 15 40 9 -9 17 -10l2 23z M720 288h-61q5 -16 17 -24l2 13q4 -25 18 -42 6 15 5 33 11 -13 19 -15z"/></g>
 </svg>`;
 
-export function createRescueUI({t,openDialog,switchLanguage,storage,tone,getPlayerName}){
+export function createRescueUI({t,openDialog,switchLanguage,storage,tone,getPlayerName,onPilot=()=>{}}){
   let game=createBridgeRescue(),held=0,heldFor=0,keyboard=0,returnTo=null,previousPhase;
   let earned=false;try{earned=storage.getItem(RESCUE_KEY)==='earned';}catch{}
   const dialog=document.createElement('dialog');dialog.id='bridge-rescue';dialog.setAttribute('aria-labelledby','rescue-title');
@@ -126,11 +126,11 @@ export function createRescueUI({t,openDialog,switchLanguage,storage,tone,getPlay
     if(Math.abs(point.y-layout.baseline)>35||point.x<axis(0)-20||point.x>axis(10)+20)return;
     game.pick(Math.round((point.x-axis(0))/layout.metre));render();
   };
-  $('rescue-check').onclick=()=>{if(game.checkAnchors())tone('pickup');render(true);};
+  $('rescue-check').onclick=()=>{const correct=game.checkAnchors();onPilot('check',{step:'anchors',correct});if(correct)tone('pickup');render(true);};
   $('rescue-span').onchange=$('rescue-curve').onchange=()=>{game.tune(Number($('rescue-span').value),Number($('rescue-curve').value));render();};
-  $('rescue-build-panel').onsubmit=event=>{event.preventDefault();if(game.build())tone('craft');render(true);};
-  $('rescue-light').onclick=()=>{if(!game.light())return;earned=true;try{storage.setItem(RESCUE_KEY,'earned');}catch{}tone('win');render(true);};
-  $('rescue-replay').onclick=()=>{game=createBridgeRescue();previousPhase=null;render(true);};
+  $('rescue-build-panel').onsubmit=event=>{event.preventDefault();const correct=game.build();onPilot('check',{step:'design',correct});if(correct)tone('craft');render(true);};
+  $('rescue-light').onclick=()=>{if(!game.light())return;earned=true;try{storage.setItem(RESCUE_KEY,'earned');}catch{}onPilot('complete');tone('win');render(true);};
+  $('rescue-replay').onclick=()=>{onPilot('restart');game=createBridgeRescue();previousPhase=null;render(true);};
   $('rescue-language').onclick=switchLanguage;
   $('rescue-exit').onclick=()=>dialog.close();
   $('rescue-next').onclick=()=>dialog.close('next');

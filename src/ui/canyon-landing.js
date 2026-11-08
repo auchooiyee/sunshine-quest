@@ -19,7 +19,7 @@ const landing=point=>({x:246+point.x*68,y:184-point.y*19});
 const flightPoint=(end,p)=>({x:start.x+(end.x-start.x)*p,y:start.y+(end.y-22-start.y)*p-Math.sin(p*Math.PI)*31});
 const coords=`<option value="">—</option>${Array.from({length:CANYON.bound+1},(_,n)=>`<option>${n}</option>`).join('')}`;
 
-export function createCanyonUI({t,openDialog,switchLanguage,storage,tone,getPlayerName,getLanguage,getFieldBadges}){
+export function createCanyonUI({t,openDialog,switchLanguage,storage,tone,getPlayerName,getLanguage,getFieldBadges,onPilot=()=>{}}){
   let game=createCanyonLanding(),earned=false,returnTo=null,previousPhase,geometry;
   try{earned=storage.getItem(CANYON_KEY)==='earned';}catch{}
   const dialog=document.createElement('dialog');dialog.id='canyon-landing';dialog.setAttribute('aria-labelledby','canyon-title');
@@ -86,11 +86,11 @@ export function createCanyonUI({t,openDialog,switchLanguage,storage,tone,getPlay
     if(point.x<left-5||point.x>W-right+5||point.y<top-5||point.y>H-bottom+5)return;
     game.select(Math.round((point.x-left)/(W-left-right)*maxX),Math.round((H-bottom-point.y)/(H-bottom-top)*maxY));render();
   };
-  function finish(){earned=true;try{storage.setItem(CANYON_KEY,'earned');}catch{}tone('win');render(true);}
-  $('canyon-plan').onsubmit=event=>{event.preventDefault();if(game.check())tone('pickup');render(true);};
+  function finish(){earned=true;try{storage.setItem(CANYON_KEY,'earned');}catch{}onPilot('complete');tone('win');render(true);}
+  $('canyon-plan').onsubmit=event=>{event.preventDefault();const correct=game.check();onPilot('check',{step:'point',correct});if(correct)tone('pickup');render(true);};
   $('canyon-launch').onclick=()=>{if(game.launch()){tone('craft');render(true);}};
   $('canyon-skip').onclick=()=>{if(game.advance(CANYON.duration))finish();};
-  $('canyon-replay').onclick=()=>{game=createCanyonLanding();previousPhase=null;render(true);};
+  $('canyon-replay').onclick=()=>{onPilot('restart');game=createCanyonLanding();previousPhase=null;render(true);};
   $('canyon-language').onclick=switchLanguage;$('canyon-exit').onclick=$('canyon-map').onclick=()=>dialog.close();
   $('canyon-storm').onclick=()=>dialog.close('storm');
   dialog.addEventListener('close',()=>{const callback=returnTo;returnTo=null;const destination=dialog.returnValue;if(callback)setTimeout(()=>callback(destination),0);});

@@ -15,7 +15,7 @@ const terrain=`<svg id="storm-scene" viewBox="0 0 720 207" role="img"><title></t
   <g fill="#f2ecd0" font-size="16" font-weight="bold" text-anchor="middle"><text x="288" y="57">28 m</text><text x="294" y="166">32 m</text></g>
 </svg>`;
 
-export function createStormUI({t,openDialog,switchLanguage,storage,tone,getPlayerName}){
+export function createStormUI({t,openDialog,switchLanguage,storage,tone,getPlayerName,onPilot=()=>{},hasPlaytest=()=>false,onReport=()=>{}}){
   let game=createStormRelay(),earned=false,returnTo=null,previousPhase,liveTick=-1;
   try{earned=storage.getItem(STORM_KEY)==='earned';}catch{}
   const dialog=document.createElement('dialog');dialog.id='storm-relay';dialog.setAttribute('aria-labelledby','storm-title');
@@ -28,7 +28,7 @@ export function createStormUI({t,openDialog,switchLanguage,storage,tone,getPlaye
     <div id="storm-feedback" role="status" hidden><p id="storm-distance-feedback"></p><p id="storm-reserve-feedback"></p></div>
     <details id="storm-details"><summary data-i18n="stormCalculations"></summary><p id="storm-distance-math"></p><p id="storm-cost-math"></p><p data-i18n="stormFee"></p></details><details id="storm-hint"><summary data-i18n="rescueHint"></summary><p data-i18n="stormHint"></p></details>
     <div id="storm-ride" hidden><strong id="storm-live"></strong><button id="storm-skip" class="outline" data-i18n="stormSkip"></button></div><button id="storm-unload" class="primary" hidden data-i18n="stormUnload"></button>
-    <div id="storm-finish" hidden><div class="rescue-badge"><span aria-hidden="true">✦</span><strong data-i18n="stormBadge"></strong></div><div class="rescue-controls"><button id="storm-map" class="primary" data-i18n="stormMap"></button><button id="storm-replay" class="outline" data-i18n="rescueReplay"></button></div></div>`;
+    <div id="storm-finish" hidden><div class="rescue-badge"><span aria-hidden="true">✦</span><strong data-i18n="stormBadge"></strong></div><div class="rescue-controls"><button id="storm-playtest-report" class="primary" data-i18n="fieldPilotReport"></button><button id="storm-map" class="primary" data-i18n="stormMap"></button><button id="storm-replay" class="outline" data-i18n="rescueReplay"></button></div></div>`;
   document.body.append(dialog);
   const $=id=>dialog.querySelector('#'+id);
   const lengths={};
@@ -50,7 +50,7 @@ export function createStormUI({t,openDialog,switchLanguage,storage,tone,getPlaye
     [...dialog.querySelectorAll('.storm-steps li')].forEach((el,i)=>{el.classList.toggle('done',i<step[phase]);if(i===step[phase])el.setAttribute('aria-current','step');else el.removeAttribute('aria-current');});
     $('storm-player').textContent=getPlayerName();$('storm-objective').textContent=fill(phaseText[phase],{route:t(routeNames[plan.route]),remaining:plan.remaining});
     $('storm-plan').hidden=!planning;$('storm-check').hidden=phase!=='plan';$('storm-send').hidden=phase!=='ready';$('storm-feedback').hidden=!checked||phase!=='plan';$('storm-hint').hidden=phase!=='plan';
-    $('storm-ride').hidden=phase!=='riding';$('storm-unload').hidden=phase!=='arrived';$('storm-finish').hidden=!done;
+    $('storm-ride').hidden=phase!=='riding';$('storm-unload').hidden=phase!=='arrived';$('storm-finish').hidden=!done;$('storm-playtest-report').hidden=!hasPlaytest();$('storm-map').className=hasPlaytest()?'outline':'primary';
     $('storm-distance').textContent=`${plan.planned} / ${plan.distance} m`;$('storm-reserve').textContent=plan.remaining<0?`−RM${-plan.remaining}`:`RM${plan.remaining}`;
     for(const [id,ok] of [['storm-distance-card',plan.correctDistance],['storm-reserve-card',plan.correctReserve]]){
       $(id).classList.toggle('storm-pass',checked&&ok);$(id).classList.toggle('storm-fail',checked&&!ok);
@@ -69,15 +69,16 @@ export function createStormUI({t,openDialog,switchLanguage,storage,tone,getPlaye
     $('storm-scene').querySelector('title').textContent=t('stormScene');
     $('storm-crates').style.display=done?'':'none';$('storm-cart').style.display=done?'none':'';
     if(dialog.open)paintRide(true);
-    if(focus&&changed)$(phase==='ready'?'storm-send':phase==='arrived'?'storm-unload':done?'storm-map':'storm-objective').focus({preventScroll:true});
+    if(focus&&changed)$(phase==='ready'?'storm-send':phase==='arrived'?'storm-unload':done?(hasPlaytest()?'storm-playtest-report':'storm-map'):'storm-objective').focus({preventScroll:true});
   }
   const tune=()=>{const route=dialog.querySelector('input[name="storm-route"]:checked').value;game.tune(route,Number($('storm-time').value),Number($('storm-speed').value));render();};
   for(const id of ['storm-route-ridge','storm-route-valley','storm-time','storm-speed'])$(id).onchange=tune;
-  $('storm-plan').onsubmit=event=>{event.preventDefault();if(game.check())tone('pickup');render(true);};
+  $('storm-plan').onsubmit=event=>{event.preventDefault();const correct=game.check();onPilot('check',{step:'plan',correct});if(correct)tone('pickup');render(true);};
   $('storm-send').onclick=()=>{if(game.launch()){tone('craft');render(true);}};
   $('storm-skip').onclick=()=>{if(game.advance(STORM.model.duration)){tone('pickup');render(true);}};
-  $('storm-unload').onclick=()=>{if(!game.unload())return;earned=true;try{storage.setItem(STORM_KEY,'earned');}catch{}tone('win');render(true);};
-  $('storm-replay').onclick=()=>{game=createStormRelay();previousPhase=null;$('storm-details').open=false;$('storm-hint').open=false;render(true);};
+  $('storm-unload').onclick=()=>{if(!game.unload())return;earned=true;try{storage.setItem(STORM_KEY,'earned');}catch{}onPilot('complete');tone('win');render(true);};
+  $('storm-replay').onclick=()=>{onPilot('restart');game=createStormRelay();previousPhase=null;$('storm-details').open=false;$('storm-hint').open=false;render(true);};
+  $('storm-playtest-report').onclick=()=>{returnTo=onReport;dialog.close();};
   $('storm-language').onclick=switchLanguage;$('storm-exit').onclick=$('storm-map').onclick=()=>dialog.close();
   dialog.addEventListener('close',()=>{const callback=returnTo;returnTo=null;if(callback)setTimeout(callback,0);});
   return {get earned(){return earned;},render,

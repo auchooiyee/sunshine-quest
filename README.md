@@ -14,11 +14,13 @@ Run this command from the repository directory. Open http://127.0.0.1:4173 in a 
 
 ## Deploy
 
-Student link: [Play Sunshine Math Quest](https://sunshine-quest.pages.dev/?view=regions). Version 0.10 is deployed on Cloudflare Pages. The project currently reports a disconnected Git account, so this release was published directly from the verified local build; see [DEPLOYMENT.md](DEPLOYMENT.md).
+Student link: [Play Sunshine Math Quest](https://sunshine-quest.pages.dev/?view=regions). The game is hosted on Cloudflare Pages. See [DEPLOYMENT.md](DEPLOYMENT.md) for the direct deployment workflow and Git integration.
 
 This repository is prepared for Cloudflare Pages. Run `npm run build` to create the public `dist` directory. Use `npm run build` as the Pages build command and `dist` as the output directory. See [DEPLOYMENT.md](DEPLOYMENT.md) for Git integration and update instructions.
 
 ## Play
+
+**Field mission playtest (v0.17)** lets students record their attempts in the six short missions and download a CSV without their nickname. Open **Field playtest** on the region map to share the opt-in student link or combine student reports. See the [classroom playtest guide](docs/FIELD_PLAYTEST_GUIDE.md).
 
 **Storm Supply Relay (v0.16)** unlocks after collecting all five Field mission badges. Compare the ridge and valley routes, plan an 8-second journey, and deliver supplies while protecting the emergency reserve. See [v0.16 release notes](docs/V16_RELEASE.md).
 
