@@ -1,0 +1,20 @@
+#supply-delivery .delivery-steps{grid-template-columns:repeat(3,1fr)}
+#delivery-objective{margin:8px 0;color:#244334;font-size:clamp(13px,1.9vw,16px);line-height:1.38;font-weight:650}
+#delivery-objective:focus{outline:none}
+.delivery-visuals{display:grid;grid-template-columns:1.65fr 1fr;gap:8px;margin-bottom:9px;align-items:stretch}
+.delivery-stage,.delivery-chart{min-width:0;border:1px solid #afc29e;border-radius:10px;overflow:hidden;display:grid;align-items:center}
+.delivery-stage{position:relative;background:linear-gradient(0deg,#274e40bf,transparent 80%),url('./assets/forest-east.webp') center 45%/cover #50766c}
+.delivery-stage svg,.delivery-chart svg{display:block;width:100%;height:auto}
+.delivery-chart{background:#eef4e9;padding:3px 5px}
+#delivery-player,.delivery-goal{position:absolute;top:6px;padding:3px 7px;border-radius:5px;background:#183d33ec;color:#fff4cf;font-size:clamp(10px,1.6vw,13px);line-height:1.25}
+#delivery-player{left:7px;max-width:46%;text-overflow:ellipsis;overflow:hidden;white-space:nowrap}.delivery-goal{right:7px}
+.delivery-stop-key{position:absolute;bottom:2px;left:6px;padding:0 4px;border-radius:3px;background:#1e4136;color:#fff4cf;font-size:clamp(8px,1.3vw,11px);line-height:1.2}.delivery-stop-key span:first-child{color:#f2cf76}
+.delivery-math{margin:6px 0;color:#385a43;font-size:clamp(12px,1.5vw,15px);font-variant-numeric:tabular-nums}
+#delivery-feedback{margin:7px 0;color:#873c2e;font-weight:650;font-size:13px}
+#delivery-hint{margin:6px 0 0;font-size:13px}#delivery-hint summary{padding:6px 0;cursor:pointer}#delivery-hint p{margin:4px 0}
+#delivery-ride{display:flex;flex-wrap:wrap;align-items:center;gap:10px}#delivery-live{font-variant-numeric:tabular-nums;font-weight:bold;margin:5px 0}
+#supply-delivery button:not(.rescue-head-actions button){min-height:44px}
+#supply-delivery[data-phase=arrived] #delivery-lamp,#supply-delivery[data-phase=complete] #delivery-lamp{fill:#ffe092;filter:drop-shadow(0 0 6px #ffd679)}
+#supply-delivery[data-phase=complete] #delivery-depot-crates{animation:delivery-drop .48s ease-out both;transform-box:fill-box;transform-origin:center}
+@keyframes delivery-drop{from{opacity:.2;translate:0 -7px}to{opacity:1;translate:0 0}}
+@media(max-width:630px){.delivery-visuals{grid-template-columns:1fr;gap:5px}.delivery-chart svg{max-height:120px}.delivery-stage{background-position:center 44%}.delivery-tuning label,.delivery-tuning .rescue-height{padding:5px 6px}}

@@ -20,6 +20,8 @@ This repository is prepared for Cloudflare Pages. Run `npm run build` to create 
 
 ## Play
 
+**Supply Cart Run (v0.12)** is the next short adventure after Broken Bridge Rescue. Open it from the bridge victory screen or the region map. Plan a two-stage journey to the depot, board the cart and unload the crates to earn the local Supply Runner badge. See [v0.12 release notes](docs/V12_RELEASE.md).
+
 **Broken Bridge Rescue (v0.11)** is an optional starter mission in Quadratic Forest. New guest players see it after choosing a nickname. Returning players can open it from the region map. Find the two anchors on the graph, tune the arch, walk over your bridge and light the beacon to earn a local badge. Classroom links still open their assigned missions directly. See [v0.11 release notes](docs/V11_RELEASE.md).
 
 Before starting, enter a name or nickname (up to 24 characters). The game shows it on the player badge and remembers it in this browser. Click the badge or use **Learning journal → Change name** to edit it. Progress JSON keeps the name; teacher CSV reports still use the separate learner code.

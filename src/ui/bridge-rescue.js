@@ -54,7 +54,7 @@ export function createRescueUI({t,openDialog,switchLanguage,storage,tone,getPlay
     <section id="rescue-anchor-panel" hidden><p id="rescue-pick-label" data-i18n="rescuePick"></p><div id="rescue-points" role="group" aria-labelledby="rescue-pick-label">${Array.from({length:11},(_,i)=>`<button type="button" class="outline" data-point="${i}" aria-pressed="false">${i}</button>`).join('')}</div><button id="rescue-check" class="primary" data-i18n="rescueCheck"></button></section>
     <form id="rescue-build-panel" hidden><div class="rescue-tuning"><label><span data-i18n="rescueSpan"></span><select id="rescue-span">${spanValues.map(v=>`<option>${v}</option>`).join('')}</select></label><label><span data-i18n="rescueCurve"></span><select id="rescue-curve">${curveValues.map(v=>`<option>${v}</option>`).join('')}</select></label><div class="rescue-height"><span data-i18n="rescueHeight"></span><output id="rescue-height" for="rescue-span rescue-curve"></output></div></div><p class="rescue-equation">y = k · d(L − d) · <span data-i18n="rescueDistance"></span></p><button id="rescue-build" class="primary" data-i18n="rescueBuild"></button></form>
     <p id="rescue-feedback" role="alert" hidden></p><details id="rescue-hint" hidden><summary data-i18n="rescueHint"></summary><p id="rescue-hint-text"></p></details>
-    <button id="rescue-light" class="primary" hidden data-i18n="rescueLight"></button><div id="rescue-finish" hidden><div class="rescue-badge"><span aria-hidden="true">✦</span><strong data-i18n="rescueBadge"></strong></div><div class="rescue-controls"><button id="rescue-next" class="primary" data-i18n="rescueNext"></button><button id="rescue-replay" class="outline" data-i18n="rescueReplay"></button></div></div>`;
+    <button id="rescue-light" class="primary" hidden data-i18n="rescueLight"></button><div id="rescue-finish" hidden><div class="rescue-badge"><span aria-hidden="true">✦</span><strong data-i18n="rescueBadge"></strong></div><div class="rescue-controls"><button id="rescue-delivery" class="primary" data-i18n="deliveryNext"></button><button id="rescue-next" class="outline" data-i18n="rescueNext"></button><button id="rescue-replay" class="outline" data-i18n="rescueReplay"></button></div></div>`;
   document.body.append(dialog);
   const $=id=>dialog.querySelector('#'+id);
   const phaseText={approach:'rescueApproach',anchors:'rescueAnchors',design:'rescueDesign',cross:'rescueCross',beacon:'rescueBeacon',complete:'rescueComplete'};
@@ -134,7 +134,8 @@ export function createRescueUI({t,openDialog,switchLanguage,storage,tone,getPlay
   $('rescue-language').onclick=switchLanguage;
   $('rescue-exit').onclick=()=>dialog.close();
   $('rescue-next').onclick=()=>dialog.close('next');
-  dialog.addEventListener('close',()=>{stop();const callback=returnTo;returnTo=null;const next=dialog.returnValue==='next';if(callback)setTimeout(()=>callback(next),0);});
+  $('rescue-delivery').onclick=()=>dialog.close('delivery');
+  dialog.addEventListener('close',()=>{stop();const callback=returnTo;returnTo=null;const destination=dialog.returnValue;if(callback)setTimeout(()=>callback(destination),0);});
   return {
     get earned(){return earned;},
     render,
