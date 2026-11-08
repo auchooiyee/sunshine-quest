@@ -31,6 +31,8 @@ import {createSignalUI} from './src/ui/crystal-signal.js';
 import {en as signalEN,ms as signalMS} from './locales/signal.js';
 import {createMarketUI} from './src/ui/camp-market.js';
 import {en as marketEN,ms as marketMS} from './locales/market.js';
+import {createCanyonUI} from './src/ui/canyon-landing.js';
+import {en as canyonEN,ms as canyonMS} from './locales/canyon.js';
 import {adventureFor} from './config/adventures.js';
 import {constructionsFor,constructionSummary} from './src/missions/constructions.js';
 import {en as adventureEN,ms as adventureMS} from './locales/adventure.js';
@@ -53,7 +55,7 @@ let playerName=loadPlayerName(storage)||stored.data?.playerName||'',afterPlayerN
 let currentWorld=getWorld(assignment?.world||stored.data?.currentRegion),regions=stored.data?.regions||{};
 let language=stored.data?.language || assignment?.language || 'en', assist=assignment?assignment.assist:stored.data?.assist !== false;
 let history=stored.data?.history||[];
-const messages={en:{...en,...expeditionEN,...finaleEN,...practiceEN,...pilotEN,...adventureEN,...learningEN,...levelsEN,...equipmentEN,...playerEN,...rescueEN,...deliveryEN,...signalEN,...marketEN},ms:{...ms,...expeditionMS,...finaleMS,...practiceMS,...pilotMS,...adventureMS,...learningMS,...levelsMS,...equipmentMS,...playerMS,...rescueMS,...deliveryMS,...signalMS,...marketMS}};
+const messages={en:{...en,...expeditionEN,...finaleEN,...practiceEN,...pilotEN,...adventureEN,...learningEN,...levelsEN,...equipmentEN,...playerEN,...rescueEN,...deliveryEN,...signalEN,...marketEN,...canyonEN},ms:{...ms,...expeditionMS,...finaleMS,...practiceMS,...pilotMS,...adventureMS,...learningMS,...levelsMS,...equipmentMS,...playerMS,...rescueMS,...deliveryMS,...signalMS,...marketMS,...canyonMS}};
 const t = key => assignment?.tasks===3&&['questLead','introText','finishedText'].includes(key)?messages[language].shortMissionText:key==='guardian'&&adventureFor(currentWorld.id)?adventureFor(currentWorld.id).guardian[language]:worldText(currentWorld,key,language) || messages[language][key] || messages.en[key] || key;
 const game=createGame(regions[currentWorld.id]?.world,{mathQuest:true,assist});
 const curricula=new Map();
@@ -69,6 +71,7 @@ const bridgeRescue=createRescueUI({t,openDialog,switchLanguage,storage,tone,getP
 const supplyDelivery=createDeliveryUI({t,openDialog,switchLanguage,storage,tone,getPlayerName:()=>playerName});
 const crystalSignal=createSignalUI({t,openDialog,switchLanguage,storage,tone,getPlayerName:()=>playerName});
 const campMarket=createMarketUI({t,openDialog,switchLanguage,storage,tone,getPlayerName:()=>playerName});
+const canyonLanding=createCanyonUI({t,openDialog,switchLanguage,storage,tone,getPlayerName:()=>playerName,getLanguage:()=>language});
 const stationX=id=>currentWorld.id==='finale'?FINAL_WORLD.stations[id]:adventureFor(currentWorld.id).stations[id];
 const benchX=()=>adventureFor(currentWorld.id)?.bench??1450;
 const dialogs=[...document.querySelectorAll('dialog')];
@@ -120,7 +123,7 @@ function applyLanguage(){
   if($('journal').open)renderJournal();
   if($('workshop').open)renderWorkshop();
   tutorial.render();
-  bridgeRescue.render();supplyDelivery.render();crystalSignal.render();campMarket.render();renderRescueEntry();
+  bridgeRescue.render();supplyDelivery.render();crystalSignal.render();campMarket.render();canyonLanding.render();renderRescueEntry();
   renderAdventure();
   $('load-message').textContent=t(loadFailed?'loadError':loadingPhase);
   $('save-recovery').hidden=!recoveryPending;
@@ -187,8 +190,10 @@ function updateUI(force=false){
 }
 function begin(){if(!loaded||anyModal())return;if(!playerName){askPlayerName(begin);return;}game.start();clearInput();stage.focus({preventScroll:true});persist();updateUI(true);}
 function renderRescueEntry(){
-  const starters={rescue:bridgeRescue,delivery:supplyDelivery,signal:crystalSignal,market:campMarket};
+  const starters={rescue:bridgeRescue,delivery:supplyDelivery,signal:crystalSignal,market:campMarket,canyon:canyonLanding};
   $('starter-missions').hidden=Boolean(assignment);
+  const missions=Object.values(starters);
+  $('starter-badge-count').textContent=t('canyonTrailCount').replace('{earned}',missions.filter(mission=>mission.earned).length).replace('{total}',missions.length);
   for(const entry of document.querySelectorAll('.rescue-entry')){
     const prefix=entry.dataset.mission||'rescue',earned=starters[prefix].earned;
     entry.hidden=Boolean(assignment);entry.querySelector('button').disabled=!loaded;
@@ -196,9 +201,13 @@ function renderRescueEntry(){
     entry.querySelector('small').textContent=t(prefix+(earned?'Earned':'EntryNote'));
   }
 }
+function openCanyon(){
+  if(!loaded||!playerName||assignment)return;
+  canyonLanding.open(()=>{renderRescueEntry();$('region-button').click();});
+}
 function openMarket(){
   if(!loaded||!playerName||assignment)return;
-  campMarket.open(()=>{renderRescueEntry();$('region-button').click();});
+  campMarket.open(destination=>{renderRescueEntry();if(destination==='canyon')openCanyon();else $('region-button').click();});
 }
 function openSignal(){
   if(!loaded||!playerName||assignment)return;
@@ -217,6 +226,7 @@ $('map-rescue').onclick=()=>{$('region-map').close();setTimeout(()=>openRescue((
 $('map-delivery').onclick=()=>{$('region-map').close();setTimeout(openDelivery,0);};
 $('map-signal').onclick=()=>{$('region-map').close();setTimeout(openSignal,0);};
 $('map-market').onclick=()=>{$('region-map').close();setTimeout(openMarket,0);};
+$('map-canyon').onclick=()=>{$('region-map').close();setTimeout(openCanyon,0);};
 function askPlayerName(next=null,starter=false){
   if(anyModal())return;afterPlayerName=next;$('player-setup').dataset.next=starter?'rescue':'';$('player-input').value=playerName;$('player-error').textContent='';openDialog($('player-setup'));$('player-input').focus();
 }
@@ -576,7 +586,7 @@ function pauseForFocus(){clearInput();if(!openingModal&&game.state.mode==='playi
 window.addEventListener('blur',pauseForFocus);document.addEventListener('visibilitychange',()=>{if(document.hidden)pauseForFocus();});window.addEventListener('pagehide',persist);
 function frame(now){
   const dt=Math.min((now-last)/1000||1/60,.05);last=now;
-  bridgeRescue.tick(dt);supplyDelivery.tick(dt);crystalSignal.tick(dt);
+  bridgeRescue.tick(dt);supplyDelivery.tick(dt);crystalSignal.tick(dt);canyonLanding.tick(dt);
   if(playerName&&!anyModal())game.update(dt,input);
   for(const event of game.state.events.splice(0)){
     if(event.type==='sound')tone(event.name);

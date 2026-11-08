@@ -28,7 +28,7 @@ export function createMarketUI({t,openDialog,switchLanguage,storage,tone,getPlay
     <div class="rescue-controls market-actions"><button id="market-check" type="submit" class="primary" data-i18n="marketCheck"></button><button id="market-unpack" type="button" class="primary" hidden data-i18n="marketUnpack"></button></div></form>
     <p id="market-feedback" role="alert" hidden></p><details id="market-hint"><summary data-i18n="rescueHint"></summary><p data-i18n="marketHint"></p></details>
     <p id="market-inventory" hidden></p><button id="market-light" class="primary" hidden data-i18n="marketLight"></button>
-    <div id="market-finish" hidden><div class="rescue-badge"><span aria-hidden="true">✦</span><strong data-i18n="marketBadge"></strong></div><div class="rescue-controls"><button id="market-map" class="primary" data-i18n="marketMap"></button><button id="market-replay" class="outline" data-i18n="rescueReplay"></button></div></div>`;
+    <div id="market-finish" hidden><div class="rescue-badge"><span aria-hidden="true">✦</span><strong data-i18n="marketBadge"></strong></div><div class="rescue-controls"><button id="market-canyon" class="primary" data-i18n="canyonNext"></button><button id="market-map" class="outline" data-i18n="marketMap"></button><button id="market-replay" class="outline" data-i18n="rescueReplay"></button></div></div>`;
   document.body.append(dialog);
   const $=id=>dialog.querySelector('#'+id);
   const step={plan:0,ready:1,stocked:2,complete:3};
@@ -66,7 +66,7 @@ export function createMarketUI({t,openDialog,switchLanguage,storage,tone,getPlay
     $('market-food-props').innerHTML=props(basket.food,i=>`<g transform="translate(${unpacked?174+i*26:72+i*13} ${unpacked?166:150})"><path d="M-9 0v-15H9V0Z" fill="#b8854b" stroke="#69492f" stroke-width="2"/><path d="M-7 -13 7 -2M-7 -2 7 -13" stroke="#e1ad70" stroke-width="1.8"/></g>`);
     $('market-medical-props').innerHTML=props(basket.medical,i=>`<g transform="translate(${unpacked?536+i*24:85+i*13} ${unpacked?168:134})"><rect x="-9" y="-13" width="18" height="13" rx="2" fill="#c1d3a4" stroke="#50684b" stroke-width="2"/><path d="M-4 -6H4M0 -10v8" stroke="#95514d" stroke-width="2"/></g>`);
     $('market-lamp-props').innerHTML=props(basket.lamp,i=>`<g transform="translate(${unpacked?425+i*74:101+i*12} ${unpacked?132:119})">${lit?'<circle cx="0" cy="-23" r="40" fill="url(#market-glow)"/>':''}<path d="M0 15v-36" stroke="#573d31" stroke-width="3"/><path d="M-8 -20v-10l8 -6 8 6v10Z" fill="${lit?'#ffe1a2':'#87907a'}" stroke="#624c37" stroke-width="2"/></g>`);
-    if(focus&&changed)$(phase==='ready'?'market-unpack':phase==='stocked'?'market-light':phase==='complete'?'market-map':'market-objective').focus({preventScroll:true});
+    if(focus&&changed)$(phase==='ready'?'market-unpack':phase==='stocked'?'market-light':phase==='complete'?'market-canyon':'market-objective').focus({preventScroll:true});
   }
   for(const {key} of model.items)$('market-quantity-'+key).onchange=()=>{game.choose(key,Number($('market-quantity-'+key).value));render();};
   $('market-plan').onsubmit=event=>{event.preventDefault();if(game.check())tone('pickup');render(true);};
@@ -74,8 +74,9 @@ export function createMarketUI({t,openDialog,switchLanguage,storage,tone,getPlay
   $('market-light').onclick=()=>{if(!game.light())return;earned=true;try{storage.setItem(MARKET_KEY,'earned');}catch{}tone('win');render(true);};
   $('market-replay').onclick=()=>{game=createCampMarket();previousPhase=null;render(true);};
   $('market-language').onclick=switchLanguage;$('market-exit').onclick=$('market-map').onclick=()=>dialog.close();
-  dialog.addEventListener('close',()=>{const callback=returnTo;returnTo=null;if(callback)setTimeout(callback,0);});
+  $('market-canyon').onclick=()=>dialog.close('canyon');
+  dialog.addEventListener('close',()=>{const callback=returnTo;returnTo=null;const destination=dialog.returnValue;if(callback)setTimeout(()=>callback(destination),0);});
   return {get earned(){return earned;},render,
-    open(onClose){if(!openDialog(dialog))return;returnTo=onClose;game=createCampMarket();previousPhase=null;render();$('market-title').focus({preventScroll:true});}
+    open(onClose){if(!openDialog(dialog))return;returnTo=onClose;dialog.returnValue='';game=createCampMarket();previousPhase=null;render();$('market-title').focus({preventScroll:true});}
   };
 }

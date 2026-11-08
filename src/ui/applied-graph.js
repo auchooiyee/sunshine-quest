@@ -4,8 +4,8 @@ const esc=v=>String(v).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;'
 const fmt=v=>Number(v.toFixed(3));
 const fraction=(n,d)=>{let a=n,b=d;while(b){[a,b]=[b,a%b];}return n===0?'0':`${n/a}/${d/a}`;};
 const text=(x,y,value,extra='')=>`<text x="${x}" y="${y}" fill="#335846" font-size="13" ${extra}>${esc(value)}</text>`;
-function plot(maxX,maxY,xLabel,yLabel){
-  const yTick=maxY<=10?2:maxY<=30?5:maxY<=60?10:20;
+function plot(maxX,maxY,xLabel,yLabel,unitGrid=false){
+  const yTick=unitGrid?1:maxY<=10?2:maxY<=30?5:maxY<=60?10:20;
   maxY=Math.ceil(maxY/yTick)*yTick;
   const g={minX:0,maxX,minY:0,maxY,left:48,right:25,top:32,bottom:40,W:540,H:360};
   const sx=x=>g.left+x/maxX*(g.W-g.left-g.right),sy=y=>g.H-g.bottom-y/maxY*(g.H-g.top-g.bottom);
@@ -30,7 +30,7 @@ export function renderAppliedGraph(def,draft,language,previewTime=0){
   const local=(en,ms)=>language==='ms'?ms:en;
   let markup='',equation='',summary='',instructions='',geometry=null;
   if(def.kind==='inequality'){
-    const p=plot(def.model.bound,def.model.bound,'x','y');geometry=p.g;markup=p.markup;
+    const p=plot(def.model.bound,def.model.bound,'x','y',def.model.unitGrid);geometry=p.g;markup=p.markup;
     const bound=def.model.bound;let polygon=[{x:0,y:0},{x:bound,y:0},{x:bound,y:bound},{x:0,y:bound}];
     for(const c of def.model.constraints)polygon=clip(polygon,c);
     markup+=`<polygon points="${polygon.map(v=>`${p.sx(v.x)},${p.sy(v.y)}`).join(' ')}" fill="#69b59a" fill-opacity=".28"/>`;

@@ -20,6 +20,8 @@ This repository is prepared for Cloudflare Pages. Run `npm run build` to create 
 
 ## Play
 
+**Canyon Landing (v0.15)** follows the camp market and is available in Field missions. Pick an integer point on the map, check every inequality and launch the supply glider. The map shows how many of the five local field badges you have earned. See [v0.15 release notes](docs/V15_RELEASE.md).
+
 **Camp Supply Market (v0.14)** follows the ferry and is also on the map under Field missions. Buy the camp essentials, keep at least RM20 for tomorrow, then unpack your purchases and light the lanterns. See [v0.14 release notes](docs/V14_RELEASE.md).
 
 **Crystal Signal (v0.13)** follows the cart delivery and can also be opened from the region map. Build a crystal bag to match an exact probability, trace both mixed-colour orders, and light the lanterns that bring the ferry into dock. See [v0.13 release notes](docs/V13_RELEASE.md).

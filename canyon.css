@@ -1,0 +1,25 @@
+.starter-heading{display:flex;align-items:baseline;justify-content:space-between;gap:8px;flex-wrap:wrap}.starter-heading span{color:#405f49;font-size:12px;font-weight:bold}
+#canyon-landing .canyon-steps{grid-template-columns:repeat(3,1fr)}
+#canyon-objective{margin:8px 0;color:#244334;font-size:clamp(13px,1.9vw,16px);line-height:1.35;font-weight:650}
+#canyon-objective:focus{outline:none}
+.canyon-visuals{display:grid;grid-template-columns:1.45fr 1fr;gap:8px;margin-bottom:6px}
+.canyon-stage,.canyon-chart{min-width:0;border:1px solid #b5be9f;border-radius:10px;overflow:hidden}
+.canyon-stage{position:relative;display:grid;align-items:end;background:linear-gradient(#b9896896,#5f4c61b5),url('./assets/forest-east.webp') center 42%/cover #8b6e6b}
+.canyon-stage svg,.canyon-chart svg{display:block;width:100%;height:auto}
+.canyon-chart{background:#f0f4e9;padding:3px 5px}
+#canyon-landing:is([data-phase=plan],[data-phase=ready]) #canyon-graph{cursor:crosshair}
+#canyon-player,#canyon-pad-label{position:absolute;top:6px;padding:3px 7px;border-radius:5px;background:#383d38ed;color:#fff4ce;font-size:clamp(10px,1.6vw,13px);line-height:1.25}
+#canyon-player{left:7px;max-width:43%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}#canyon-pad-label{right:7px}
+.canyon-legend{display:flex;flex-wrap:wrap;gap:4px 15px;margin:5px 0 6px;font-size:12px;color:#3b5649}
+.canyon-legend>span{display:inline-flex;align-items:center;gap:5px}.canyon-legend i{width:20px;border-top:2px solid #226954}.canyon-legend .dashed{border-top-style:dashed}
+#canyon-rules{list-style:none;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:5px;margin:5px 0 8px;padding:0}
+#canyon-rules li{min-width:0;display:grid;gap:2px;padding:5px 8px;border:1px solid transparent;border-radius:6px;background:#ecf1e1;font-size:13px;color:#355348}
+#canyon-rules li span{font-size:11px;line-height:1.18}#canyon-rules li span:empty{display:none}
+#canyon-rules .canyon-pass{background:#e0edda;border-color:#a7be9d}#canyon-rules .canyon-fail{background:#f7e9df;border-color:#b88170;color:#7e3c2e}
+.canyon-plan-controls{display:flex;align-items:center;flex-wrap:wrap;gap:6px}.canyon-plan-controls label{display:flex;align-items:center;gap:5px;font-weight:bold;font-size:14px}
+.canyon-plan-controls select{min-width:56px;min-height:44px;padding:4px;background:#fffdf4;color:#264734;border:1px solid #9eb298;border-radius:6px;font:inherit}
+#canyon-landing button:not(.rescue-head-actions button){min-height:44px}#canyon-feedback{margin:7px 0;color:#873c2e;font-size:13px;font-weight:650}
+#canyon-hint{margin:4px 0 0;font-size:13px}#canyon-hint summary{padding:5px 0;cursor:pointer}#canyon-hint p{margin:4px 0}
+#canyon-landing[data-phase=complete] #canyon-lookout-light{fill:#ffe1a2;filter:drop-shadow(0 0 7px #ffd679)}
+#canyon-landing[data-phase=complete] #canyon-crate{animation:canyon-crate .4s ease-out both}@keyframes canyon-crate{from{opacity:.4;translate:0 -5px}to{opacity:1;translate:0 0}}
+@media(max-width:630px){.canyon-visuals{grid-template-columns:1fr;gap:5px}.canyon-chart svg{max-height:163px}.canyon-legend{font-size:11px}#canyon-rules{grid-template-columns:repeat(2,minmax(0,1fr))}#canyon-rules li{font-size:12px;padding:4px 6px}.canyon-plan-controls button{font-size:11px;padding:6px 9px}}
