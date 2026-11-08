@@ -20,6 +20,8 @@ This repository is prepared for Cloudflare Pages. Run `npm run build` to create 
 
 ## Play
 
+**Camp Supply Market (v0.14)** follows the ferry and is also on the map under Field missions. Buy the camp essentials, keep at least RM20 for tomorrow, then unpack your purchases and light the lanterns. See [v0.14 release notes](docs/V14_RELEASE.md).
+
 **Crystal Signal (v0.13)** follows the cart delivery and can also be opened from the region map. Build a crystal bag to match an exact probability, trace both mixed-colour orders, and light the lanterns that bring the ferry into dock. See [v0.13 release notes](docs/V13_RELEASE.md).
 
 **Supply Cart Run (v0.12)** is the next short adventure after Broken Bridge Rescue. Open it from the bridge victory screen or the region map. Plan a two-stage journey to the depot, board the cart and unload the crates to earn the local Supply Runner badge. See [v0.12 release notes](docs/V12_RELEASE.md).

@@ -36,7 +36,7 @@ export function createSignalUI({t,openDialog,switchLanguage,storage,tone,getPlay
     <div id="signal-draw" hidden><p id="signal-draw-status" aria-live="polite"></p><div class="rescue-controls"><button id="signal-pick-red" class="outline"><i class="signal-gem red" aria-hidden="true"></i><span data-i18n="signalPickRed"></span></button><button id="signal-pick-blue" class="outline"><i class="signal-gem blue" aria-hidden="true"></i><span data-i18n="signalPickBlue"></span></button><button id="signal-clear" class="text-button" data-i18n="signalResetDraw"></button></div></div>
     <p id="signal-feedback" role="status" hidden></p><details id="signal-hint"><summary data-i18n="rescueHint"></summary><p data-i18n="signalHint"></p></details>
     <button id="signal-send" class="primary" hidden data-i18n="signalSend"></button><button id="signal-skip" class="outline" hidden data-i18n="signalSkip"></button>
-    <div id="signal-finish" hidden><div class="rescue-badge"><span aria-hidden="true">✦</span><strong data-i18n="signalBadge"></strong></div><div class="rescue-controls"><button id="signal-map" class="primary" data-i18n="signalMap"></button><button id="signal-replay" class="outline" data-i18n="rescueReplay"></button></div></div>`;
+    <div id="signal-finish" hidden><div class="rescue-badge"><span aria-hidden="true">✦</span><strong data-i18n="signalBadge"></strong></div><div class="rescue-controls"><button id="signal-market" class="primary" data-i18n="marketNext"></button><button id="signal-map" class="outline" data-i18n="signalMap"></button><button id="signal-replay" class="outline" data-i18n="rescueReplay"></button></div></div>`;
   document.body.append(dialog);
   const $=id=>dialog.querySelector('#'+id);
   const step={plan:0,trace:1,ready:2,sailing:2,complete:3};
@@ -78,7 +78,7 @@ export function createSignalUI({t,openDialog,switchLanguage,storage,tone,getPlay
     }
     for(const [id,order] of [['signal-rb-lamp','RB'],['signal-br-lamp','BR']])$(id).classList.toggle('is-lit',demonstrated.includes(order));
     paintBoat();
-    if(focus&&changed)$(phase==='ready'?'signal-send':phase==='complete'?'signal-map':'signal-objective').focus({preventScroll:true});
+    if(focus&&changed)$(phase==='ready'?'signal-send':phase==='complete'?'signal-market':'signal-objective').focus({preventScroll:true});
   }
   function finish(){earned=true;try{storage.setItem(SIGNAL_KEY,'earned');}catch{}tone('win');render(true);}
   $('signal-red').onchange=$('signal-rule').onchange=()=>{game.tune(Number($('signal-red').value),$('signal-rule').value==='return');render();};
@@ -89,9 +89,10 @@ export function createSignalUI({t,openDialog,switchLanguage,storage,tone,getPlay
   $('signal-skip').onclick=()=>{if(game.advance(SIGNAL.duration))finish();};
   $('signal-replay').onclick=()=>{game=createCrystalSignal();previousPhase=null;render(true);};
   $('signal-language').onclick=switchLanguage;$('signal-exit').onclick=$('signal-map').onclick=()=>dialog.close();
-  dialog.addEventListener('close',()=>{const callback=returnTo;returnTo=null;if(callback)setTimeout(callback,0);});
+  $('signal-market').onclick=()=>dialog.close('market');
+  dialog.addEventListener('close',()=>{const callback=returnTo;returnTo=null;const destination=dialog.returnValue;if(callback)setTimeout(()=>callback(destination),0);});
   return {get earned(){return earned;},render,
     tick(dt){if(!dialog.open||game.phase!=='sailing')return;if(game.advance(dt))finish();else paintBoat();},
-    open(onClose){if(!openDialog(dialog))return;returnTo=onClose;game=createCrystalSignal();previousPhase=null;render();$('signal-title').focus({preventScroll:true});}
+    open(onClose){if(!openDialog(dialog))return;returnTo=onClose;dialog.returnValue='';game=createCrystalSignal();previousPhase=null;render();$('signal-title').focus({preventScroll:true});}
   };
 }
